@@ -1,7 +1,7 @@
 //*********************************************
 // Utility.cpp
 //*********************************************
-
+#define _CRT_SECURE_NO_WARNINGS
 #include "Utility.h"
 
 namespace Util{
@@ -22,7 +22,6 @@ Eigen::Affine3f Perspective(const GLfloat fovy, const GLfloat aspect, const GLfl
 
 }
 
-#define _CRT_SECURE_NO_WARNINGS
 // Create a NULL-terminated string by reading the provided file
 static char* readShaderSource(const char* shaderFile)
 {

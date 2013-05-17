@@ -181,6 +181,7 @@ int main(int argcp, char **argv)
     glutCreateWindow("Jedi Chess");
     assign_callback();
     
+	glewInit();
     initScene();
     
     glutMainLoop();
