@@ -1,0 +1,291 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		653227D21744691D00D012E8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653227D11744691D00D012E8 /* GLUT.framework */; };
+		653227D41744692100D012E8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653227D31744692100D012E8 /* OpenGL.framework */; };
+		653227D61744693400D012E8 /* libGLEW.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 653227D51744693400D012E8 /* libGLEW.dylib */; };
+		65322B021744D11300D012E8 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 653229E21744D11300D012E8 /* Camera.cpp */; };
+		65322B031744D11300D012E8 /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 653229E41744D11300D012E8 /* Drawer.cpp */; };
+		65322B051744D11300D012E8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AF41744D11300D012E8 /* main.cpp */; };
+		65322B061744D11300D012E8 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AF61744D11300D012E8 /* Object.cpp */; };
+		65322B071744D11300D012E8 /* Piece.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AF81744D11300D012E8 /* Piece.cpp */; };
+		65322B081744D11300D012E8 /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AFB1744D11300D012E8 /* tga.cpp */; };
+		65322B091744D11300D012E8 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AFD1744D11300D012E8 /* Timer.cpp */; };
+		65322B0A1744D11300D012E8 /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AFF1744D11300D012E8 /* Utility.cpp */; };
+		65322B161744D46700D012E8 /* vShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 65322B141744D46600D012E8 /* vShader.vert */; };
+		65322B171744D46700D012E8 /* fShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 65322B151744D46700D012E8 /* fShader.frag */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		653227C31744691300D012E8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		653227C51744691300D012E8 /* JediChess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JediChess; sourceTree = BUILT_PRODUCTS_DIR; };
+		653227D11744691D00D012E8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		653227D31744692100D012E8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		653227D51744693400D012E8 /* libGLEW.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.dylib; path = ../../../../../../../../../../../usr/local/lib/libGLEW.dylib; sourceTree = "<group>"; };
+		653229E21744D11300D012E8 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		653229E31744D11300D012E8 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		653229E41744D11300D012E8 /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
+		653229E51744D11300D012E8 /* Drawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawer.h; sourceTree = "<group>"; };
+		65322AF11744D11300D012E8 /* gl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gl.h; sourceTree = "<group>"; };
+		65322AF21744D11300D012E8 /* JediChess.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = JediChess.1; sourceTree = "<group>"; };
+		65322AF31744D11300D012E8 /* Light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
+		65322AF41744D11300D012E8 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		65322AF51744D11300D012E8 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		65322AF61744D11300D012E8 /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
+		65322AF71744D11300D012E8 /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
+		65322AF81744D11300D012E8 /* Piece.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Piece.cpp; sourceTree = "<group>"; };
+		65322AF91744D11300D012E8 /* Piece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
+		65322AFA1744D11300D012E8 /* Square.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
+		65322AFB1744D11300D012E8 /* tga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tga.cpp; sourceTree = "<group>"; };
+		65322AFC1744D11300D012E8 /* tga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tga.h; sourceTree = "<group>"; };
+		65322AFD1744D11300D012E8 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
+		65322AFE1744D11300D012E8 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		65322AFF1744D11300D012E8 /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
+		65322B001744D11300D012E8 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		65322B141744D46600D012E8 /* vShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = vShader.vert; sourceTree = "<group>"; };
+		65322B151744D46700D012E8 /* fShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fShader.frag; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		653227C21744691300D012E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				653227D61744693400D012E8 /* libGLEW.dylib in Frameworks */,
+				653227D41744692100D012E8 /* OpenGL.framework in Frameworks */,
+				653227D21744691D00D012E8 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		653227BC1744691300D012E8 = {
+			isa = PBXGroup;
+			children = (
+				653227D51744693400D012E8 /* libGLEW.dylib */,
+				653227D31744692100D012E8 /* OpenGL.framework */,
+				653227D11744691D00D012E8 /* GLUT.framework */,
+				653229E11744D11300D012E8 /* JediChess */,
+				653227C61744691300D012E8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		653227C61744691300D012E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				653227C51744691300D012E8 /* JediChess */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		653229E11744D11300D012E8 /* JediChess */ = {
+			isa = PBXGroup;
+			children = (
+				653229E21744D11300D012E8 /* Camera.cpp */,
+				653229E31744D11300D012E8 /* Camera.h */,
+				653229E41744D11300D012E8 /* Drawer.cpp */,
+				653229E51744D11300D012E8 /* Drawer.h */,
+				65322B151744D46700D012E8 /* fShader.frag */,
+				65322AF11744D11300D012E8 /* gl.h */,
+				65322AF21744D11300D012E8 /* JediChess.1 */,
+				65322AF31744D11300D012E8 /* Light.h */,
+				65322AF41744D11300D012E8 /* main.cpp */,
+				65322AF51744D11300D012E8 /* main.h */,
+				65322AF61744D11300D012E8 /* Object.cpp */,
+				65322AF71744D11300D012E8 /* Object.h */,
+				65322AF81744D11300D012E8 /* Piece.cpp */,
+				65322AF91744D11300D012E8 /* Piece.h */,
+				65322AFA1744D11300D012E8 /* Square.h */,
+				65322AFB1744D11300D012E8 /* tga.cpp */,
+				65322AFC1744D11300D012E8 /* tga.h */,
+				65322AFD1744D11300D012E8 /* Timer.cpp */,
+				65322AFE1744D11300D012E8 /* Timer.h */,
+				65322AFF1744D11300D012E8 /* Utility.cpp */,
+				65322B001744D11300D012E8 /* Utility.h */,
+				65322B141744D46600D012E8 /* vShader.vert */,
+			);
+			path = JediChess;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		653227C41744691300D012E8 /* JediChess */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 653227CE1744691300D012E8 /* Build configuration list for PBXNativeTarget "JediChess" */;
+			buildPhases = (
+				653227C11744691300D012E8 /* Sources */,
+				653227C21744691300D012E8 /* Frameworks */,
+				653227C31744691300D012E8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JediChess;
+			productName = JediChess;
+			productReference = 653227C51744691300D012E8 /* JediChess */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		653227BD1744691300D012E8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "CS174A-Team3";
+			};
+			buildConfigurationList = 653227C01744691300D012E8 /* Build configuration list for PBXProject "JediChess" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 653227BC1744691300D012E8;
+			productRefGroup = 653227C61744691300D012E8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				653227C41744691300D012E8 /* JediChess */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		653227C11744691300D012E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65322B021744D11300D012E8 /* Camera.cpp in Sources */,
+				65322B031744D11300D012E8 /* Drawer.cpp in Sources */,
+				65322B051744D11300D012E8 /* main.cpp in Sources */,
+				65322B061744D11300D012E8 /* Object.cpp in Sources */,
+				65322B071744D11300D012E8 /* Piece.cpp in Sources */,
+				65322B081744D11300D012E8 /* tga.cpp in Sources */,
+				65322B091744D11300D012E8 /* Timer.cpp in Sources */,
+				65322B0A1744D11300D012E8 /* Utility.cpp in Sources */,
+				65322B161744D46700D012E8 /* vShader.vert in Sources */,
+				65322B171744D46700D012E8 /* fShader.frag in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		653227CC1744691300D012E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = "";
+			};
+			name = Debug;
+		};
+		653227CD1744691300D012E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = "";
+			};
+			name = Release;
+		};
+		653227CF1744691300D012E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		653227D01744691300D012E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		653227C01744691300D012E8 /* Build configuration list for PBXProject "JediChess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				653227CC1744691300D012E8 /* Debug */,
+				653227CD1744691300D012E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		653227CE1744691300D012E8 /* Build configuration list for PBXNativeTarget "JediChess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				653227CF1744691300D012E8 /* Debug */,
+				653227D01744691300D012E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 653227BD1744691300D012E8 /* Project object */;
+}
