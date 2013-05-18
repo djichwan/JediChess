@@ -5,6 +5,7 @@
 //*********************************************
 
 #include "main.h"
+#include "Board.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ double rotation = 0;
 
 bool smooth = true;
 
+Board board;
 
 //=========================================
 //------------------------------------------
@@ -20,10 +22,15 @@ bool smooth = true;
 void initScene()
 {
     //set up the camera
-    Pentax.Init(Eigen::Vector4f(0,250,250,1.0),
+//    Pentax.Init(Eigen::Vector4f(0,255,255,1.0),
+//                Eigen::Vector4f(0,0,0.0,1.0),
+//                Eigen::Vector4f(0,1.0,0,0),
+//                60, Window_Width/Window_Height, 0.1, 1000);
+
+    Pentax.Init(Eigen::Vector4f(0,2,2,1.0),
                 Eigen::Vector4f(0,0,0.0,1.0),
                 Eigen::Vector4f(0,1.0,0,0),
-                60, Window_Width/Window_Height, 0.1, 1000);
+                1, Window_Width/Window_Height, 0.1, 1000);
     
     //set up the light
     Lumia.m_position = Pentax.m_position;
@@ -39,6 +46,13 @@ void initScene()
     //change initial camera position
     Pentax.m_zoom  = Pentax.m_zoom * .07;
     rotation = 0;
+
+    board = Board(1.6);
+    board.m_AmbientCoefficient = 0.2;
+    board.m_DiffuseCoefficient = 0.5;
+    board.m_SpecularCoefficient = 1.0;
+    board.m_Shininess = 50;
+    
 }// end initScene()
 
 
@@ -47,7 +61,7 @@ void initScene()
 void drawScene()
 {
     glEnable( GL_DEPTH_TEST );
-    glClearColor(0.0, 0.0, 0.0, 0.0); // Black background
+    glClearColor( 0.5, 0.5, 0.5, 1.0 ); // Set white background
     
     Pentax.Update();                      //update camera
     Lumia.m_position = Pentax.m_position; //the light is attached to the camera
@@ -55,31 +69,32 @@ void drawScene()
     
     Pentax.Update();
     Lumia.m_position = Pentax.m_position; //the light is attached to the camera
-    
-    g_Drawer->SetIdentity();
-    g_Drawer->setSmoothShading(true);
-    
-    //----------- draw sun -----------------------------
-    //Warmer if large (reddish), colder if smaller (blueish)
-    g_Drawer->PushMatrix();
-    
-    //set "brightness"
-    g_Drawer->setSpecular(70.0);
-    g_Drawer->setDiffuse(1.0);
-    
-    //set complexity
-    g_Drawer->setSubdivisions(5);
-    
-    //set size/color
-    g_Drawer->Scale(12.0);
-    g_Drawer->SetColor(Eigen::Vector3f(0.8, 0.0, 0.0));
-    
-    //draw sun
-    int DRAW_TYPE = DRAW_PHONG;
-    g_Drawer->DrawSphere(DRAW_TYPE, Pentax, Lumia);
-    g_Drawer->PopMatrix();
-    
-    
+
+//    g_Drawer->SetIdentity();
+//    g_Drawer->setSmoothShading(true);
+//    
+//    //----------- draw sun -----------------------------
+//    //Warmer if large (reddish), colder if smaller (blueish)
+//    g_Drawer->PushMatrix();
+//    
+//    //set "brightness"
+//    g_Drawer->setSpecular(70.0);
+//    g_Drawer->setDiffuse(1.0);
+//
+//    //set complexity
+//    g_Drawer->setSubdivisions(5);
+//    
+//    //set size/color
+//    g_Drawer->Scale(12.0);
+//    g_Drawer->SetColor(Eigen::Vector3f(0.8, 0.0, 0.0));
+//    
+//    //draw sun
+//    int DRAW_TYPE = DRAW_PHONG;
+//    g_Drawer->DrawSphere(DRAW_TYPE, Pentax, Lumia);
+//    g_Drawer->PopMatrix();
+
+    //board.draw();
+    board.Draw(0, Pentax, Lumia);
     
 }// end drawScene()
 
@@ -94,7 +109,26 @@ void keyboardCallback(unsigned char key, int x, int y)
         case ESC_KEY:
             exit(0);
             break;
+        case 'h':
+            board.select(vec3(0.0, 0.0, 0.0), true);
+            break;
+        case 'H':
+            board.select(vec3(0.0, 0.0, 0.0), false);
+            break;
+        case 'j':
+            board.select(vec3(0.2, -0.2, 0.0), true);
+            break;
+        case 'J':
+            board.select(vec3(0.2, -0.2, 0.0), false);
+            break;
+        case 'u':
+            board.unhightlightAll(); break;
+        default:
+            break;
     }//end switch
+    
+    glutPostRedisplay();
+    
 }// end keyboardCallback()
 
 //--------------------------------------------------------------
@@ -151,6 +185,26 @@ void specialKeys(int key, int x, int y)
     glutPostRedisplay();
 }// end processSpecialKeys()
 
+// Called when a mouse button is pressed or released
+void callbackMouse(int button, int state, int x, int y)
+{
+    // Ignore any actions without left button
+    if (button != GLUT_LEFT_BUTTON)
+        return;
+    
+    if (state == GLUT_UP)
+    {
+        // Determines Square selected
+        //  - If selected square is highlighted, clears all highlights as selection is made
+        Square* selected = board.picking( vec2( x, y ) );
+        if (selected->isHighlight())
+            board.unhightlightAll();
+        
+        printf("Selected: %i\n", selected->getId());
+    }
+    
+    glutPostRedisplay(); // Display normal scene immediately after clicked object is found
+}
 
 //-----------------------------------------------------------------
 //Assign callback functions
@@ -161,6 +215,7 @@ void assign_callback()
     glutKeyboardFunc( keyboardCallback );
     glutDisplayFunc( displayCallback );
     glutSpecialFunc( specialKeys );
+    glutMouseFunc(callbackMouse);
 }// end assign_callback()
 
 
@@ -179,6 +234,7 @@ int main(int argcp, char **argv)
     
     // Initialize callback bindingss + scene
     glutCreateWindow("Jedi Chess");
+    
     assign_callback();
     
 	glewInit();

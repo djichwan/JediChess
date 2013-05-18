@@ -20,6 +20,10 @@
 		65322B0A1744D11300D012E8 /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AFF1744D11300D012E8 /* Utility.cpp */; };
 		65322B161744D46700D012E8 /* vShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 65322B141744D46600D012E8 /* vShader.vert */; };
 		65322B171744D46700D012E8 /* fShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 65322B151744D46700D012E8 /* fShader.frag */; };
+		D6C436A81745FC990094699C /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436A71745FC980094699C /* Square.cpp */; };
+		D6C436AB1745FCC80094699C /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436A91745FCC70094699C /* Texture.cpp */; };
+		D6C436AD1745FD5C0094699C /* libpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D6C436AC1745FD5C0094699C /* libpng.dylib */; };
+		D6C436B01745FEA50094699C /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436AE1745FEA40094699C /* Board.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +65,13 @@
 		65322B001744D11300D012E8 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		65322B141744D46600D012E8 /* vShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = vShader.vert; sourceTree = "<group>"; };
 		65322B151744D46700D012E8 /* fShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fShader.frag; sourceTree = "<group>"; };
+		D6C436A61745FBAD0094699C /* Type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Type.h; sourceTree = "<group>"; };
+		D6C436A71745FC980094699C /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Square.cpp; sourceTree = "<group>"; };
+		D6C436A91745FCC70094699C /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		D6C436AA1745FCC80094699C /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		D6C436AC1745FD5C0094699C /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng.dylib; path = ../../../../../../usr/local/lib/libpng.dylib; sourceTree = "<group>"; };
+		D6C436AE1745FEA40094699C /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
+		D6C436AF1745FEA50094699C /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6C436AD1745FD5C0094699C /* libpng.dylib in Frameworks */,
 				653227D61744693400D012E8 /* libGLEW.dylib in Frameworks */,
 				653227D41744692100D012E8 /* OpenGL.framework in Frameworks */,
 				653227D21744691D00D012E8 /* GLUT.framework in Frameworks */,
@@ -80,6 +92,7 @@
 		653227BC1744691300D012E8 = {
 			isa = PBXGroup;
 			children = (
+				D6C436AC1745FD5C0094699C /* libpng.dylib */,
 				653227D51744693400D012E8 /* libGLEW.dylib */,
 				653227D31744692100D012E8 /* OpenGL.framework */,
 				653227D11744691D00D012E8 /* GLUT.framework */,
@@ -113,14 +126,20 @@
 				65322AF71744D11300D012E8 /* Object.h */,
 				65322AF81744D11300D012E8 /* Piece.cpp */,
 				65322AF91744D11300D012E8 /* Piece.h */,
+				D6C436A71745FC980094699C /* Square.cpp */,
 				65322AFA1744D11300D012E8 /* Square.h */,
 				65322AFB1744D11300D012E8 /* tga.cpp */,
 				65322AFC1744D11300D012E8 /* tga.h */,
 				65322AFD1744D11300D012E8 /* Timer.cpp */,
 				65322AFE1744D11300D012E8 /* Timer.h */,
+				D6C436A61745FBAD0094699C /* Type.h */,
 				65322AFF1744D11300D012E8 /* Utility.cpp */,
 				65322B001744D11300D012E8 /* Utility.h */,
 				65322B141744D46600D012E8 /* vShader.vert */,
+				D6C436A91745FCC70094699C /* Texture.cpp */,
+				D6C436AA1745FCC80094699C /* Texture.h */,
+				D6C436AE1745FEA40094699C /* Board.cpp */,
+				D6C436AF1745FEA50094699C /* Board.h */,
 			);
 			path = JediChess;
 			sourceTree = "<group>";
@@ -186,6 +205,9 @@
 				65322B0A1744D11300D012E8 /* Utility.cpp in Sources */,
 				65322B161744D46700D012E8 /* vShader.vert in Sources */,
 				65322B171744D46700D012E8 /* fShader.frag in Sources */,
+				D6C436A81745FC990094699C /* Square.cpp in Sources */,
+				D6C436AB1745FCC80094699C /* Texture.cpp in Sources */,
+				D6C436B01745FEA50094699C /* Board.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +306,7 @@
 				653227D01744691300D012E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

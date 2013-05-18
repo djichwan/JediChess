@@ -45,8 +45,8 @@ class Piece
         virtual void animate() = 0;                                                        //animates piece (need)?
     
     protected:
-        Square* m_square;           // square where piece is located
-        std::vector<Square*> m_possibleMoves;  // array of squares a pieces can move to
+        //Square* m_square;           // square where piece is located
+        //std::vector<Square*> m_possibleMoves;  // array of squares a pieces can move to
         int m_row;                  // row where piece locationed (1-8)
         int m_col;                  // column where piece locationed (1-8)
         int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)

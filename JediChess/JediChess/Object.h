@@ -9,7 +9,7 @@
 #ifndef _Object_h
 #define _Object_h
 
-#include"Eigen/Dense"
+#include "Eigen/Dense"
 #include "Utility.h"
 #include "Camera.h"
 #include "Light.h"
@@ -33,7 +33,7 @@ class Camera;
 class Light;
 
 enum ObjectType2{NoType2, TypeCube, TypeSphere, TypeCone, TypeCylinder, TypeCloth, TypeDeformable,
-				TypeRide, TypeRigidCube, TypeMixed, TypeTerrain, TypeSphWater};
+				TypeRide, TypeRigidCube, TypeMixed, TypeTerrain, TypeSphWater, TypeSquare, TypeBoard };
 
 class Object{
 public:
@@ -45,10 +45,13 @@ public:
     virtual ObjectType2 GetType(){return m_type;}
 	virtual void Draw(int type, const Camera& camera, const Light& light) = 0;
 	virtual void UpdateAll(double dt) = 0;
+    unsigned char* getColorId() { return m_colorID; }
 
 public:
-    std::string m_name;
-    ObjectType2 m_type;
+    std::string          m_name;
+    ObjectType2          m_type;
+    unsigned char        m_colorID[3];
+    static unsigned char gColorID[3];
 };//end Object
 
 //===========================================
