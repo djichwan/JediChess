@@ -112,6 +112,8 @@
 		653229E11744D11300D012E8 /* JediChess */ = {
 			isa = PBXGroup;
 			children = (
+				D6C436AE1745FEA40094699C /* Board.cpp */,
+				D6C436AF1745FEA50094699C /* Board.h */,
 				653229E21744D11300D012E8 /* Camera.cpp */,
 				653229E31744D11300D012E8 /* Camera.h */,
 				653229E41744D11300D012E8 /* Drawer.cpp */,
@@ -128,6 +130,8 @@
 				65322AF91744D11300D012E8 /* Piece.h */,
 				D6C436A71745FC980094699C /* Square.cpp */,
 				65322AFA1744D11300D012E8 /* Square.h */,
+				D6C436A91745FCC70094699C /* Texture.cpp */,
+				D6C436AA1745FCC80094699C /* Texture.h */,
 				65322AFB1744D11300D012E8 /* tga.cpp */,
 				65322AFC1744D11300D012E8 /* tga.h */,
 				65322AFD1744D11300D012E8 /* Timer.cpp */,
@@ -136,10 +140,6 @@
 				65322AFF1744D11300D012E8 /* Utility.cpp */,
 				65322B001744D11300D012E8 /* Utility.h */,
 				65322B141744D46600D012E8 /* vShader.vert */,
-				D6C436A91745FCC70094699C /* Texture.cpp */,
-				D6C436AA1745FCC80094699C /* Texture.h */,
-				D6C436AE1745FEA40094699C /* Board.cpp */,
-				D6C436AF1745FEA50094699C /* Board.h */,
 			);
 			path = JediChess;
 			sourceTree = "<group>";

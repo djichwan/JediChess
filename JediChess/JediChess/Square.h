@@ -5,9 +5,10 @@
 #ifndef JediChess_square_h
 #define JediChess_square_h
 
-#include "Type.h"
 #include "Object.h"
 #include "Piece.h"
+#include "Texture.h"
+#include "Type.h"
 
 const int NumSquareVertices = 4;
 const int pointsSize        = NumSquareVertices * sizeof(vec4);
@@ -42,7 +43,7 @@ public:
     virtual void UpdateAll(double dt){};
     ~Square() {}; // Empty destructor
     
-public:
+public: // Not used for now
     Eigen::Vector3f m_Center; //For generating translation Angel::matrix
     Eigen::Vector3f m_Size; //For generating scaling Angel::matrix
 	Eigen::Vector3f m_Rotation;
@@ -53,11 +54,6 @@ public:
     float m_DiffuseCoefficient;
     float m_SpecularCoefficient;
     float m_Shininess;
-
-protected:
-    GLuint m_vertexArrayObject;
-    GLuint m_vertexBufferObject;
-    GLuint m_shader;
     
 private:
     Piece* m_piece;

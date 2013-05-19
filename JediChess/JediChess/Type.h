@@ -22,7 +22,7 @@
 #define WHITE     vec4( 1.0, 1.0, 1.0, 1.0 )
 #define YELLOW    vec4( 1.0, 1.0, 0.0, 1.0 )
 #define BABY_BLUE vec4( 0.8, 1.0, 1.0, 1.0 )
-#define HIGHLIGHT YELLOW
+#define HIGHLIGHT BABY_BLUE
 
 #define BLACK3     vec3( 0.0, 0.0, 0.0 )
 #define WHITE3     vec3( 1.0, 1.0, 1.0 )

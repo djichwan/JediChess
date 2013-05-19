@@ -5,7 +5,6 @@
 //*********************************************
 
 #include "main.h"
-#include "Board.h"
 
 using namespace std;
 
@@ -13,8 +12,6 @@ using namespace std;
 double rotation = 0;
 
 bool smooth = true;
-
-Board board;
 
 //=========================================
 //------------------------------------------
@@ -46,12 +43,6 @@ void initScene()
     //change initial camera position
     Pentax.m_zoom  = Pentax.m_zoom * .07;
     rotation = 0;
-
-    board = Board(1.6);
-    board.m_AmbientCoefficient = 0.2;
-    board.m_DiffuseCoefficient = 0.5;
-    board.m_SpecularCoefficient = 1.0;
-    board.m_Shininess = 50;
     
 }// end initScene()
 
@@ -93,8 +84,10 @@ void drawScene()
 //    g_Drawer->DrawSphere(DRAW_TYPE, Pentax, Lumia);
 //    g_Drawer->PopMatrix();
 
-    //board.draw();
-    board.Draw(0, Pentax, Lumia);
+    g_Drawer->SetIdentity();
+    g_Drawer->PushMatrix();
+    g_Drawer->DrawBoard(0, Pentax, Lumia);
+    g_Drawer->PopMatrix();
     
 }// end drawScene()
 
@@ -110,19 +103,19 @@ void keyboardCallback(unsigned char key, int x, int y)
             exit(0);
             break;
         case 'h':
-            board.select(vec3(0.0, 0.0, 0.0), true);
+            g_Drawer->getBoard()->select(vec3(0.0, 0.0, 0.0), true);
             break;
         case 'H':
-            board.select(vec3(0.0, 0.0, 0.0), false);
+            g_Drawer->getBoard()->select(vec3(0.0, 0.0, 0.0), false);
             break;
         case 'j':
-            board.select(vec3(0.2, -0.2, 0.0), true);
+            g_Drawer->getBoard()->select(vec3(0.2, -0.2, 0.0), true);
             break;
         case 'J':
-            board.select(vec3(0.2, -0.2, 0.0), false);
+            g_Drawer->getBoard()->select(vec3(0.2, -0.2, 0.0), false);
             break;
         case 'u':
-            board.unhightlightAll(); break;
+            g_Drawer->getBoard()->unhightlightAll(); break;
         default:
             break;
     }//end switch
@@ -183,7 +176,7 @@ void specialKeys(int key, int x, int y)
     }//end switch
     
     glutPostRedisplay();
-}// end processSpecialKeys()
+} // end processSpecialKeys()
 
 // Called when a mouse button is pressed or released
 void callbackMouse(int button, int state, int x, int y)
@@ -196,9 +189,11 @@ void callbackMouse(int button, int state, int x, int y)
     {
         // Determines Square selected
         //  - If selected square is highlighted, clears all highlights as selection is made
-        Square* selected = board.picking( vec2( x, y ) );
-        if (selected->isHighlight())
-            board.unhightlightAll();
+        Square* selected = g_Drawer->getBoard()->picking( vec2( x, y ) );
+        if (selected == NULL)
+            return;
+        else if (selected->isHighlight())
+            g_Drawer->getBoard()->unhightlightAll();
         
         printf("Selected: %i\n", selected->getId());
     }
@@ -237,7 +232,7 @@ int main(int argcp, char **argv)
     
     assign_callback();
     
-	glewInit();
+	//glewInit();
     initScene();
     
     glutMainLoop();

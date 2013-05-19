@@ -63,6 +63,7 @@ void Drawer::Init(){
 	SetIdentity();
     //TODO: instantiate member for pieces
 	m_sphere = new Sphere;
+    m_board  = new Board(1.6);
 	m_color = Eigen::Vector3f(1.0,0,0);//red
     m_ambientCoefficient = 0.2;
     m_diffuseCoefficient = 0.5;
@@ -170,5 +171,15 @@ void Drawer::DrawSphere(int type, const Camera& camera,const Light& light){
     m_sphere->m_DiffuseCoefficient = m_diffuseCoefficient;
     m_sphere->m_SpecularCoefficient = m_specularCoefficient;
 	m_sphere->Draw(type, camera, light);
+}
+
+void Drawer::DrawBoard(int type, const Camera& camera,const Light& light){
+	m_board->m_Color = m_color; // Not really used
+	m_board->m_Trans = m_transformation;
+    m_board->m_Shininess = m_shininess;
+    m_board->m_AmbientCoefficient = m_ambientCoefficient;
+    m_board->m_DiffuseCoefficient = m_diffuseCoefficient;
+    m_board->m_SpecularCoefficient = m_specularCoefficient;
+	m_board->Draw(type, camera, light);
 }
 

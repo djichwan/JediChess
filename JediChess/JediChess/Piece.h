@@ -11,8 +11,9 @@
 //***************************
 #include "tga.h"
 #include "Camera.h"
-#include "Drawer.h"
-#include "Square.h"
+#include "Object.h"
+//#include "Drawer.h" // Getting rid of circular dependency
+//#include "Square.h"
 #include <vector>
 
 #ifndef JediChess_piece_h

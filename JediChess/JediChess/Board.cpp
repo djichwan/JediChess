@@ -84,6 +84,10 @@ void Board::Draw(int type, const Camera& camera, const Light& light)
     // Update all lighting coefficients
     for (int i = 0; i < NumSquares; i++)
     {
+        // Skip if square lighted up
+        if (m_squares.at(i).isHighlight())
+            continue;
+        
         m_squares.at(i).m_AmbientCoefficient = m_AmbientCoefficient;
         m_squares.at(i).m_DiffuseCoefficient = m_DiffuseCoefficient;
         m_squares.at(i).m_SpecularCoefficient = m_SpecularCoefficient;
@@ -169,14 +173,11 @@ void Board::Draw(int type, const Camera& camera, const Light& light)
     
     for (int i = 0; i < NumSquares; i++)
     {
-        wMo = m_squares.at(i).m_Trans;
-        glUniformMatrix4fv( object2world , 1, GL_FALSE, wMo.data() );
-        
         glUniform1f(ambientCoefficient, m_squares.at(i).m_AmbientCoefficient);
         glUniform1f(diffuseCoefficient, m_squares.at(i).m_DiffuseCoefficient);
         glUniform1f(specularCoefficient, m_squares.at(i).m_SpecularCoefficient);
         glUniform1f(shininess, m_squares.at(i).m_Shininess);
-        
+        //cout << m_squares.at(i).m_DiffuseCoefficient << endl;
         glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, m_squares.at(i).getPoints() );
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize, colorsSize, m_squares.at(i).getColors() );
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize + colorsSize,
@@ -184,7 +185,7 @@ void Board::Draw(int type, const Camera& camera, const Light& light)
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize + colorsSize + texSize,
                         normalsSize, m_squares.at(i).getNormal() );
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
-    }
+    }//cout << "-----" << endl;
 }
 
 // Determines whether a Square object is clicked and returns
@@ -234,13 +235,19 @@ Square* Board::picking(vec2 coord )
 void Board::select( vec3 pos, bool on )
 {
     m_squares.at(pos2id(pos)).highlight(on, HIGHLIGHT);
+    m_squares.at(pos2id(pos)).m_DiffuseCoefficient = on ? 2.0 : m_DiffuseCoefficient;
 }
 
 void Board::unhightlightAll()
 {
     for (int i = 0; i < m_squares.size(); i++)
+    {
         if (m_squares.at(i).isHighlight())
+        {
             m_squares.at(i).highlight(false, BLACK);
+            m_squares.at(i).m_DiffuseCoefficient = m_DiffuseCoefficient;
+        }
+    }
 }
 
 void Board::move( vec3 oldPos, vec3 newPos )

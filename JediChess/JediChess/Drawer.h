@@ -7,6 +7,7 @@
 #include <stack>
 
 #include "Utility.h"
+#include "Board.h"
 
 #ifndef JediChess_drawer_h
 #define JediChess_drawer_h
@@ -60,14 +61,18 @@ public:
     void setDiffuse(float a_diffuse) { m_diffuseCoefficient = a_diffuse;}
     void setSpecular(float a_specular) { m_specularCoefficient = a_specular; }
     
+    Board* getBoard() { return m_board; } // Returns board object to manipulate board
+    
 	void DrawSphere(int type, const Camera& camera,const Light& light);
     void DrawGrid(float sx, float sy, float mx, float my, float dx);
+    void DrawBoard(int type, const Camera& camera,const Light& light);
 public:
 	MatrixStack m_transformation_stack;
 	Eigen::Affine3f m_transformation;
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 private:
 	Sphere* m_sphere;
+    Board*  m_board;
     //TODO: add pointer per class
 	Eigen::Vector3f m_color;
     int m_subdivisions;

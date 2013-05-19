@@ -9,7 +9,7 @@
 #ifndef __JediChess__Texture__
 #define __JediChess__Texture__
 
-#include "Utility.h"
+#include "png.h"
 #include "Type.h"
 
 using namespace std;

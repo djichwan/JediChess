@@ -7,7 +7,6 @@
 //
 
 #include "Texture.h"
-#include "png.h"
 
 Texture::Texture()
 {

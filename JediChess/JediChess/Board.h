@@ -10,7 +10,6 @@
 #define __JediChess__Board__
 
 #include "Square.h"
-#include "Texture.h"
 #include <map>
 #include <vector>
 
@@ -45,6 +44,8 @@ public:
     Eigen::Affine3f m_Trans;
     Eigen::Affine3f m_TransBack;
     Eigen::Vector3f m_Color;
+    
+    // Default params
     float m_AmbientCoefficient = 0.2;
     float m_DiffuseCoefficient = 0.5;
     float m_SpecularCoefficient = 1.0;
