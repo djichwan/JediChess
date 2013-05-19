@@ -30,3 +30,6 @@ double TIME_LAST;
 double DTIME;
 double FRAME_TIME = 0;
 int FRAME_COUNT = 0;
+
+//------------ Mouse click variables --------------------
+int prevId; // Keeps track of object selected on mouse down

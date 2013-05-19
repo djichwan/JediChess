@@ -60,11 +60,11 @@ Board::Board( double dim ) //: m_square() // Explicitly declared to avoid compil
     
     // Initialize texture coordinates
     //  - Divides texture mapping into 64 pieces and assigns to each square accordingly
-    double distance = 0.125 / 2.0; // = 0.0625
+    double distance = 1.0 / 8.0 / 2.0; // = 0.0625
     int index = 0;
-    for (double i = 0.9375; i >= 0.0625; i -= 0.125)
+    for (double i = 1 - distance; i >= distance; i -= distance * 2)
     {
-        for (double j = 0.0625; j <= 0.9375; j += 0.125)
+        for (double j = distance; j <= 1 - distance; j += distance * 2)
         {
             m_squares.at(index).getTex()[0] = vec2( j - distance, i - distance );
             m_squares.at(index).getTex()[1] = vec2( j + distance, i - distance );
@@ -163,7 +163,7 @@ void Board::Draw(int type, const Camera& camera, const Light& light)
     
     wMo = m_Trans;
     proj = Util::Perspective( camera.m_fovy, camera.m_aspect, camera.m_znear, camera.m_zfar );
-	cMw = camera.m_cMw;//Angel::LookAt(camera.position,camera.lookat, camera.up );
+	cMw = camera.m_cMw;
     
     glUniformMatrix4fv( object2world , 1, GL_FALSE, wMo.data() );
     glUniformMatrix4fv( world2camera, 1, GL_FALSE, cMw.data() );
@@ -177,7 +177,7 @@ void Board::Draw(int type, const Camera& camera, const Light& light)
         glUniform1f(diffuseCoefficient, m_squares.at(i).m_DiffuseCoefficient);
         glUniform1f(specularCoefficient, m_squares.at(i).m_SpecularCoefficient);
         glUniform1f(shininess, m_squares.at(i).m_Shininess);
-        //cout << m_squares.at(i).m_DiffuseCoefficient << endl;
+        
         glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, m_squares.at(i).getPoints() );
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize, colorsSize, m_squares.at(i).getColors() );
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize + colorsSize,
@@ -185,7 +185,7 @@ void Board::Draw(int type, const Camera& camera, const Light& light)
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize + colorsSize + texSize,
                         normalsSize, m_squares.at(i).getNormal() );
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
-    }//cout << "-----" << endl;
+    }
 }
 
 // Determines whether a Square object is clicked and returns
@@ -250,6 +250,13 @@ void Board::unhightlightAll()
     }
 }
 
+void Board::unSelect()
+{
+    for (int i = 0; i < m_squares.size(); i++)
+        if (m_squares.at(i).isSelected())
+            m_squares.at(i).unselect();
+}
+
 void Board::move( vec3 oldPos, vec3 newPos )
 {
     m_pieces.at(pos2id(newPos)) = m_pieces.at(pos2id(oldPos));
@@ -270,9 +277,11 @@ void Board::add( vec3 pos, Piece* piece )
     m_squares.at(pos2id(pos)).setPiece(piece);
 }
 
-// Converts relative position to real position
-// rel2real - if true, relative position to real position
-// Top left is (0, 0) and Bottom right is (7, 7)
+/*
+ * Converts relative position to real position
+ *  - rel2real - if true, relative position to real position
+ *  - Top left is (0, 0) and Bottom right is (7, 7)
+ */
 vec3 Board::convertPos( vec3 pos, bool rel2real )
 {
     vec3 newPos;
@@ -290,7 +299,7 @@ vec3 Board::convertPos( vec3 pos, bool rel2real )
 
 void Board::m_computePosition()
 {
-    boardMin = -0.8; //-0.3;
+    boardMin = -(m_dim / 2);
     boardMax = boardMin + m_dim;
     increment = m_dim / 8;
     

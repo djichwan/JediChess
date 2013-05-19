@@ -44,6 +44,7 @@ void Square::Draw(int type, const Camera& camera, const Light& light)
     // Drawing done in Board
 }
 
+// Change color of square
 void Square::highlight( bool on, vec4 color )
 {
     for (int i = 0; i < NumSquareVertices; i++)
@@ -53,6 +54,32 @@ void Square::highlight( bool on, vec4 color )
     m_highlighted = on ? true : false;
 }
 
+
+void Square::setColor( vec4 color )
+{
+    for (int i = 0; i < NumSquareVertices; i++)
+        m_colors[i] = color;
+    
+    // If changing lighted up square to select state
+    if (color.x() == SELECT.x() && color.y() == SELECT.y() && color.z() == SELECT.z())
+        m_selected = true;
+}
+
+void Square::unselect()
+{
+    for (int i = 0; i < NumSquareVertices; i++)
+        m_colors[i] = HIGHLIGHT;
+    
+    m_selected = false;
+}
+
+/*
+ * Detects which square object is clicked via mouse
+ *  - Using color buffer picking method, which assigns 
+ *    unique color to each object
+ *  - Objects are drawn but not actually shown on screen 
+ *    because no call of glutSwapBuffers() is made
+ */
 void Square::picking( GLuint program )
 {
     GLuint vao[1], buffer[1];
@@ -97,11 +124,6 @@ void Square::picking( GLuint program )
 void Square::m_initSquareStriped()
 {
     GLfloat v = m_dim / 2; // Dimension of cube in half
-    
-    //    m_points[0] = vec4( -v, 0.0, -v, 1.0 );
-    //    m_points[1] = vec4(  v, 0.0, -v, 1.0 );
-    //    m_points[2] = vec4( -v, 0.0,  v, 1.0 );
-    //    m_points[3] = vec4(  v, 0.0,  v, 1.0 );
     
     // X, Y coordinates for now
     m_points[0] = vec4( -v, -v, 0.0, 1.0 );

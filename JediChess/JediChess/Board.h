@@ -17,19 +17,20 @@ using namespace std;
 
 const int NumSquares = 64; // 8 x 8 board
 
+/*
+ * Initializes each square with dimension of board
+ * Deals with drawing square in correct location
+ */
 class Board : public Object
 {
 public:
-    /*
-     * Initializes each square with dimension of board
-     * Deals with drawing square in correct location
-     */
     Board();
     Board(double dim); // Dimension of board
     void    Draw(int type, const Camera& camera, const Light& light); // Draws board on screen
     Square* picking(vec2 coord); // Color buffer picking on board side, returns selected Square object
     void    select(vec3 pos, bool on);   // Input is position of square selected - function will highlight possible moves
     void    unhightlightAll(); // Disables all highlighted squares
+    void    unSelect(); // Unselects square highlight
     void    move(vec3 oldPos, vec3 newPos); // Updates location of piece on board on m_map
     void    remove(vec3 pos);   // remove position to piece mapping from m_map
     void    add(vec3 pos, Piece* piece);  // Adds new mapping to m_map
@@ -46,20 +47,20 @@ public:
     Eigen::Vector3f m_Color;
     
     // Default params
-    float m_AmbientCoefficient = 0.2;
-    float m_DiffuseCoefficient = 0.5;
-    float m_SpecularCoefficient = 1.0;
-    float m_Shininess = 50;
+    float m_AmbientCoefficient;
+    float m_DiffuseCoefficient;
+    float m_SpecularCoefficient;
+    float m_Shininess;
     
 private:
     double             m_dim; // Dimesion of board
     vec3               m_pos[NumSquares]; // Array of positions
-    vector<ObjectType> m_pieces;
-    vector<Square>     m_squares;
-    GLuint             m_texture;
+    vector<ObjectType> m_pieces; // Vector of type of piece object on each square
+    vector<Square>     m_squares; // Vector of square objects
+    GLuint             m_texture; // Texture object
+    GLuint             m_shader; // Shader object
     void               m_computePosition(); // Computes center positions for each square
-    void               m_initTexture(string filename, bool mip, int index);
-    GLuint             m_shader;
+    void               m_initTexture(string filename, bool mip, int index); // Initializes texture for board
 };
 
 #endif /* defined(__JediChess__Board__) */

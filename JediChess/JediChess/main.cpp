@@ -109,10 +109,10 @@ void keyboardCallback(unsigned char key, int x, int y)
             g_Drawer->getBoard()->select(vec3(0.0, 0.0, 0.0), false);
             break;
         case 'j':
-            g_Drawer->getBoard()->select(vec3(0.2, -0.2, 0.0), true);
+            g_Drawer->getBoard()->select(vec3(0.4, -0.2, 0.0), true);
             break;
         case 'J':
-            g_Drawer->getBoard()->select(vec3(0.2, -0.2, 0.0), false);
+            g_Drawer->getBoard()->select(vec3(0.4, -0.2, 0.0), false);
             break;
         case 'u':
             g_Drawer->getBoard()->unhightlightAll(); break;
@@ -185,17 +185,28 @@ void callbackMouse(int button, int state, int x, int y)
     if (button != GLUT_LEFT_BUTTON)
         return;
     
+    // Determines Square selected
+    //  - If selected square is highlighted, clears all highlights as selection is made
+    Square* selected = g_Drawer->getBoard()->picking( vec2( x, y ) );
+    
+    if (selected == NULL)
+        return;
+    
     if (state == GLUT_UP)
     {
-        // Determines Square selected
-        //  - If selected square is highlighted, clears all highlights as selection is made
-        Square* selected = g_Drawer->getBoard()->picking( vec2( x, y ) );
-        if (selected == NULL)
-            return;
-        else if (selected->isHighlight())
-            g_Drawer->getBoard()->unhightlightAll();
+        if (selected->isHighlight() && prevId == selected->getId())
+            g_Drawer->getBoard()->unhightlightAll(); // Unhighlight all squares
+        else
+            g_Drawer->getBoard()->unSelect(); // Turn off select light
         
         printf("Selected: %i\n", selected->getId());
+    }
+    else if (state == GLUT_DOWN)
+    {
+        if (selected->isHighlight())
+            selected->setColor(SELECT); // Turn on select light
+        
+        prevId = selected->getId();
     }
     
     glutPostRedisplay(); // Display normal scene immediately after clicked object is found
