@@ -5,7 +5,7 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 
 class Timer

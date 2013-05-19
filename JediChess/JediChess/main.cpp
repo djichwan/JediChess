@@ -3,42 +3,156 @@
 //  by Yuta Kai, Evan Shi, and Daniel Ichwan
 //  main.cpp
 //*********************************************
+//TODO: add more includes
+#ifdef WIN32
+#include <windows.h>
+#include "GL/glew.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+#else
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#endif
 
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <assert.h>
+
+#ifdef WIN32
+#include "GL/freeglut.h"
+#else
+#include <GLUT/glut.h>
+#endif
+
+#include "tga.h"
+#include "Timer.h"
+#include "Angel/Angel.h"
+
+#ifdef __APPLE__
+#define glutInitContextVersion(a,b)
+#define glutInitContextProfile(a)
+#define glewExperimental int glewExperimentalAPPLE
+#define glewInit()
+#endif
+
+
+#include "Utility.h"
+#include "Piece.h"
+#include "Timer.h"
+
+
+
+//Global Variables
+int Window_Width = 1200;
+int Window_Height = 900;
+float Zoom = 1;
+GLfloat theta = 0.0;
+GLfloat azimuth = 0.0;
+
+const int ESC_KEY               = 27;
+const int SPACE_KEY             = 32;
+
+// The eye point and look-at point.
+// Currently unused. Use to control a camera with LookAt().
+Angel::vec4 eye{0, 0.0, 50.0,1.0};
+Angel::vec4 ref{0.0, 0.0, 0.0,1.0};
+Angel::vec4 up{0.0,1.0,0.0,0.0};
+
+//------------ Instantiate Timer variables --------------------
+Timer TM ;
+double TIME;
+double TIME_LAST;
+double DTIME;
+double FRAME_TIME = 0;
+int FRAME_COUNT = 0;
 
 using namespace std;
 
 //------------ Global Variables -----------
 double rotation = 0;
-
 bool smooth = true;
+
+mat4         model_view;
+mat4         texture_view;
+GLint        uModelView, uProjection, uView;
+GLint        uAmbient, uDiffuse, uSpecular, uLightPos, uShininess;
+GLint        uTex, uEnableTex, uTexture;
+
+Pawn whitePawn;
 
 
 //=========================================
+//----------------------------------------------------------------
+void set_color(float r, float g, float b)
+{
+    float ambient  = 0.2f;
+    float diffuse  = 0.6f;
+    float specular = 0.2f;
+    glUniform4f(uAmbient,  ambient*r,  ambient*g,  ambient*b,  1.0f);
+    glUniform4f(uDiffuse,  diffuse*r,  diffuse*g,  diffuse*b,  1.0f);
+    glUniform4f(uSpecular, specular*r, specular*g, specular*b, 1.0f);
+}//end set_color()
+
 //------------------------------------------
 // Initialize scene (camera, light, drawer, time and camera position)
 void initScene()
 {
-    //set up the camera
-    Pentax.Init(Eigen::Vector4f(0,250,250,1.0),
-                Eigen::Vector4f(0,0,0.0,1.0),
-                Eigen::Vector4f(0,1.0,0,0),
-                60, Window_Width/Window_Height, 0.1, 1000);
     
-    //set up the light
-    Lumia.m_position = Pentax.m_position;
-    Lumia.m_color = Eigen::Vector4f(1.0,1.0,1.0,1.0); //white light
+    // Load shaders and use the resulting shader program
+    GLuint program = InitShader( "vTexture.vert", "fTexture.frag" );
+    glUseProgram(program);
     
-    //set up the global drawer
-    g_Drawer = new Drawer;
+    //--------- Assign texture files and generate pieces ------------
+    //TODO: add generate each piece
+    //--------------------------------------------------------
+    textureGroup whitePawnTexture;
+    whitePawnTexture.headFile = "DarthVaderFace.tga";
+    whitePawnTexture.torsoFile = "DarthVaderTorso.tga";
+    whitePawnTexture.leftArmFile = "DarthVaderLeftArm.tga";
+    whitePawnTexture.rightArmFile = "DarthVaderRightArm.tga";
+    whitePawnTexture.leftLegFile = "DarthVaderLeftLeg.tga";
+    whitePawnTexture.rightLegFile = "DarthVaderRightLeg.tga";
+    whitePawnTexture.weaponFile = "DarthVaderWeapon.tga";
     
-    TIME_LAST = TM.GetElapsedTime() ;
-	DTIME = 0.0;
-	FRAME_TIME = 0.0;
+    whitePawn = Pawn(1, 1, WHITESIDE, whitePawnTexture);
+    whitePawn.generate(program);
+    //------------------------------------------------------
     
-    //change initial camera position
-    Pentax.m_zoom  = Pentax.m_zoom * .07;
-    rotation = 0;
+    //link with vertex shader variables
+    uModelView  = glGetUniformLocation( program, "ModelView"  );
+    uProjection = glGetUniformLocation( program, "Projection" );
+    uView       = glGetUniformLocation( program, "View"       );
+    
+    glClearColor( 0.1, 0.1, 0.2, 1.0 ); // dark blue background
+    
+    uAmbient   = glGetUniformLocation( program, "AmbientProduct"  );
+    uDiffuse   = glGetUniformLocation( program, "DiffuseProduct"  );
+    uSpecular  = glGetUniformLocation( program, "SpecularProduct" );
+    uLightPos  = glGetUniformLocation( program, "LightPosition"   );
+    uShininess = glGetUniformLocation( program, "Shininess"       );
+    uTex       = glGetUniformLocation( program, "Tex"             );
+    uEnableTex = glGetUniformLocation( program, "EnableTex"       );
+    uTexture   = glGetUniformLocation( program, "Texture"         );
+    
+    
+    glUniform4f(uAmbient,    0.2f,  0.2f,  0.2f, 1.0f);
+    glUniform4f(uDiffuse,    0.6f,  0.6f,  0.6f, 1.0f);
+    glUniform4f(uSpecular,   0.2f,  0.2f,  0.2f, 1.0f);
+    glUniform4f(uLightPos,  15.0f, 15.0f, 30.0f, 0.0f);
+    glUniform1f(uShininess, 100.0f);
+    
+    //--------------- Bind textures to pieces ---------------
+    whitePawn.bindTextures(uTex);
+    
+    
+    //--------------------------------------------------------
+    // Set texture sampler variable to texture unit 0
+    // (set in glActiveTexture(GL_TEXTURE0))
+    glUniform1i( uTex, 0);
+    
+    glEnable(GL_DEPTH_TEST);
+    
 }// end initScene()
 
 
@@ -46,42 +160,22 @@ void initScene()
 // Draw scene (i.e. board + pieces)
 void drawScene()
 {
-    glEnable( GL_DEPTH_TEST );
-    glClearColor(0.0, 0.0, 0.0, 0.0); // Black background
+
+    model_view = mat4(1.0f);
+    model_view *= Translate(0.0f, 0.0f, -15.0f);
     
-    Pentax.Update();                      //update camera
-    Lumia.m_position = Pentax.m_position; //the light is attached to the camera
+    glUniformMatrix4fv( uView, 1, GL_TRUE, model_view );
+    glUniformMatrix4fv( uTexture, 1, GL_TRUE, texture_view);
     
-    
-    Pentax.Update();
-    Lumia.m_position = Pentax.m_position; //the light is attached to the camera
-    
-    g_Drawer->SetIdentity();
-    g_Drawer->setSmoothShading(true);
-    
-    //----------- draw sun -----------------------------
-    //Warmer if large (reddish), colder if smaller (blueish)
-    g_Drawer->PushMatrix();
-    
-    //set "brightness"
-    g_Drawer->setSpecular(70.0);
-    g_Drawer->setDiffuse(1.0);
-    
-    //set complexity
-    g_Drawer->setSubdivisions(5);
-    
-    //set size/color
-    g_Drawer->Scale(12.0);
-    g_Drawer->SetColor(Eigen::Vector3f(0.8, 0.0, 0.0));
-    
-    //draw sun
-    int DRAW_TYPE = DRAW_PHONG;
-    g_Drawer->DrawSphere(DRAW_TYPE, Pentax, Lumia);
-    g_Drawer->PopMatrix();
-    
-    
-    
+    model_view *= Scale(Zoom);
+    model_view *= Scale(0.7f, 0.7f, 0.7f);
+    model_view *= RotateY(theta);
+    model_view *= RotateX(azimuth);
+    model_view *= Translate(0.0f, 0.0f, 1.0f);
+    //TODO: draw pieces
+    whitePawn.draw(uTex, uEnableTex, uModelView, model_view);
 }// end drawScene()
+
 
 //-------------------------------------------------------------
 // Callback for keyboard
@@ -89,12 +183,27 @@ void keyboardCallback(unsigned char key, int x, int y)
 {
     switch(key)
     {
-        case 'q':
+        case 'q':       // Quit
         case 'Q':
         case ESC_KEY:
             exit(0);
             break;
+        case 'i':       // Zoom in
+        case 'I':
+            Zoom  = Zoom * 1.03 ;
+            break;
+        case 'o':       // Zoom out
+        case 'O':
+            Zoom  = Zoom * 0.97;
+            break;
+        case SPACE_KEY: //Reset camera position
+            Zoom = 1;
+            theta = 0;
+            azimuth = 0;
+            break;
     }//end switch
+    
+     glutPostRedisplay();
 }// end keyboardCallback()
 
 //--------------------------------------------------------------
@@ -123,11 +232,10 @@ void reshapeCallback(int w, int h)
     Window_Height = h;
     
     glViewport(0, 0, w, h);
-	Pentax.m_aspect = (float)w/(float)h;
-	glutPostRedisplay() ;
     
-    //TODO: edit
-}// end reshapeCallback()
+    mat4 projection = Perspective(50.0f, (float)w/(float)h, 1.0f, 1000.0f);
+    glUniformMatrix4fv( uProjection, 1, GL_TRUE, projection );
+}//end reshape()
 
 
 //----------------------------------------------------------------
@@ -139,12 +247,16 @@ void specialKeys(int key, int x, int y)
     switch (key)
     {
         case GLUT_KEY_UP:       //Up arrow
+            azimuth -= 5;       //Rotate around X-axis
             break;
         case GLUT_KEY_DOWN:     //Down arrow
+            azimuth += 5;       //Rotate around X-axis
             break;
         case GLUT_KEY_LEFT:     //Left arrow
+            theta -= 5;         //Rotate around Y-Axis
             break;
         case GLUT_KEY_RIGHT:    //Right arrow
+            theta += 5;         //Rotate around Y-Axis
             break;
     }//end switch
     
@@ -181,6 +293,7 @@ int main(int argcp, char **argv)
     glutCreateWindow("Jedi Chess");
     assign_callback();
     
+    glewInit();
     initScene();
     
     glutMainLoop();

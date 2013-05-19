@@ -10,9 +10,10 @@
 //  Bishop
 //***************************
 #include "tga.h"
-#include "Camera.h"
-#include "Drawer.h"
+#include "Shapes.h"
 #include "Square.h"
+#include "Utility.h"
+#include "MoveChecker.h"
 #include <vector>
 
 #ifndef JediChess_piece_h
@@ -22,27 +23,82 @@
 const int WHITESIDE = 0;
 const int BLACKSIDE = 1;
 
-enum ObjectType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
 
-//------------------------------------------------------------------------------------
+enum PieceType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
+enum WeaponType { NoWeapon, TypeGun, TypeSaber };
+enum animationType { TypeAttacking, TypeDying };
+
+
+//----------------------- Structs -------------------------
+// Holds and organizes textures for separate body parts of the piece
+// Texture reference and texture file location
+struct textureGroup
+{
+    GLuint texture_head;
+    std::string headFile;
+    
+    GLuint texture_torso;
+    std::string torsoFile;
+    
+    GLuint texture_leftArm;
+    std::string leftArmFile;
+    
+    GLuint texture_rightArm;
+    std::string rightArmFile;
+    
+    GLuint texture_leftLeg;
+    std::string leftLegFile;
+    
+    GLuint texture_rightLeg;
+    std::string rightLegFile;
+    
+    GLuint texture_weapon;
+    std::string weaponFile;
+};// end textureGroup
+
+
+// Holds the geometry (vertex array for the separate body parts of the piece)
+struct pieceShapeData
+{
+    ShapeData head;
+    ShapeData torso;
+    ShapeData leftArm;
+    ShapeData rightArm;
+    ShapeData leftLeg;
+    ShapeData rightLeg;
+    ShapeData weapon;
+};// end pieceShapeData
+
+
+
+
+
+
+//---------------------------- Classes --------------------------------------
 //Abstract base class for Chess Piece
 class Piece
 {
     public:
-        void move(int row, int col);        // move piece to (row, col), need to check if valid move
-        void setType(ObjectType type);      // change the ObjectType of the object (if pawn reaches other end of the board)
+        void move(Square* destSquare);        // move piece to destSquare, need to check if valid move
+        void select();                      // respond to being selected by mouse click
+        void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
         void captured();                    // call if captured
     
         int getRow();                       // accessor function for m_row
         int getCol();                       // accessor function for m_col
         bool isAlive();                     // accessor function for m_alive
         bool isOnTeam(int team);            // check if this piece is on same team as input
-        ObjectType getType();               // accessor function for m_type
-        void select();                      // respond to being selected by mouse click
+        PieceType getType();                // accessor function for m_type
+        textureGroup getTexture();          // accessor function for m_texture
+        pieceShapeData getShapeData();      // accessor function for m_shapeData
     
+        void bindTextures(GLint uTex);      // initializes textures for pieces parts                  //TODO: implement for non-humanoid pieces
+        virtual void generate(GLint program) = 0;   // generates the geometry for piece's parts
+        virtual void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)= 0 ; 	   //draws the Piece (pure virtual function)
+        virtual void animate(animationType aType) = 0;          //animates piece
     
-        virtual void draw(int type, const Camera& camera, const Light& light) = 0 ; 	   //draws the Piece (pure virtual function)
-        virtual void animate() = 0;                                                        //animates piece (need)?
+        textureGroup m_texture;     // textures for piece               //TODO: implement for non-humanoid pieces
+        pieceShapeData m_shapeData; // struct for all shapes in piece   //TODO: implement for non-humanoid pieces
     
     protected:
         Square* m_square;           // square where piece is located
@@ -51,8 +107,9 @@ class Piece
         int m_col;                  // column where piece locationed (1-8)
         int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)
         bool m_alive;               // whether alive (true) or captured (false)
-        ObjectType m_type;          // type of chess piece
-        TgaImage m_texture;         // texture for piece //TODO: choose correct type
+        PieceType m_type;           // type of chess piece
+       
+        WeaponType m_weapon;        // type of weapon piece wields
 }; //end class Piece
 
 
@@ -62,12 +119,14 @@ class Piece
 class Pawn : public Piece
 {
     public:
-        Pawn(int row, int col, int team, TgaImage texture);
+        Pawn() {}
+        Pawn(int row, int col, int team, textureGroup texture);
         void setEnPassant(bool enPassant);
         bool canEnPassant();
         void setMoved();        //if Pawn has moved, call
-        void draw(int type, const Camera& camera, const Light& light); //implement specifically for Pawn
-        void animate();         //animate Pawn
+        void generate(GLint program);
+        void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Pawn
+        void animate(animationType aType);         //animate Pawn
     private:
         bool m_enPassant;     //true if just advanced two squares from starting position, else false
         bool m_moved;         //true if moved; if not moved can move two positions forward
@@ -79,10 +138,12 @@ class Pawn : public Piece
 class Rook: public Piece
 {
     public:
-        Rook(int row, int col, int team, TgaImage texture);
+        Rook() {}
+        Rook(int row, int col, int team, textureGroup texture);
         void setMoved();        //if Rook has moved from initial position, call
-        void draw(int type, const Camera& camera, const Light& light); //implement specifically for Rook
-        void animate();         //animate Rook
+        virtual void generate(GLint program, GLint uTex);
+        void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Rook
+        void animate(animationType aType);         //animate Rook
     private:
         bool m_moved;        //if m_moved is false -> possible castling
 }; //end class Rook
@@ -93,9 +154,11 @@ class Rook: public Piece
 class Queen: public Piece
 {
     public:
-        Queen(int row, int col, int team, TgaImage texture);
-        void draw(int type, const Camera& camera, const Light& light); //implement specifically for Queen
-        void animate();                                                //animate Queen
+        Queen() {}
+        Queen(int row, int col, int team, textureGroup texture);
+        virtual void generate(GLint program, GLint uTex);
+        void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Queen
+        void animate(animationType aType);                                                //animate Queen
 }; //end class Queen
 
 
@@ -104,9 +167,11 @@ class Queen: public Piece
 class Bishop: public Piece
 {
 public:
-    Bishop(int row, int col, int team, TgaImage texture);
-    void draw(int type, const Camera& camera, const Light& light); //implement specifically for Bishop
-    void animate();                                                //animate Bishop
+    Bishop() {}
+    Bishop(int row, int col, int team, textureGroup texture);
+    virtual void generate(GLint program, GLint uTex);
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Bishop
+    void animate(animationType aType);                                                //animate Bishop
 }; //end class Bishop
 
 
@@ -115,9 +180,11 @@ public:
 class Knight: public Piece
 {
 public:
-    Knight(int row, int col, int team, TgaImage texture);
-    void draw(int type, const Camera& camera, const Light& light); //implement specifically for Knight
-    void animate();                                                //animate Knight
+    Knight() {}
+    Knight(int row, int col, int team, textureGroup texture);
+    virtual void generate(GLint program, GLint uTex);
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Knight
+    void animate(animationType aType);                                                //animate Knight
 }; //end class Knight
 
 
@@ -126,12 +193,14 @@ public:
 class King: public Piece
 {
     public:
-        King(int row, int col, int team, TgaImage texture);
+        King() {}
+        King(int row, int col, int team, textureGroup texture);
         bool isChecked();                                               //accessor function for m_checked
         void setChecked(bool a_checked);                                //set m_checked
         void setMoved();                                                //if Rook has moved from initial position, call
-        void draw(int type, const Camera& camera, const Light& light); //implement specifically for King
-        void animate();                                                 //animate King
+        virtual void generate(GLint program, GLint uTex);
+        void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for King
+        void animate(animationType aType);                                               //animate King
     private:
         bool m_moved;        //if King has not moved yet -> possible castling
         bool m_checked;       //if King is in check or not

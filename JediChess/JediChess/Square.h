@@ -1,13 +1,14 @@
-//***************************************************
+//
 //  Square.h
-//***************************************************
+//  JediChess
+//
+//  Created by Daniel I on 5/19/13.
+//  Copyright (c) 2013 CS174A-Team3. All rights reserved.
+//
 
-#ifndef JediChess_square_h
-#define JediChess_square_h
+#ifndef __JediChess__Square__
+#define __JediChess__Square__
 
-class Square
-{
-    
-};
+#include <iostream>
 
-#endif
+#endif /* defined(__JediChess__Square__) */
