@@ -146,11 +146,20 @@ void Square::m_initSquareStriped()
 {
     GLfloat v = m_dim / 2; // Dimension of cube in half
     
-    // X, Y coordinates for now
-    m_points[0] = vec4( -v, -v, 0.0, 1.0 );
-    m_points[1] = vec4(  v, -v, 0.0, 1.0 );
-    m_points[2] = vec4( -v,  v, 0.0, 1.0 );
-    m_points[3] = vec4(  v,  v, 0.0, 1.0 );
+    if (HORIZONTAL) // X, Z coordinates
+    {
+        m_points[0] = vec4( -v, 0.0, -v, 1.0 );
+        m_points[1] = vec4(  v, 0.0, -v, 1.0 );
+        m_points[2] = vec4( -v, 0.0,  v, 1.0 );
+        m_points[3] = vec4(  v, 0.0,  v, 1.0 );
+    }
+    else // X, Y coordinates
+    {
+        m_points[0] = vec4( -v, -v, 0.0, 1.0 );
+        m_points[1] = vec4(  v, -v, 0.0, 1.0 );
+        m_points[2] = vec4( -v,  v, 0.0, 1.0 );
+        m_points[3] = vec4(  v,  v, 0.0, 1.0 );
+    }
     
     for (int i = 0; i < NumSquareVertices; i++)
     {
@@ -175,6 +184,9 @@ void Square::m_initSquareStriped()
                        U.z*V.x - U.x*V.z,
                        U.x*V.y - U.y*V.x
     );
+    
+    if (HORIZONTAL)
+        normal *= -1;
     
     m_normals[0] = normal;
     m_normals[1] = normal;

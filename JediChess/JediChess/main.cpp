@@ -151,7 +151,7 @@ void initScene()
     whitePawn.bindTextures(uTex);
     
     // Initialize Board object
-    board = Board(program, 12.8);
+    board = Board(program, BOARD_DIM);
     
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
@@ -179,15 +179,20 @@ void drawScene()
     model_view *= RotateX(azimuth);
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
-    // Draw Board
+    //--------- Draw Board ------------
     glUniform1f( uBoard, 1.0 );
+    model_view *= RotateX(-85);
     glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
     board.draw(uModelView, model_view);
     
+    // Revert variables back to normal
+    model_view *= RotateX(85);
     glUniform1f( uBoard, 0.0 );
     glUniform1f( uPicking, 0.0 );
+    //----------------------------------
     
     //TODO: draw pieces
+    model_view *= Translate(0.0f, 8.5f, 0.0f);
     whitePawn.draw(uTex, uEnableTex, uModelView, model_view);
 }// end drawScene()
 
@@ -223,10 +228,10 @@ void keyboardCallback(unsigned char key, int x, int y)
             board.select(vec3(0.0, 0.0, 0.0), false);
             break;
         case 'j':
-            board.select(vec3(3.2, -1.6, 0.0), true);
+            board.select(vec3(2 * BOARD_DIM / 8, -(BOARD_DIM / 8), 0.0), true);
             break;
         case 'J':
-            board.select(vec3(3.2, -1.6, 0.0), false);
+            board.select(vec3(2 * BOARD_DIM / 8, -(BOARD_DIM / 8), 0.0), false);
             break;
         case 'u':
             board.unhightlightAll(); break;

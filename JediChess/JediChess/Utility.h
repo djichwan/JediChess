@@ -26,6 +26,9 @@
 #define PICKING 1.0
 #define NO_PICKING 0.0
 
+#define BOARD_DIM 25.6
+#define HORIZONTAL false
+
 // Colors
 #define BLACK     vec4( 0.3, 0.3, 0.3, 1.0 )
 #define WHITE     vec4( 1.0, 1.0, 1.0, 1.0 )

@@ -18,7 +18,7 @@ int pos2id( vec3 pos )
     {
         for (double j = boardMin; j < boardMax; j += increment)
         {
-            if ( abs(pos.x - j) < 0.04 && abs(pos.y - i) < 0.04)
+            if ( abs(pos.x - j) < 0.04 && abs((HORIZONTAL ? pos.z : pos.y) - i) < 0.04)
                 return index;
             index++;
         }
@@ -273,7 +273,7 @@ vec3 Board::convertPos( vec3 pos, bool rel2real )
     vec3 newPos;
     
     if (rel2real)
-        newPos = vec3( boardMin + pos.x * increment, -boardMin - pos.y * increment, 0.0 );
+        newPos = vec3( boardMin + pos.x * increment, -boardMin - (HORIZONTAL ? pos.z : pos.y) * increment, 0.0 );
     else
     {
         int index = pos2id(pos);
@@ -294,7 +294,10 @@ void Board::m_computePosition()
     {
         for (double j = boardMin; j < boardMax; j += increment)
         {
-            m_pos[index] = vec3( j, i, 0.0 );
+            if (HORIZONTAL)
+                m_pos[index] = vec3( j, 0.0, i );
+            else
+                m_pos[index] = vec3( j, i, 0.0 );
             index++;
         }
     }
