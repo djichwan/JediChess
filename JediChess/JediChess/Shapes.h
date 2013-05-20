@@ -1,14 +1,22 @@
-//
-//  Shapes.h
-//  JediChess
-//
-//  Created by Yuta Kai on 5/19/13.
-//  Copyright (c) 2013 CS174A-Team3. All rights reserved.
-//
+#ifndef _SHAPES_H_
+#define _SHAPES_H_
 
-#ifndef __JediChess__Shapes__
-#define __JediChess__Shapes__
+#ifdef __APPLE__
+#define glGenVertexArrays glGenVertexArraysAPPLE
+#define glBindVertexArray glBindVertexArrayAPPLE
+#endif
 
-#include <iostream>
+#include "Utility.h"
 
-#endif /* defined(__JediChess__Shapes__) */
+struct ShapeData
+{
+    GLuint vao;
+    int numVertices;
+};
+
+void generateCube(GLuint program, ShapeData* cubeData);
+void generateSphere(GLuint program, ShapeData* sphereData);
+void generateCone(GLuint program, ShapeData* coneData);
+void generateCylinder(GLuint program, ShapeData* cylData);
+
+#endif

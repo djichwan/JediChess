@@ -15,11 +15,11 @@ public:
         height = 0;
         byteCount = 0;
     }
-
+    
     ~TgaImage() { delete[] data; data = 0; }
-
+    
     bool loadTGA(const char* filename);
-
+    
     int width;
     int height;
     unsigned char byteCount;

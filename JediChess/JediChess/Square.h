@@ -8,7 +8,7 @@
 #include "Object.h"
 #include "Piece.h"
 #include "Texture.h"
-#include "Type.h"
+#include "Utility.h"
 
 const int NumSquareVertices = 4;
 const int pointsSize        = NumSquareVertices * sizeof(vec4);
@@ -22,7 +22,7 @@ public:
     Square();
     Square(int id, vec3 pos, int color, double dim); // Calls initialize()
     void   initialize(int id, vec3 pos, int color, double dim); // Sets up square object
-    void   Draw(int type, const Camera& camera, const Light& light); // Draw the board object
+    void   draw(GLint uModelView, mat4 modelView); // Draw the board object
     void   setPos(vec3 pos) { m_pos = pos; } // Set the position of square
     vec3   getPos() { return m_pos; } // Returns position of square on board
     int    getId() { return m_id; } // Returns unique id of square
@@ -42,12 +42,12 @@ public:
     ~Square() {}; // Empty destructor
     
 public: // Not used for now
-    Eigen::Vector3f m_Center; //For generating translation Angel::matrix
-    Eigen::Vector3f m_Size; //For generating scaling Angel::matrix
-	Eigen::Vector3f m_Rotation;
-    Eigen::Affine3f m_Trans;
-    Eigen::Affine3f m_TransBack;
-    Eigen::Vector3f m_Color;
+    vec3 m_Center; //For generating translation Angel::matrix
+    vec3 m_Size; //For generating scaling Angel::matrix
+	vec3 m_Rotation;
+    vec3 m_Trans;
+    vec3 m_TransBack;
+    vec3 m_Color;
     float m_AmbientCoefficient;
     float m_DiffuseCoefficient;
     float m_SpecularCoefficient;

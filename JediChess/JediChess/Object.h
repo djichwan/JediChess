@@ -9,11 +9,7 @@
 #ifndef _Object_h
 #define _Object_h
 
-#include "Eigen/Dense"
 #include "Utility.h"
-#include "Camera.h"
-#include "Light.h"
-
 #include <vector>
 #include <queue>
 
@@ -43,7 +39,7 @@ public:
     virtual void SetType(ObjectType2 type){m_type = type;}
     std::string GetName(){return m_name;}
     virtual ObjectType2 GetType(){return m_type;}
-	virtual void Draw(int type, const Camera& camera, const Light& light) = 0;
+	virtual void draw(GLint uModelView, mat4 modelView) = 0;
 	virtual void UpdateAll(double dt) = 0;
     unsigned char* getColorId() { return m_colorID; }
 
@@ -55,48 +51,5 @@ public:
 };//end Object
 
 //===========================================
-
-
-class Sphere:public Object{
-    
-protected:
-   
-    GLuint m_vertexArrayObject;                      
-    GLuint m_vertexBufferObject;  
-    GLuint m_shader;
-
-	
-    Eigen::Vector4f* m_Vertices;
-    Eigen::Vector3f *m_Normals;
-    int m_Index;
-	int m_count;
-    
-public:    
-    Eigen::Vector3f m_Center;//For generating translation Angel::matrix
-    Eigen::Vector3f m_Size;//For generating scaling Angel::matrix
-	Eigen::Vector3f m_Rotation;
-    Eigen::Affine3f m_Trans;
-    Eigen::Affine3f m_TransBack;
-    Eigen::Vector3f m_Color;
-    int m_Subdivisions;
-    float m_AmbientCoefficient;
-    float m_DiffuseCoefficient;
-    float m_SpecularCoefficient;
-    float m_Shininess;
-    bool m_Smooth_shading;
-
-public:
-    Sphere();//Default constructor create a unit cube in center of screen
-    Sphere(Eigen::Vector3f, Eigen::Vector3f,Eigen::Vector3f );//constructor creating a cube with size and center
-    void GenerateSphere();
-	Eigen::Vector4f Unit(const Eigen::Vector4f &p);
-	void DivideTriangle(const Eigen::Vector4f& a,const Eigen::Vector4f& b, const Eigen::Vector4f& c, int n);//for iterative generation of sphere
-    void Init(Eigen::Vector3f center,Eigen::Vector3f size, Eigen::Vector3f color);//Init the data
-    void InitDraw();//Init the vertexs and color data on GPU, Init the shader program, link the shader program with the buffer data
-    void Draw(int type, const Camera& camera,const Light& light);//Update data on GPU's buffer and draw the vertexs, rotate clockwise around z with speed
-	virtual void UpdateAll(double dt){};
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-}; //end Sphere
-
 
 #endif
