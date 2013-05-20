@@ -1,46 +1,42 @@
-attribute vec4 vPosition;
-attribute vec3 vNormal;
-attribute  vec4 vColor;
-attribute  vec2 vTexCoord;
+#version 120
+attribute   vec4 vPosition;
+attribute   vec3 vNormal;
+attribute   vec4 vColor;
+attribute   vec2 vTexCoords;
 
-varying vec3 fN; //normal at current position
-varying vec3 fV; //vector from point to viewer
-varying vec3 fL; //vector from point to light
-varying vec4 fColor;
-varying vec2 texCoord;
-varying float fambientCoefficient;
-varying float fdiffuseCoefficient;
-varying float fspecularCoefficient;
-varying float fshininess;
+// output values that will be interpretated per-fragment
+varying  vec3 fN;
+varying  vec3 fE;
+varying  vec3 fL;
+varying  vec4 color;
+varying  vec2 texCoord;
 
-uniform mat4 cMw;
-uniform mat4 wMo;
-uniform mat4 proj;
-uniform mat4 modelView;
-
-uniform vec4 cameraPosition;
-uniform vec4 lightPosition;
-uniform vec4 Color;
-
-uniform float ambientCoefficient;
-uniform float diffuseCoefficient;
-uniform float specularCoefficient;
-uniform float shininess;
-uniform float picking;
+uniform mat4 ModelView;
+uniform mat4 View;
+uniform vec4 LightPosition;
+uniform mat4 Projection;
+uniform mat4 Texture;
+uniform float Board;
+uniform float Picking;
 
 void main()
 {
-    texCoord = vTexCoord;
+    vec4 N = vec4(vNormal, 0.0f);
+    fN =  (ModelView * N).xyz; //not correct, should be inverse(transpose(ModelView)); only for version 150 or higher.
+    fE = -(ModelView * vPosition).xyz;
+    fL =  (LightPosition).xyz;
+    //fL = (View * LightPosition).xyz;
     
-    gl_Position = proj*cMw*wMo*vPosition;
+    if( LightPosition.w != 0.0 )
+    {
+        fL = LightPosition.xyz - vPosition.xyz;
+    }
     
-    fN = (wMo*vec4(vNormal.x,vNormal.y,vNormal.z,0.0)).xyz;
-    fV = (cameraPosition - wMo*vPosition).xyz;
-    fL = (lightPosition - wMo*vPosition).xyz;
+    gl_Position = Projection * ModelView * vPosition;
     
-    fColor = vColor;
-    fambientCoefficient = ambientCoefficient;
-    fdiffuseCoefficient = diffuseCoefficient;
-    fspecularCoefficient = specularCoefficient;
-    fshininess = shininess;
-}
+    if (Board == 1.0)
+        texCoord = vTexCoords;
+    else
+        gl_TexCoord[0].xy = vTexCoords;
+    
+}//end main()

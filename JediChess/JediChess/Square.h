@@ -8,7 +8,7 @@
 #include "Object.h"
 #include "Piece.h"
 #include "Texture.h"
-#include "Type.h"
+#include "Utility.h"
 
 const int NumSquareVertices = 4;
 const int pointsSize        = NumSquareVertices * sizeof(vec4);
@@ -19,15 +19,10 @@ const int normalsSize       = NumSquareVertices * sizeof(vec3);
 class Square : public Object
 {
 public:
-    /*
-     * id is unique id number for square
-     * center position of the square
-     * color of square - white / black
-     */
     Square();
-    Square(int id, vec3 pos, int color, double dim);
-    void   initialize(int id, vec3 pos, int color, double dim);
-    void   Draw(int type, const Camera& camera, const Light& light);
+    Square(int id, vec3 pos, int color, double dim); // Calls initialize()
+    void   initialize(int id, vec3 pos, int color, double dim); // Sets up square object
+    void   draw(GLint uModelView, mat4 modelView); // Draw the board object
     void   setPos(vec3 pos) { m_pos = pos; } // Set the position of square
     vec3   getPos() { return m_pos; } // Returns position of square on board
     int    getId() { return m_id; } // Returns unique id of square
@@ -36,7 +31,10 @@ public:
     vec2*  getTex() { return m_texCoords; } // Returns pointer to TexCoords array
     vec3*  getNormal() { return m_normals; } // Returns pointer to Normals array
     void   highlight(bool on, vec4 color);   // Light up the square if on, color if on - optional if off
+    void   setColor(vec4 color); // Set color of square
+    void   unselect(); // Unselects square
     bool   isHighlight() { return m_highlighted; } // Whether square is highlighted or not
+    bool   isSelected() { return m_selected; } // Returns whether square is currently selected
     void   picking(GLuint program); // For color buffer picking
     void   setPiece(Piece* piece) { m_piece = piece; } // Sets corresponding piece to square
     Piece* getPiece() { return m_piece; } // Returns the current piece corresponding to square
@@ -44,29 +42,30 @@ public:
     ~Square() {}; // Empty destructor
     
 public: // Not used for now
-    Eigen::Vector3f m_Center; //For generating translation Angel::matrix
-    Eigen::Vector3f m_Size; //For generating scaling Angel::matrix
-	Eigen::Vector3f m_Rotation;
-    Eigen::Affine3f m_Trans;
-    Eigen::Affine3f m_TransBack;
-    Eigen::Vector3f m_Color;
+    vec3 m_Center; //For generating translation Angel::matrix
+    vec3 m_Size; //For generating scaling Angel::matrix
+	vec3 m_Rotation;
+    vec3 m_Trans;
+    vec3 m_TransBack;
+    vec3 m_Color;
     float m_AmbientCoefficient;
     float m_DiffuseCoefficient;
     float m_SpecularCoefficient;
     float m_Shininess;
     
 private:
-    Piece* m_piece;
-    int    m_id;
-    int    m_color; // 0 = black, 1 = white, 2 = highlight
-    vec3   m_pos;
+    Piece* m_piece; // Pointer to piece on square, NULL if none
+    int    m_id; // Unique id of square object (0-63) because 64 squares
+    int    m_color; // 0 = black, 1 = white
+    vec3   m_pos; // Center position of sqaure
     vec4   m_points[NumSquareVertices];
     vec4   m_colors[NumSquareVertices];
     vec3   m_normals[NumSquareVertices];
     vec2   m_texCoords[NumSquareVertices];
-    double m_dim;
-    bool   m_highlighted;
-    void   m_initSquareStriped();
+    double m_dim; // Dimension of square
+    bool   m_highlighted; // Whether square is currently lighted up
+    bool   m_selected; // Whether lighted square is currently selected
+    void   m_initSquareStriped(); // Initializes square object
 };
 
 #endif
