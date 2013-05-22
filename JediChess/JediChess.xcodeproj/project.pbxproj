@@ -66,7 +66,6 @@
 		D6C436A71745FC980094699C /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Square.cpp; sourceTree = "<group>"; };
 		D6C436A91745FCC70094699C /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
 		D6C436AA1745FCC80094699C /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
-		D6C436AC1745FD5C0094699C /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng.dylib; path = ../../../../../../usr/local/lib/libpng.dylib; sourceTree = "<group>"; };
 		D6C436AE1745FEA40094699C /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		D6C436AF1745FEA50094699C /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
 		D6C9EF60174971960043A8F5 /* MoveChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveChecker.cpp; sourceTree = "<group>"; };
@@ -95,7 +94,6 @@
 			isa = PBXGroup;
 			children = (
 				D6C9EF66174979A40043A8F5 /* libpng16.16.dylib */,
-				D6C436AC1745FD5C0094699C /* libpng.dylib */,
 				653227D51744693400D012E8 /* libGLEW.dylib */,
 				653227D31744692100D012E8 /* OpenGL.framework */,
 				653227D11744691D00D012E8 /* GLUT.framework */,

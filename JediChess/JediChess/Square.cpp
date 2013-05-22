@@ -81,14 +81,6 @@ void Square::picking( GLuint program )
     
     GLuint vao[1], buffer[1];
     
-    // Convert color attributes to unique object color
-    vec4 pickingColors[NumSquareVertices] = {
-        vec4( (double) ( ( (double) getColorId()[0]) / 255 ), getColorId()[1], getColorId()[2], 1.0 ),
-        vec4( (double) ( ( (double) getColorId()[0]) / 255 ), getColorId()[1], getColorId()[2], 1.0 ),
-        vec4( (double) ( ( (double) getColorId()[0]) / 255 ), getColorId()[1], getColorId()[2], 1.0 ),
-        vec4( (double) ( ( (double) getColorId()[0]) / 255 ), getColorId()[1], getColorId()[2], 1.0 )
-    };
-    
     // Create a vertex array object
 #ifdef __APPLE__
     glGenVertexArraysAPPLE( 1, vao );
@@ -101,13 +93,11 @@ void Square::picking( GLuint program )
     // Create and initialize a buffer object
     glGenBuffers( 1, buffer );
     glBindBuffer( GL_ARRAY_BUFFER, buffer[0] );
-    glBufferData( GL_ARRAY_BUFFER, sizeof(m_points) + sizeof(pickingColors)
-                 + sizeof(m_texCoords) + sizeof(m_normals),
+    glBufferData( GL_ARRAY_BUFFER, sizeof(m_points) + sizeof(m_texCoords) + sizeof(m_normals),
                  NULL, GL_STATIC_DRAW );
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(m_points), m_points );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(m_points), sizeof(pickingColors), pickingColors );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(m_points) + sizeof(pickingColors), sizeof(m_texCoords), m_texCoords );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(m_points) + sizeof(pickingColors) + sizeof(m_texCoords)
+    glBufferSubData( GL_ARRAY_BUFFER, sizeof(m_points), sizeof(m_texCoords), m_texCoords );
+    glBufferSubData( GL_ARRAY_BUFFER, sizeof(m_points) + sizeof(m_texCoords)
                     , sizeof(m_normals), m_normals );
     
     // Set up vector positions
@@ -116,25 +106,20 @@ void Square::picking( GLuint program )
     glVertexAttribPointer( vPosition, 4, GL_FLOAT, GL_FALSE, 0,
                           BUFFER_OFFSET(0) );
     
-    GLuint vColor = glGetAttribLocation( program, "vColor" );
-    glEnableVertexAttribArray( vColor );
-    glVertexAttribPointer( vColor, 4, GL_FLOAT, GL_FALSE, 0,
-                          BUFFER_OFFSET(sizeof(m_points)) );
-    
     GLuint vTexCoord = glGetAttribLocation( program, "vTexCoords" );
     glEnableVertexAttribArray( vTexCoord );
     glVertexAttribPointer( vTexCoord, 2, GL_FLOAT, GL_FALSE, 0,
-                          BUFFER_OFFSET(pointsSize + sizeof(pickingColors)) );
+                          BUFFER_OFFSET(pointsSize) );
     
     GLuint vNormal = glGetAttribLocation( program, "vNormal" );
     glEnableVertexAttribArray( vNormal );
     glVertexAttribPointer( vNormal, 3, GL_FLOAT, GL_FALSE, 0,
-                          BUFFER_OFFSET(pointsSize + sizeof(pickingColors) + texSize) );
+                          BUFFER_OFFSET(pointsSize + texSize) );
     
-    glUniform4f( glGetUniformLocation(program, "color"), pickingColors[0][0],
-                pickingColors[0][1],
-                pickingColors[0][2],
-                pickingColors[0][3]);
+    glUniform4f( glGetUniformLocation(program, "color"), (double) ( ( (double) getColorId()[0]) / 255 ),
+                getColorId()[1],
+                getColorId()[2],
+                1.0);
     
     // Turn picking on
     glUniform1f( glGetUniformLocation( program, "Picking" ), PICKING );

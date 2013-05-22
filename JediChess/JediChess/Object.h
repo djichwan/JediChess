@@ -39,8 +39,8 @@ public:
     virtual void SetType(ObjectType2 type){m_type = type;}
     std::string GetName(){return m_name;}
     virtual ObjectType2 GetType(){return m_type;}
-	virtual void draw(GLint uModelView, mat4 modelView) = 0;
-	virtual void UpdateAll(double dt) = 0;
+	//virtual void draw(GLint uModelView, mat4 modelView) = 0;
+	//virtual void UpdateAll(double dt) = 0;
     unsigned char* getColorId() { return m_colorID; }
 
 public:

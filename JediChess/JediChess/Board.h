@@ -35,6 +35,8 @@ public:
     void    remove(vec3 pos);   // remove position to piece mapping from m_map
     void    add(vec3 pos, Piece* piece);  // Adds new mapping to m_map
     vec3    convertPos(vec3 pos, bool rel2real); // Converts relative position to real position
+    int     pos2id(vec3 pos); // Converts position input to square id
+    Square* getSquare(int index) { return &m_squares.at(index); } // Returns square given index
     virtual void UpdateAll(double dt){};
     ~Board() {};  // Empty destructor
 
@@ -55,14 +57,16 @@ public:
 private:
     double             m_dim; // Dimesion of board
     vec3               m_pos[NumSquares]; // Array of positions
-    vector<PieceType> m_pieces; // Vector of type of piece object on each square
+    vec3               m_borderPos[NumSquares + 4]; // Array of border positions
+    vector<PieceType>  m_pieces; // Vector of type of piece object on each square
     vector<Square>     m_squares; // Vector of square objects
     GLuint             m_texture; // Texture object
     GLuint             m_shader; // Shader object
     GLint              m_uModelView;
     mat4               m_modelView;
     void               m_computePosition(); // Computes center positions for each square
-    void               m_initTexture(string filename, bool mip, int index); // Initializes texture for board
+    void               m_initTexture(bool png, string filename, bool mip, int index); // Initializes texture for board
+    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
 };
 
 #endif /* defined(__JediChess__Board__) */

@@ -86,6 +86,8 @@ Square* prevSelected;
 Pawn whitePawn;
 Board board;
 
+int pieceIndex = 26;
+
 //=========================================
 //----------------------------------------------------------------
 void set_color(float r, float g, float b)
@@ -129,6 +131,7 @@ void initScene()
     uView       = glGetUniformLocation( program, "View"       );
     
     glClearColor( 0.1, 0.1, 0.2, 1.0 ); // dark blue background
+    //glClearColor( 0.0, 0.0, 0.0, 1.0 ); // Black background
     
     uAmbient   = glGetUniformLocation( program, "AmbientProduct"  );
     uDiffuse   = glGetUniformLocation( program, "DiffuseProduct"  );
@@ -179,21 +182,23 @@ void drawScene()
     model_view *= RotateX(azimuth);
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
-    //--------- Draw Board ------------
+    //--------- Draw Board -----------------------------------
     glUniform1f( uBoard, 1.0 );
-    model_view *= RotateX(-85);
+    model_view *= RotateX(BOARD_ROTATION);
     glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
     board.draw(uModelView, model_view);
     
     // Revert variables back to normal
-    model_view *= RotateX(85);
+    model_view *= RotateX(-BOARD_ROTATION);
     glUniform1f( uBoard, 0.0 );
     glUniform1f( uPicking, 0.0 );
-    //----------------------------------
+    //---------------------------------------------------------
     
     //TODO: draw pieces
-    model_view *= Translate(0.0f, 8.5f, 0.0f);
-    whitePawn.draw(uTex, uEnableTex, uModelView, model_view);
+    model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
+    
+    whitePawn.draw(uTex, uEnableTex, uModelView, model_view, board.getSquare(pieceIndex)->getPos());
+    
 }// end drawScene()
 
 
@@ -235,6 +240,17 @@ void keyboardCallback(unsigned char key, int x, int y)
             break;
         case 'u':
             board.unhightlightAll(); break;
+        // Test for moving piece
+        case 'a':
+            pieceIndex++;
+            if (pieceIndex == 64)
+                pieceIndex = 0;
+            break;
+        case 'A':
+            pieceIndex--;
+            if (pieceIndex == -1)
+                pieceIndex = 63;
+            break;
         default:
             break;
     }//end switch
