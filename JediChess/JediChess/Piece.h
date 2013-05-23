@@ -103,6 +103,10 @@ public:
     textureGroup m_texture;     // textures for piece               //TODO: implement for non-humanoid pieces
     pieceShapeData m_shapeData; // struct for all shapes in piece   //TODO: implement for non-humanoid pieces
     
+    void setModelView(GLint uModelView, mat4 modelView, vec3 translate) { m_uModelView = uModelView; m_modelView = modelView; m_translate = translate; }
+    
+    void picking(GLuint shader); // To perform color buffer picking
+    
 protected:
     Square* m_square;           // square where piece is located
     std::vector<Square*> m_possibleMoves;  // array of squares a pieces can move to
@@ -111,6 +115,12 @@ protected:
     int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)
     bool m_alive;               // whether alive (true) or captured (false)
     PieceType m_type;           // type of chess piece
+    
+    // Used for picking
+    GLint m_uModelView;          
+    mat4  m_modelView;
+    vec3  m_translate;
+    
     
     WeaponType m_weapon;        // type of weapon piece wields
 }; //end class Piece

@@ -327,16 +327,28 @@ void Piece::bindTextures(GLint uTex)
     
 }//end Piece::bindTextures()
 
+// Performs color buffer picking by assigning unique color to each object
+void Piece::picking(GLuint shader)
+{
+    glUniform1f( glGetUniformLocation(shader, "Picking"), 1.0 );
+    glUniform4f( glGetUniformLocation(shader, "color"), (double) ( ( (double) this->getColorId()[0]) / 255 ),
+                this->getColorId()[1],
+                this->getColorId()[2],
+                1.0);
+
+    this->draw( -1, -1, this->m_uModelView, this->m_modelView, this->m_translate );
+}
 
 
 //============================== Utitility Functions for Drawing ========================
 // Draws any humanoid piece (has head, torso, two arms, two legs, and weapon)
 void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, vec3 translate)
 {
+    piece->setModelView(uModelView, model_view, translate);
+    
     // Translate to proper position on board
     model_view *= Translate(translate.x/PIECE_SCALE.x, TRANSLATE_Y/PIECE_SCALE.y, -translate.y/PIECE_SCALE.z);
     mat4 originalView = model_view;
-    
     
     //--------------- Draw head as a sphere -------------------------------------
     model_view *= RotateX(180.0f);

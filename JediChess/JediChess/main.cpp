@@ -82,6 +82,7 @@ GLint        uBoard, uPicking;
 // Variables for mouse click
 int prevId;
 Square* prevSelected;
+Piece*  prevPieceSelected;
 
 Pawn whitePawn;
 Board board;
@@ -104,7 +105,6 @@ void set_color(float r, float g, float b)
 // Initialize scene (camera, light, drawer, time and camera position)
 void initScene()
 {
-    
     // Load shaders and use the resulting shader program
     GLuint program = InitShader( "vTexture.vert", "fTexture.frag" );
     glUseProgram(program);
@@ -155,6 +155,9 @@ void initScene()
     
     // Initialize Board object
     board = Board(program, BOARD_DIM);
+    
+    // Add pieces to board
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn);
     
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
@@ -245,11 +248,13 @@ void keyboardCallback(unsigned char key, int x, int y)
             pieceIndex++;
             if (pieceIndex == 64)
                 pieceIndex = 0;
+            board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
             break;
         case 'A':
             pieceIndex--;
             if (pieceIndex == -1)
                 pieceIndex = 63;
+            board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
             break;
         default:
             break;
@@ -322,34 +327,64 @@ void callbackMouse(int button, int state, int x, int y)
     if (button != GLUT_LEFT_BUTTON)
         return;
     
+    glUniform1f( uBoard, 0.0 );
+    
+    Piece* selectedPiece = board.pickingPiece( vec2( x, y ) );
+    
     glUniform1f( uBoard, 1.0 );
     
     // Determines Square selected
     //  - If selected square is highlighted, clears all highlights as selection is made
-    Square* selected = board.picking( vec2( x, y ) );
+    Square* selected = NULL;
+    if (selectedPiece == NULL)
+         selected = board.picking( vec2( x, y ) );
     
     glUniform1f( uBoard, 0.0 );
     
-    if (selected == NULL)
+    if (selectedPiece == NULL && selected == NULL)
         return;
         
     if (state == GLUT_UP)
     {
-        if (selected->isHighlight() && prevId == selected->getId())
-            board.unhightlightAll(); // Unhighlight all squares
+        if (selectedPiece == NULL)
+        {
+            if (selected->isHighlight() && prevId == selected->getId())
+                board.unhightlightAll(); // Unhighlight all squares
+            else
+                if (prevSelected->isHighlight())
+                    prevSelected->unselect(); // Turn off select light
+            
+            printf("Selected: %i\n", selected->getId());
+        }
         else
-            if (prevSelected->isHighlight())
-                prevSelected->unselect(); // Turn off select light
-        
-        printf("Selected: %i\n", selected->getId());
+        {
+            if (prevPieceSelected == selectedPiece)
+            {
+                // TODO: implement through piece class
+                // Test implementation for now
+                board.select(board.getSquare(pieceIndex)->getPos(), HIGHLIGHT);
+            }
+            
+            prevPieceSelected = NULL;
+            
+            // 0 = NULL, 1 = Pawn, 2 = Rook, 3 = Bishop, 4 = Knight, 5 = Queen, 6 = King
+            printf("Selected piece: %i\n", selectedPiece->getType());
+        }
     }
     else if (state == GLUT_DOWN)
     {
-        if (selected->isHighlight())
-            selected->setColor(SELECT); // Turn on select light
-        
-        prevId = selected->getId();
-        prevSelected = selected;
+        if (selectedPiece == NULL)
+        {
+            if (selected->isHighlight())
+                selected->setColor(SELECT); // Turn on select light
+            
+            prevId = selected->getId();
+            prevSelected = selected;
+        }
+        else
+        {
+            prevPieceSelected = selectedPiece;
+        }
     }
     
     glutPostRedisplay(); // Display normal scene immediately after clicked object is found

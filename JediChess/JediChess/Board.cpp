@@ -174,7 +174,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
 // Determines whether a Square object is clicked and returns
 // corresponding Square object if clicked
 // coord is the coordinate of the mouse click
-Square* Board::picking(vec2 coord )
+Square* Board::picking( vec2 coord )
 {
     glUseProgram(m_shader);
     
@@ -208,6 +208,51 @@ Square* Board::picking(vec2 coord )
         {
             // Object is selected, return pointer to object
             return &m_squares.at(i);
+        }
+    }
+    
+    return NULL; // Return NULL if nothing found
+}
+
+Piece* Board::pickingPiece( vec2 coord )
+{
+    glUseProgram(m_shader);
+    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    
+    // turn off texturing, lighting and fog
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_FOG);
+    glDisable(GL_LIGHTING);
+    
+    glUniformMatrix4fv( m_uModelView, 1, GL_TRUE, m_modelView );
+    
+    // render every  square object in our scene
+    for (int i = 0; i < m_squares.size(); i++)
+        if (m_squares.at(i).getPiece() != NULL)
+            m_squares.at(i).getPiece()->picking(m_shader);
+    
+    // get color information from frame buffer
+    unsigned char pixel[3];
+    
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    
+    glReadPixels(coord.x, viewport[3] - coord.y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+    
+    // now our picked screen pixel color is stored in pixel[3]
+    // so we search through our object list looking for the object that was selected
+    for (int i = 0; i < m_squares.size(); i++)
+    {
+        if (m_squares.at(i).getPiece() != NULL)
+        {
+            if (m_squares.at(i).getPiece()->getColorId()[0] == pixel[0]
+                && m_squares.at(i).getPiece()->getColorId()[1] == pixel[1]
+                && m_squares.at(i).getPiece()->getColorId()[2] == pixel[2])
+            {
+                // Object is selected, return pointer to object
+                return m_squares.at(i).getPiece();
+            }
         }
     }
     

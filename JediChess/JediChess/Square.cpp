@@ -26,6 +26,8 @@ void Square::initialize( int id, vec3 pos, int color, double dim )
     m_color = color;
     m_highlighted = false;
     
+    m_piece = NULL;
+    
     m_type = TypeSquare;
     m_Center = vec3( 0.0, 0.0, 0.0 );
     m_Size = vec3( 1.0, 1.0, 1.0 );

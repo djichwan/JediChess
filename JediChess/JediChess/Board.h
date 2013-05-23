@@ -28,6 +28,7 @@ public:
     Board(GLuint program, double dim); // Dimension of board
     void    draw(GLint uModelView, mat4 modelView); // Draws board on screen
     Square* picking(vec2 coord); // Color buffer picking on board side, returns selected Square object
+    Piece*  pickingPiece(vec2 coord);
     void    select(vec3 pos, bool on);   // Input is position of square selected - function will highlight possible moves
     void    unhightlightAll(); // Disables all highlighted squares
     void    unSelect(); // Unselects square highlight
