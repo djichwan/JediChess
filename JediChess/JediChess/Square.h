@@ -10,7 +10,6 @@ class Piece;
 
 #include "Object.h"
 #include "Piece.h"
-#include "Texture.h"
 #include "Utility.h"
 
 const int NumSquareVertices = 4;

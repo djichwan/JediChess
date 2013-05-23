@@ -84,7 +84,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
     
     GLuint vao[1], buffer[1];
     
-    m_initTexture( false, "battleground.tga", false, 0 ); // Normal mapping
+    m_initTexture( "battleground.tga" ); // Normal mapping
     
     // Create a vertex array object
 #ifdef __APPLE__
@@ -151,7 +151,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
     //------------------ Draw border -------------------------------------------------
     
     // Initialize border texture
-    m_initTexture( false, "border.tga", false, 0 ); // Normal mapping
+    m_initTexture( "border.tga" ); // Normal mapping
     
     // Use whole texture for each border square
     vec2 borderTexture[NumSquareVertices] = {
@@ -314,7 +314,7 @@ void Board::add( vec3 pos, Piece* piece )
     m_squares.at(pos2id(pos)).setPiece(piece);
 }
 
-Square *Board::getSquare(int x, int y)
+Square* Board::getSquare(int x, int y)
 {
 	return getSquare( pos2id( vec3( x, y, 0 ) ) );
 }
@@ -453,39 +453,24 @@ void Board::m_computePosition()
                               m_pos[63].z);
 }
 
-void Board::m_initTexture( bool png, string filename, bool mip, int index )
+void Board::m_initTexture( string filename )
 {
-    if (png)
+    TgaImage image;
+    if (!image.loadTGA(filename.c_str()))
     {
-        int width, height; // Set by loadTexture function
-        
-        Texture t;
-        if ( (m_texture = t.png_texture_load( filename.c_str(), &width, &height, mip ))
-            == TEXTURE_LOAD_ERROR )
-        {
-            cerr << "Error load texture file" << endl;
-            exit( EXIT_FAILURE );
-        }
+        cerr << "Error load texture file" << endl;
+        exit( EXIT_FAILURE );
     }
-    else
-    {
-        TgaImage image;
-        if (!image.loadTGA(filename.c_str()))
-        {
-            cerr << "Error load texture file" << endl;
-            exit( EXIT_FAILURE );
-        }
-        
-        glGenTextures( 1, &m_texture );
-        glBindTexture( GL_TEXTURE_2D, m_texture );
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, 4, image.width, image.height, 0,
-                     (image.byteCount == 3) ? GL_BGR : GL_BGRA,
-                     GL_UNSIGNED_BYTE, image.data );
-        
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    }
+    
+    glGenTextures( 1, &m_texture );
+    glBindTexture( GL_TEXTURE_2D, m_texture );
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, image.width, image.height, 0,
+                 (image.byteCount == 3) ? GL_BGR : GL_BGRA,
+                 GL_UNSIGNED_BYTE, image.data );
+    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 void Board::m_getBorderCoord( vec4 points[NumSquareVertices], vec3 pos )
