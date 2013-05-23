@@ -45,9 +45,9 @@
 //Global Variables
 int Window_Width = 1200;
 int Window_Height = 900;
-float Zoom = 1;
+float Zoom = 0.8; // 1.0
 GLfloat theta = 0.0;
-GLfloat azimuth = 0.0;
+GLfloat azimuth = 30.0; // 0.0
 
 const int ESC_KEY               = 27;
 const int SPACE_KEY             = 32;
@@ -80,14 +80,16 @@ GLint        uTex, uEnableTex, uTexture;
 GLint        uBoard, uPicking;
 
 // Variables for mouse click
-int prevId;
-Square* prevSelected;
-Piece*  prevPieceSelected;
+int     prevId; // Square selected on mouse down
+Square* prevSelected; // Square selected on mouse down, used to unhighlight square
+Piece*  prevPieceSelected; // Piece selected on mouse down
 
-Pawn whitePawn;
+// Board object
 Board board;
 
-int pieceIndex = 26;
+Pawn  whitePawn;
+
+int pieceIndex = 26; // Used for testing purposes, TODO: remove
 
 //=========================================
 //----------------------------------------------------------------
@@ -344,9 +346,9 @@ void callbackMouse(int button, int state, int x, int y)
     if (selectedPiece == NULL && selected == NULL)
         return;
         
-    if (state == GLUT_UP)
+    if (state == GLUT_UP) // Mouse up
     {
-        if (selectedPiece == NULL)
+        if (selectedPiece == NULL) // CASE Board Square
         {
             if (selected->isHighlight() && prevId == selected->getId())
                 board.unhightlightAll(); // Unhighlight all squares
@@ -356,7 +358,7 @@ void callbackMouse(int button, int state, int x, int y)
             
             printf("Selected: %i\n", selected->getId());
         }
-        else
+        else // CASE Piece
         {
             if (prevPieceSelected == selectedPiece)
             {
@@ -371,9 +373,9 @@ void callbackMouse(int button, int state, int x, int y)
             printf("Selected piece: %i\n", selectedPiece->getType());
         }
     }
-    else if (state == GLUT_DOWN)
+    else if (state == GLUT_DOWN) // Mouse down
     {
-        if (selectedPiece == NULL)
+        if (selectedPiece == NULL) // CASE Board Square
         {
             if (selected->isHighlight())
                 selected->setColor(SELECT); // Turn on select light
@@ -381,7 +383,7 @@ void callbackMouse(int button, int state, int x, int y)
             prevId = selected->getId();
             prevSelected = selected;
         }
-        else
+        else // CASE Piece
         {
             prevPieceSelected = selectedPiece;
         }

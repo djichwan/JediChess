@@ -26,6 +26,7 @@ public:
     void   setPos(vec3 pos) { m_pos = pos; } // Set the position of square
     vec3   getPos() { return m_pos; } // Returns position of square on board
     int    getId() { return m_id; } // Returns unique id of square
+    int    getSide() { return m_color; } // Returns the color of square - black or white
     vec4*  getPoints() { return m_points; } // Returns pointer to Points array
     vec4*  getColors() { return m_colors; } // Returns pointer to Colors array
     vec2*  getTex() { return m_texCoords; } // Returns pointer to TexCoords array
