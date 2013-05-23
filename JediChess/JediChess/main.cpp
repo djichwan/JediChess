@@ -5,7 +5,7 @@
 //*********************************************
 
 //TODO: add more includes
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #include "GL/glew.h"
 #include <GL/gl.h>
@@ -20,7 +20,7 @@
 #include <math.h>
 #include <assert.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "GL/freeglut.h"
 #else
 #include <GLUT/glut.h>
@@ -54,9 +54,9 @@ const int SPACE_KEY             = 32;
 
 // The eye point and look-at point.
 // Currently unused. Use to control a camera with LookAt().
-Angel::vec4 eye{0, 0.0, 50.0,1.0};
-Angel::vec4 ref{0.0, 0.0, 0.0,1.0};
-Angel::vec4 up{0.0,1.0,0.0,0.0};
+Angel::vec4 eye(0, 0.0, 50.0,1.0);
+Angel::vec4 ref(0.0, 0.0, 0.0,1.0);
+Angel::vec4 up(0.0,1.0,0.0,0.0);
 
 //------------ Instantiate Timer variables --------------------
 Timer TM ;

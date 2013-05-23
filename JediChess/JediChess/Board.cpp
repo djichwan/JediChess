@@ -314,6 +314,12 @@ void Board::add( vec3 pos, Piece* piece )
     m_squares.at(pos2id(pos)).setPiece(piece);
 }
 
+Square *Board::getSquare(int x, int y)
+{
+	vec3 coord = (x, y, 0);
+	return getSquare(pos2id(coord));
+}
+
 /*
  * Converts relative position to real position
  *  - rel2real - if true, relative position to real position

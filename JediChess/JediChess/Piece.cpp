@@ -4,7 +4,7 @@
 // Definitions for Piece subclasses
 //*********************************
 #include "Piece.h"
-#include "MoveChecker.h" //TODO: change as necessary
+#include "GameManager.h" //TODO: change as necessary
 
 //================================== Piece Base Class ==========================================
 //------------------------ Modifiers---------------------------
@@ -94,6 +94,15 @@ int Piece::getCol()
     return m_col;
 }// end Piece::getCol()
 
+MoveList* Piece::getMoveList()
+{
+	return &m_possibleMoves;
+}
+
+void Piece::setMoveList(MoveList moveList)
+{
+	m_possibleMoves = moveList;
+}
 
 //---------------------------------------------------------------
 // Accessor function for m_alive
@@ -525,6 +534,10 @@ void Pawn::setMoved()
     m_moved = true;
 }//end Pawn::setMoved()
 
+bool Pawn::getMoved()
+{
+	return m_moved;
+}
 
 //--------------------------------------------------------------
 void Pawn::generate(GLint program)
@@ -590,6 +603,10 @@ void Rook::setMoved()
     m_moved = true;
 }// end Rook::setMoved()
 
+bool Rook::getMoved()
+{
+	return m_moved;
+}
 
 //--------------------------------------------------------------
 void Rook::generate(GLint program, GLint uTex)
@@ -831,6 +848,11 @@ void King::setMoved()
 {
     m_moved = true;
 }// end King::setMoved()
+
+bool King::getMoved()
+{
+	return m_moved;
+}
 
 //--------------------------------------------------------------
 void King::generate(GLint program, GLint uTex)

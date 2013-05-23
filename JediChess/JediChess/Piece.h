@@ -16,7 +16,7 @@ class Square; // To avoid circular dependency
 #include "Shapes.h"
 #include "Square.h"
 #include "Utility.h"
-#include "MoveChecker.h"
+#include "GameManager.h"
 #include <vector>
 
 #ifndef JediChess_piece_h
@@ -86,10 +86,13 @@ public:
     void select();                      // respond to being selected by mouse click
     void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
     void captured();                    // call if captured
+	void setMoveList(MoveList moveList);
     
     int getRow();                       // accessor function for m_row
     int getCol();                       // accessor function for m_col
     bool isAlive();                     // accessor function for m_alive
+	Square* getSquare();
+	MoveList* getMoveList();
     bool isOnTeam(int team);            // check if this piece is on same team as input
     PieceType getType();                // accessor function for m_type
     textureGroup getTexture();          // accessor function for m_texture
@@ -109,7 +112,7 @@ public:
     
 protected:
     Square* m_square;           // square where piece is located
-    std::vector<Square*> m_possibleMoves;  // array of squares a pieces can move to
+	MoveList m_possibleMoves;  // array of squares a pieces can move to
     int m_row;                  // row where piece locationed (1-8)
     int m_col;                  // column where piece locationed (1-8)
     int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)
@@ -137,6 +140,7 @@ public:
     void setEnPassant(bool enPassant);
     bool canEnPassant();
     void setMoved();        //if Pawn has moved, call
+	bool getMoved();
     void generate(GLint program);
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Pawn
     void animate(animationType aType);         //animate Pawn
@@ -154,6 +158,7 @@ public:
     Rook() {}
     Rook(int row, int col, int team, textureGroup texture);
     void setMoved();        //if Rook has moved from initial position, call
+	bool getMoved();
     virtual void generate(GLint program, GLint uTex);
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Rook
     void animate(animationType aType);         //animate Rook
@@ -211,6 +216,7 @@ public:
     bool isChecked();                                               //accessor function for m_checked
     void setChecked(bool a_checked);                                //set m_checked
     void setMoved();                                                //if Rook has moved from initial position, call
+	bool getMoved();
     virtual void generate(GLint program, GLint uTex);
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for King
     void animate(animationType aType);                                               //animate King
