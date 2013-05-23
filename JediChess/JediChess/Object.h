@@ -35,7 +35,7 @@ class Object{
 public:
     Object();
     virtual ~Object(){};
-    virtual void SetName(std::string name);
+    virtual void SetName(std::string name){m_name = name;}
     virtual void SetType(ObjectType2 type){m_type = type;}
     std::string GetName();
     virtual ObjectType2 GetType(){return m_type;}
