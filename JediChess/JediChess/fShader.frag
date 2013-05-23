@@ -44,13 +44,7 @@ void main()
         vec4 c = ambient + diffuse + specular;
         c.a = 1.0;
         
-        if (useTex == 1.0)
         gl_FragColor = c * texture2D( Tex, texCoord );
-        else
-        gl_FragColor = c;
-        
-        // TODO: for now
-        //gl_FragColor = fColor * texture2D( texture, texCoord );
     }
     else
     {

@@ -58,10 +58,10 @@ private:
     int    m_id; // Unique id of square object (0-63) because 64 squares
     int    m_color; // 0 = black, 1 = white
     vec3   m_pos; // Center position of sqaure
-    vec4   m_points[NumSquareVertices];
-    vec4   m_colors[NumSquareVertices];
-    vec3   m_normals[NumSquareVertices];
-    vec2   m_texCoords[NumSquareVertices];
+    vec4   m_points[NumSquareVertices]; // Points
+    vec4   m_colors[NumSquareVertices]; // Colors
+    vec3   m_normals[NumSquareVertices]; // Normals
+    vec2   m_texCoords[NumSquareVertices]; // Texture coordinates
     double m_dim; // Dimension of square
     bool   m_highlighted; // Whether square is currently lighted up
     bool   m_selected; // Whether lighted square is currently selected

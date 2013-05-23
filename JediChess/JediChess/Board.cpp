@@ -84,7 +84,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
     
     GLuint vao[1], buffer[1];
     
-    m_initTexture( true, "battleground.png", false, 0 ); // Normal mapping
+    m_initTexture( false, "battleground.tga", false, 0 ); // Normal mapping
     
     // Create a vertex array object
 #ifdef __APPLE__
@@ -126,9 +126,6 @@ void Board::draw(GLint uModelView, mat4 modelView)
     // Turn picking off
     glUniform1f( glGetUniformLocation( m_shader, "Picking" ), NO_PICKING );
     
-    // Turn texture on
-    glUniform1f( glGetUniformLocation( m_shader, "useTex" ), USE_TEX );
-    
     for (int i = 0; i < NumSquares; i++)
     {
         // To have the lighted squares glow
@@ -147,13 +144,23 @@ void Board::draw(GLint uModelView, mat4 modelView)
                         texSize, m_squares.at(i).getTex() );
         glBufferSubData( GL_ARRAY_BUFFER, pointsSize + texSize,
                         normalsSize, m_squares.at(i).getNormal() );
+        
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
     }
     
     //------------------ Draw border -------------------------------------------------
     
-    // Turn texture off
-    glUniform1f( glGetUniformLocation( m_shader, "useTex" ), NO_TEX );
+    // Initialize border texture
+    m_initTexture( false, "border.tga", false, 0 ); // Normal mapping
+    
+    // Use whole texture for each border square
+    vec2 borderTexture[NumSquareVertices] = {
+        vec2( 0.0, 1.0),
+        vec2( 1.0, 1.0),
+        vec2( 0.0, 0.0),
+        vec2( 1.0, 0.0)
+    };
+    glBufferSubData( GL_ARRAY_BUFFER, pointsSize, texSize, borderTexture );
     
     // Border color
     glUniform4f( glGetUniformLocation(m_shader, "color"), GRAY.x, GRAY.y, GRAY.z, GRAY.w );
@@ -167,6 +174,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
         vec4 points[NumSquareVertices];
         m_getBorderCoord(points, m_borderPos[i]);
         glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
+        
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
     }
 }
@@ -187,7 +195,7 @@ Square* Board::picking( vec2 coord )
     
     glUniformMatrix4fv( m_uModelView, 1, GL_TRUE, m_modelView );
     
-    // render every  square object in our scene
+    // render every square object in our scene
     for (int i = 0; i < m_squares.size(); i++)
         m_squares.at(i).picking(m_shader);
     
@@ -214,6 +222,7 @@ Square* Board::picking( vec2 coord )
     return NULL; // Return NULL if nothing found
 }
 
+// Determines whether piece object is selected
 Piece* Board::pickingPiece( vec2 coord )
 {
     glUseProgram(m_shader);
@@ -227,7 +236,7 @@ Piece* Board::pickingPiece( vec2 coord )
     
     glUniformMatrix4fv( m_uModelView, 1, GL_TRUE, m_modelView );
     
-    // render every  square object in our scene
+    // render every piece object in our scene
     for (int i = 0; i < m_squares.size(); i++)
         if (m_squares.at(i).getPiece() != NULL)
             m_squares.at(i).getPiece()->picking(m_shader);
@@ -246,9 +255,9 @@ Piece* Board::pickingPiece( vec2 coord )
     {
         if (m_squares.at(i).getPiece() != NULL)
         {
-            if (m_squares.at(i).getPiece()->getColorId()[0] == pixel[0]
-                && m_squares.at(i).getPiece()->getColorId()[1] == pixel[1]
-                && m_squares.at(i).getPiece()->getColorId()[2] == pixel[2])
+            if (m_squares.at(i).getPiece()->getColorId()[0] == pixel[0] &&
+                m_squares.at(i).getPiece()->getColorId()[1] == pixel[1] &&
+                m_squares.at(i).getPiece()->getColorId()[2] == pixel[2])
             {
                 // Object is selected, return pointer to object
                 return m_squares.at(i).getPiece();
@@ -360,6 +369,8 @@ void Board::m_computePosition()
         }
     }
     
+    //-------- Initialize border coordinates --------------------------
+    
     index = 0;
     // Compute top border
     for (int i = 0; i < 8; i++)
@@ -466,12 +477,6 @@ void Board::m_initTexture( bool png, string filename, bool mip, int index )
         glTexImage2D(GL_TEXTURE_2D, 0, 4, image.width, image.height, 0,
                      (image.byteCount == 3) ? GL_BGR : GL_BGRA,
                      GL_UNSIGNED_BYTE, image.data );
-
-//        glGenerateMipmap(GL_TEXTURE_2D);
-//        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-//        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-//        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-//        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

@@ -63,8 +63,8 @@ private:
     vector<Square>     m_squares; // Vector of square objects
     GLuint             m_texture; // Texture object
     GLuint             m_shader; // Shader object
-    GLint              m_uModelView;
-    mat4               m_modelView;
+    GLint              m_uModelView; // Uniform model view variable
+    mat4               m_modelView; // Model view matrix
     void               m_computePosition(); // Computes center positions for each square
     void               m_initTexture(bool png, string filename, bool mip, int index); // Initializes texture for board
     void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
