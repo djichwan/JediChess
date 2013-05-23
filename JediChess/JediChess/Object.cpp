@@ -34,3 +34,13 @@ Object::Object(){
         }
     }
 }
+
+std::string Object::GetName()
+{
+    return m_name;
+}
+
+unsigned char* Object::getColorId()
+{
+    return m_colorID;
+}

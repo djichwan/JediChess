@@ -112,6 +112,13 @@ bool Piece::isAlive()
 }// end Piece::isAlive()
 
 //---------------------------------------------------------------
+// Set function for m_square
+void Piece::setSquare(Square *square)
+{
+    m_square = square;
+}// end Piece::setSquare()
+
+//---------------------------------------------------------------
 // Accessor function for m_square
 Square* Piece::getSquare()
 {
@@ -341,6 +348,13 @@ void Piece::bindTextures(GLint uTex)
     glUniform1i( uTex, 0);
     
 }//end Piece::bindTextures()
+
+void Piece::setModelView(GLint uModelView, mat4 modelView, vec3 translate)
+{
+    m_uModelView = uModelView;
+    m_modelView  = modelView;
+    m_translate  = translate;
+}
 
 // Performs color buffer picking by assigning unique color to each object
 void Piece::picking(GLuint shader)

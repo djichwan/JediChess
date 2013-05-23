@@ -25,22 +25,22 @@ public:
     Square(int id, vec3 pos, int color, double dim); // Calls initialize()
     void   initialize(int id, vec3 pos, int color, double dim); // Sets up square object
     void   draw(GLint uModelView, mat4 modelView); // Draw the board object
-    void   setPos(vec3 pos) { m_pos = pos; } // Set the position of square
-    vec3   getPos() { return m_pos; } // Returns position of square on board
-    int    getId() { return m_id; } // Returns unique id of square
-    int    getSide() { return m_color; } // Returns the color of square - black or white
-    vec4*  getPoints() { return m_points; } // Returns pointer to Points array
-    vec4*  getColors() { return m_colors; } // Returns pointer to Colors array
-    vec2*  getTex() { return m_texCoords; } // Returns pointer to TexCoords array
-    vec3*  getNormal() { return m_normals; } // Returns pointer to Normals array
+    void   setPos(vec3 pos); // Set the position of square
+    vec3   getPos(); // Returns position of square on board
+    int    getId(); // Returns unique id of square
+    int    getSide(); // Returns the color of square - black or white
+    void   setPiece(Piece* piece); // Sets corresponding piece to square
+    Piece* getPiece(); // Returns the current piece corresponding to square
+    vec4*  getPoints(); // Returns pointer to Points array
+    vec4*  getColors(); // Returns pointer to Colors array
+    vec2*  getTex(); // Returns pointer to TexCoords array
+    vec3*  getNormal(); // Returns pointer to Normals array
     void   highlight(bool on, vec4 color);   // Light up the square if on, color if on - optional if off
     void   setColor(vec4 color); // Set color of square
     void   unselect(); // Unselects square
-    bool   isHighlight() { return m_highlighted; } // Whether square is highlighted or not
-    bool   isSelected() { return m_selected; } // Returns whether square is currently selected
+    bool   isHighlight(); // Whether square is highlighted or not
+    bool   isSelected(); // Returns whether square is currently selected
     void   picking(GLuint program); // For color buffer picking
-    void   setPiece(Piece* piece) { m_piece = piece; } // Sets corresponding piece to square
-    Piece* getPiece() { return m_piece; } // Returns the current piece corresponding to square
     virtual void UpdateAll(double dt){};
     ~Square() {}; // Empty destructor
     

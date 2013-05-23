@@ -82,6 +82,7 @@ public:
     int getRow();                       // accessor function for m_row
     int getCol();                       // accessor function for m_col
     bool isAlive();                     // accessor function for m_alive
+    void setSquare(Square* square);
 	Square* getSquare();                // accessor function for m_square
 	MoveList* getMoveList();
     bool isOnTeam(int team);            // check if this piece is on same team as input
@@ -97,7 +98,7 @@ public:
     textureGroup m_texture;     // textures for piece               //TODO: implement for non-humanoid pieces
     pieceShapeData m_shapeData; // struct for all shapes in piece   //TODO: implement for non-humanoid pieces
     
-    void setModelView(GLint uModelView, mat4 modelView, vec3 translate) { m_uModelView = uModelView; m_modelView = modelView; m_translate = translate; }
+    void setModelView(GLint uModelView, mat4 modelView, vec3 translate);
     
     void picking(GLuint shader); // To perform color buffer picking
     

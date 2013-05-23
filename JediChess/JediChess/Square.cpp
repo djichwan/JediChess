@@ -41,6 +41,56 @@ void Square::draw(GLint uModelView, mat4 modelView)
     // Drawing done in Board
 }
 
+void Square::setPos(vec3 pos)
+{
+    m_pos = pos;
+}
+
+vec3 Square::getPos()
+{
+    return m_pos;
+}
+
+int Square::getId()
+{
+    return m_id;
+}
+
+int Square::getSide()
+{
+    return m_color;
+}
+
+void Square::setPiece(Piece* piece)
+{
+    m_piece = piece;
+}
+
+Piece* Square::getPiece()
+{
+    return m_piece;
+}
+
+vec4* Square::getPoints()
+{
+    return m_points;
+}
+
+vec4* Square::getColors()
+{
+    return m_colors;
+}
+
+vec2* Square::getTex()
+{
+    return m_texCoords;
+}
+
+vec3* Square::getNormal()
+{
+    return m_normals;
+}
+
 // Change color of square
 void Square::highlight( bool on, vec4 color )
 {
@@ -68,6 +118,16 @@ void Square::unselect()
         m_colors[i] = HIGHLIGHT;
     
     m_selected = false;
+}
+
+bool Square::isHighlight()
+{
+    return m_highlighted;
+}
+
+bool Square::isSelected()
+{
+    return m_selected;
 }
 
 /*

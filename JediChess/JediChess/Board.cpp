@@ -319,6 +319,11 @@ Square* Board::getSquare(int x, int y)
 	return getSquare( pos2id( vec3( x, y, 0 ) ) );
 }
 
+Square* Board::getSquare(int index)
+{
+    return &m_squares.at(index);
+}
+
 /*
  * Converts relative position to real position
  *  - rel2real - if true, relative position to real position

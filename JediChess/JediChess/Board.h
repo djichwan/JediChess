@@ -41,7 +41,7 @@ public:
     vec3    convertPos(vec3 pos, bool rel2real); // Converts relative position to real position
     int     pos2id(vec3 pos); // Converts position input to square id
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
-    Square* getSquare(int index) { return &m_squares.at(index); } // Returns square given index
+    Square* getSquare(int index); // Returns square given index
     virtual void UpdateAll(double dt){};
     //~Board() {};  // Empty destructor
 
