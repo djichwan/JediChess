@@ -19,6 +19,10 @@
 #include "mat.h"
 #include "vec.h"
 #include "Angel.h"
+#include <vector>
+
+// To avoid circular dependency
+class Square;
 
 // Texture
 #define NO_RESULTS         -1
@@ -39,6 +43,11 @@
 // Piece
 #define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
 #define TRANSLATE_Y 2.0f / PIECE_SCALE.x
+const int WHITESIDE = 0;
+const int BLACKSIDE = 1;
+enum PieceType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
+enum WeaponType { NoWeapon, TypeGun, TypeSaber };
+enum animationType { TypeAttacking, TypeDying };
 
 // Colors
 #define BLACK     vec4( 0.3, 0.3, 0.3, 1.0 ) // Texture not visible if 0.0
@@ -50,6 +59,9 @@
 #define WHITE3    vec3( 1.0, 1.0, 1.0 )
 #define HIGHLIGHT BABY_BLUE
 #define SELECT    YELLOW
+
+// Game Manager
+typedef std::vector<Square*> MoveList;
 
 typedef Angel::vec2 vec2;
 typedef Angel::vec3 vec3;

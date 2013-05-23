@@ -5,12 +5,21 @@
 #ifndef JediChess_GameManager_h
 #define JediChess_GameManager_h
 
+// To avoid circular dependency
+class Piece;
+class Pawn;
+class Bishop;
+class Knight;
+class Rook;
+class Queen;
+class King;
+class Board;
+class Square;
+
 #include "Piece.h"
 #include "Board.h"
 #include "Square.h"
 #include <vector>
-
-typedef std::vector<Square *> MoveList;
 
 // singleton
 class GameManager

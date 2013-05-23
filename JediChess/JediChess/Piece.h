@@ -10,27 +10,18 @@
 //  Bishop
 //***************************
 
-class Square; // To avoid circular dependency
+#ifndef JediChess_piece_h
+#define JediChess_piece_h
+
+// To avoid circular dependency
+class Square; // OG
+class GameManager;
 
 #include "tga.h"
 #include "Shapes.h"
 #include "Square.h"
 #include "Utility.h"
 #include "GameManager.h"
-#include <vector>
-
-#ifndef JediChess_piece_h
-#define JediChess_piece_h
-
-//-------------------------- Globals ------------------------
-const int WHITESIDE = 0;
-const int BLACKSIDE = 1;
-
-
-enum PieceType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
-enum WeaponType { NoWeapon, TypeGun, TypeSaber };
-enum animationType { TypeAttacking, TypeDying };
-
 
 //----------------------- Structs -------------------------
 // Holds and organizes textures for separate body parts of the piece
@@ -91,7 +82,7 @@ public:
     int getRow();                       // accessor function for m_row
     int getCol();                       // accessor function for m_col
     bool isAlive();                     // accessor function for m_alive
-	Square* getSquare();
+	Square* getSquare();                // accessor function for m_square
 	MoveList* getMoveList();
     bool isOnTeam(int team);            // check if this piece is on same team as input
     PieceType getType();                // accessor function for m_type

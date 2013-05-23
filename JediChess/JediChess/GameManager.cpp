@@ -2,7 +2,7 @@
 
 GameManager::GameManager()
 {
-	m_board = &Board();
+//	m_board = &Board();
 }
 
 GameManager& GameManager::getInstance()
@@ -73,7 +73,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 		if ((piece = square->getPiece()) && !piece->isOnTeam(side))
 		{
 			possibleMoves.insert(possibleMoves.end(), square);
-			if (piece->getType == TypeKing)
+			if (piece->getType() == TypeKing)
 				((King *) piece)->setChecked(true);
 		}
 	}
@@ -84,7 +84,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 		if ((piece = square->getPiece()) && !piece->isOnTeam(side))
 		{
 			possibleMoves.insert(possibleMoves.end(), square);
-			if (piece->getType == TypeKing)
+			if (piece->getType() == TypeKing)
 				((King *) piece)->setChecked(true);			
 		}
 	}
@@ -200,7 +200,7 @@ void GameManager::kingMoveList(King *king, int side, Square *square)
 			king->setMoved();
 	}
 	
-	Square *square = NULL;
+	//Square *square = NULL;
 	if (square = m_board->getSquare(x + 1, y))
 		kingMoveHelper(square, side, &possibleMoves);
 	if (square = m_board->getSquare(x + 1, y + 1))
@@ -285,7 +285,7 @@ bool GameManager::moveBuilderHelper(Square *square, int side, MoveList* pm)
 	else if (!piece->isOnTeam(side))
 	{
 		pm->insert(pm->end(), square);
-		if (piece->getType == TypeKing)
+		if (piece->getType() == TypeKing)
 			((King *) piece)->setChecked(piece);
 		return false;
 	}

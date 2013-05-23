@@ -12,7 +12,7 @@
 void Piece::move(Square* destSquare)
 {
     //TODO: change implementation as MoveChecker interface changes
-    updateMoveList(this);   //update possible moves list
+//    updateMoveList(this);   //update possible moves list
     
     
     //--------- check if valid move -----------------
@@ -45,7 +45,7 @@ void Piece::move(Square* destSquare)
     m_square = destSquare;
     //TODO: add row, col update when Square/Board implement
     
-    buildMoveList(this);    //build new possible moves list for new square position
+//    buildMoveList(this);    //build new possible moves list for new square position
     
 }// end Piece::move()
 
@@ -111,6 +111,12 @@ bool Piece::isAlive()
     return m_alive;
 }// end Piece::isAlive()
 
+//---------------------------------------------------------------
+// Accessor function for m_square
+Square* Piece::getSquare()
+{
+    return m_square;
+}// end Piece::getSquare()
 
 //---------------------------------------------------------------
 // Check if this piece is on same team as input
@@ -493,7 +499,7 @@ void generatePersonPiece(Piece* piece, GLint program)
 Pawn::Pawn(int row, int col, int team, textureGroup texture)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
-    setFirstMove(this);
+//    setFirstMove(this);
     //Square* m_square;           // square where piece is located
     //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
@@ -582,7 +588,7 @@ void Pawn::animate(animationType aType)
 Rook::Rook(int row, int col, int team, textureGroup texture)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
-    setFirstMove(this);
+//    setFirstMove(this);
     //Square* m_square;           // square where piece is located
     //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
@@ -650,7 +656,7 @@ void Rook::animate(animationType aType)
 Bishop::Bishop(int row, int col, int team, textureGroup texture)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
-    setFirstMove(this);
+//    setFirstMove(this);
     //Square* m_square;           // square where piece is located
     //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
@@ -703,7 +709,7 @@ void Bishop::animate(animationType aType)
 Knight::Knight(int row, int col, int team, textureGroup texture)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
-    setFirstMove(this);
+//    setFirstMove(this);
     //Square* m_square;           // square where piece is located
     //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
@@ -756,7 +762,7 @@ void Knight::animate(animationType aType)
 Queen::Queen(int row, int col, int team, textureGroup texture)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
-    setFirstMove(this);
+//    setFirstMove(this);
     //Square* m_square;           // square where piece is located
     //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
@@ -809,7 +815,7 @@ void Queen::animate(animationType aType)
 King::King(int row, int col, int team, textureGroup texture)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
-    setFirstMove(this);
+//    setFirstMove(this);
     //Square* m_square;           // square where piece is located
     //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;

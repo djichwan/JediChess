@@ -5,6 +5,9 @@
 #ifndef JediChess_square_h
 #define JediChess_square_h
 
+// To avoid circular dependency
+class Piece;
+
 #include "Object.h"
 #include "Piece.h"
 #include "Texture.h"

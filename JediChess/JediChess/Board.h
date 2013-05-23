@@ -9,6 +9,9 @@
 #ifndef __JediChess__Board__
 #define __JediChess__Board__
 
+// To avoid circular dependency
+class Square;
+
 #include "Square.h"
 #include <map>
 #include <vector>
@@ -40,7 +43,7 @@ public:
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index) { return &m_squares.at(index); } // Returns square given index
     virtual void UpdateAll(double dt){};
-    ~Board() {};  // Empty destructor
+    //~Board() {};  // Empty destructor
 
 public:
     vec3 m_Center; //For generating translation Angel::matrix
@@ -68,7 +71,8 @@ private:
     mat4               m_modelView; // Model view matrix
     void               m_computePosition(); // Computes center positions for each square
     void               m_initTexture(bool png, string filename, bool mip, int index); // Initializes texture for board
-    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
+    void               m_getBorderCoord(vec4 points[4], vec3 pos); // Compute border position
+//    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
 };
 
 #endif /* defined(__JediChess__Board__) */

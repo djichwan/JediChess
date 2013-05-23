@@ -316,8 +316,7 @@ void Board::add( vec3 pos, Piece* piece )
 
 Square *Board::getSquare(int x, int y)
 {
-	vec3 coord = (x, y, 0);
-	return getSquare(pos2id(coord));
+	return getSquare( pos2id( vec3( x, y, 0 ) ) );
 }
 
 /*

@@ -21,7 +21,7 @@
 		D6C436A81745FC990094699C /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436A71745FC980094699C /* Square.cpp */; };
 		D6C436AB1745FCC80094699C /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436A91745FCC70094699C /* Texture.cpp */; };
 		D6C436B01745FEA50094699C /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436AE1745FEA40094699C /* Board.cpp */; };
-		D6C9EF62174971960043A8F5 /* MoveChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C9EF60174971960043A8F5 /* MoveChecker.cpp */; };
+		D6C58244174EB35000EEEEDB /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C58242174EB35000EEEEDB /* GameManager.cpp */; };
 		D6C9EF65174972280043A8F5 /* Shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C9EF63174972280043A8F5 /* Shapes.cpp */; };
 		D6C9EF67174979A40043A8F5 /* libpng16.16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D6C9EF66174979A40043A8F5 /* libpng16.16.dylib */; };
 /* End PBXBuildFile section */
@@ -68,8 +68,8 @@
 		D6C436AA1745FCC80094699C /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		D6C436AE1745FEA40094699C /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		D6C436AF1745FEA50094699C /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
-		D6C9EF60174971960043A8F5 /* MoveChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveChecker.cpp; sourceTree = "<group>"; };
-		D6C9EF61174971960043A8F5 /* MoveChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveChecker.h; sourceTree = "<group>"; };
+		D6C58242174EB35000EEEEDB /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
+		D6C58243174EB35000EEEEDB /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		D6C9EF63174972280043A8F5 /* Shapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shapes.cpp; sourceTree = "<group>"; };
 		D6C9EF64174972280043A8F5 /* Shapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shapes.h; sourceTree = "<group>"; };
 		D6C9EF66174979A40043A8F5 /* libpng16.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng16.16.dylib; path = ../../../../../../usr/local/lib/libpng16.16.dylib; sourceTree = "<group>"; };
@@ -117,11 +117,11 @@
 				D6C436AE1745FEA40094699C /* Board.cpp */,
 				D6C436AF1745FEA50094699C /* Board.h */,
 				65322B151744D46700D012E8 /* fShader.frag */,
+				D6C58242174EB35000EEEEDB /* GameManager.cpp */,
+				D6C58243174EB35000EEEEDB /* GameManager.h */,
 				65322AF11744D11300D012E8 /* gl.h */,
 				65322AF21744D11300D012E8 /* JediChess.1 */,
 				65322AF41744D11300D012E8 /* main.cpp */,
-				D6C9EF60174971960043A8F5 /* MoveChecker.cpp */,
-				D6C9EF61174971960043A8F5 /* MoveChecker.h */,
 				65322AF61744D11300D012E8 /* Object.cpp */,
 				65322AF71744D11300D012E8 /* Object.h */,
 				65322AF81744D11300D012E8 /* Piece.cpp */,
@@ -215,9 +215,9 @@
 				D6C436A81745FC990094699C /* Square.cpp in Sources */,
 				D6C436AB1745FCC80094699C /* Texture.cpp in Sources */,
 				D6C436B01745FEA50094699C /* Board.cpp in Sources */,
-				D6C9EF62174971960043A8F5 /* MoveChecker.cpp in Sources */,
 				D6C9EF65174972280043A8F5 /* Shapes.cpp in Sources */,
 				D60873C017497BBD004FAE4D /* InitShader.cpp in Sources */,
+				D6C58244174EB35000EEEEDB /* GameManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
