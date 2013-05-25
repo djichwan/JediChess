@@ -41,6 +41,7 @@
 #include "Piece.h"
 #include "Timer.h"
 #include "Board.h"
+#include "AssignTextures.h"
 
 //Global Variables
 int Window_Width = 1200;
@@ -48,6 +49,8 @@ int Window_Height = 900;
 float Zoom = 0.8; // 1.0
 GLfloat theta = 0.0;
 GLfloat azimuth = 30.0; // 0.0
+GLfloat horizontalPos = 0.0;
+GLfloat verticalPos = 0.0;
 
 const int ESC_KEY               = 27;
 const int SPACE_KEY             = 32;
@@ -87,7 +90,7 @@ Piece*  prevPieceSelected; // Piece selected on mouse down
 // Board object
 Board board;
 
-Pawn  whitePawn;
+Queen blackQueen;
 
 int pieceIndex = 26; // Used for testing purposes, TODO: remove
 
@@ -108,23 +111,19 @@ void set_color(float r, float g, float b)
 void initScene()
 {
     // Load shaders and use the resulting shader program
-    GLuint program = InitShader( "vTexture.vert", "fTexture.frag" );
+    GLuint program = InitShader( "vShader.vert", "fShader.frag" );
     glUseProgram(program);
     
     //--------- Assign texture files and generate pieces ------------
-    //TODO: add generate each piece
+    //TODO: add generate each piece (in separate function calls?)
     //--------------------------------------------------------
-    textureGroup whitePawnTexture;
-    whitePawnTexture.headFile = "DarthVaderFace.tga";
-    whitePawnTexture.torsoFile = "DarthVaderTorso.tga";
-    whitePawnTexture.leftArmFile = "DarthVaderLeftArm.tga";
-    whitePawnTexture.rightArmFile = "DarthVaderRightArm.tga";
-    whitePawnTexture.leftLegFile = "DarthVaderLeftLeg.tga";
-    whitePawnTexture.rightLegFile = "DarthVaderRightLeg.tga";
-    whitePawnTexture.weaponFile = "DarthVaderWeapon.tga";
+    textureGroup blackQueenTexture = createBlackQueenTexture();
+    //TODO: change so individual faces assigned potentially different image
+
     
-    whitePawn = Pawn(1, 1, WHITESIDE, whitePawnTexture);
-    whitePawn.generate(program);
+    
+    blackQueen = Queen(1, 1, BLACKSIDE, blackQueenTexture);
+    blackQueen.generate(program);
     //------------------------------------------------------
     
     //link with vertex shader variables
@@ -133,7 +132,6 @@ void initScene()
     uView       = glGetUniformLocation( program, "View"       );
     
     glClearColor( 0.1, 0.1, 0.2, 1.0 ); // dark blue background
-    //glClearColor( 0.0, 0.0, 0.0, 1.0 ); // Black background
     
     uAmbient   = glGetUniformLocation( program, "AmbientProduct"  );
     uDiffuse   = glGetUniformLocation( program, "DiffuseProduct"  );
@@ -146,20 +144,20 @@ void initScene()
     uBoard     = glGetUniformLocation( program, "Board"           );
     uPicking   = glGetUniformLocation( program, "Picking"         );
     
+    
     glUniform4f(uAmbient,    0.2f,  0.2f,  0.2f, 1.0f);
     glUniform4f(uDiffuse,    0.6f,  0.6f,  0.6f, 1.0f);
     glUniform4f(uSpecular,   0.2f,  0.2f,  0.2f, 1.0f);
     glUniform4f(uLightPos,  15.0f, 15.0f, 30.0f, 0.0f);
     glUniform1f(uShininess, 100.0f);
     
-    //--------------- Bind textures to pieces ---------------
-    whitePawn.bindTextures(uTex);
+    
     
     // Initialize Board object
     board = Board(program, BOARD_DIM);
     
     // Add pieces to board
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackQueen);
     
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
@@ -181,12 +179,14 @@ void drawScene()
     glUniformMatrix4fv( uView, 1, GL_TRUE, model_view );
     glUniformMatrix4fv( uTexture, 1, GL_TRUE, texture_view);
     
+    model_view *= Translate(horizontalPos, verticalPos, 0.0f);
     model_view *= Scale(Zoom);
     model_view *= Scale(0.7f, 0.7f, 0.7f);
     model_view *= RotateY(theta);
     model_view *= RotateX(azimuth);
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
+    mat4 originalView = model_view;
     //--------- Draw Board -----------------------------------
     glUniform1f( uBoard, 1.0 );
     model_view *= RotateX(BOARD_ROTATION);
@@ -194,15 +194,16 @@ void drawScene()
     board.draw(uModelView, model_view);
     
     // Revert variables back to normal
-    model_view *= RotateX(-BOARD_ROTATION);
+    model_view = originalView;
     glUniform1f( uBoard, 0.0 );
     glUniform1f( uPicking, 0.0 );
     //---------------------------------------------------------
     
     //TODO: draw pieces
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
-    
-    whitePawn.draw(uTex, uEnableTex, uModelView, model_view, board.getSquare(pieceIndex)->getPos());
+    //TODO: draw pieces
+    model_view *= Translate(0.0f, 7.0f, 0.0f);
+    blackQueen.draw(uTex, uEnableTex, uModelView, model_view);
     
 }// end drawScene()
 
@@ -226,11 +227,22 @@ void keyboardCallback(unsigned char key, int x, int y)
         case 'O':
             Zoom  = Zoom * 0.97;
             break;
-        case SPACE_KEY: //Reset camera position
-            Zoom = 1;
-            theta = 0;
-            azimuth = 0;
+        case 'w':       // Move camera up
+        case 'W':
+            verticalPos -= .5;
             break;
+        case 'a':       // Move camera left
+        case 'A':
+            horizontalPos += .5;
+            break;
+        case 's':       //Move camera down
+        case 'S':
+            verticalPos += .5;
+            break;
+        case 'd':       // Move camera right
+        case 'D':
+            horizontalPos -= .5;
+            break;    
         case 'h':
             board.select(vec3(0.0, 0.0, 0.0), true);
             break;
@@ -246,17 +258,24 @@ void keyboardCallback(unsigned char key, int x, int y)
         case 'u':
             board.unhightlightAll(); break;
         // Test for moving piece
-        case 'a':
+        case 'm':
             pieceIndex++;
             if (pieceIndex == 64)
                 pieceIndex = 0;
             board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
             break;
-        case 'A':
+        case 'M':
             pieceIndex--;
             if (pieceIndex == -1)
                 pieceIndex = 63;
             board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
+            break;
+        case SPACE_KEY: //Reset camera position
+            Zoom = 1;
+            theta = 0;
+            azimuth = 0;
+            horizontalPos = 0;
+            verticalPos = 0;
             break;
         default:
             break;
@@ -401,7 +420,7 @@ void assign_callback()
     glutKeyboardFunc( keyboardCallback );
     glutDisplayFunc( displayCallback );
     glutSpecialFunc( specialKeys );
-    glutMouseFunc(callbackMouse);
+    glutMouseFunc( callbackMouse );
 }// end assign_callback()
 
 

@@ -56,7 +56,6 @@ void Piece::select()
 {
     //TODO: implement
     m_square->highlight(true, HIGHLIGHT);
-    return;
 }// end Piece::select()
 
 //--------------------------------------------------------------
@@ -165,196 +164,51 @@ pieceShapeData Piece::getShapeData()
 
 //--------------------------------------------------------------
 // Initializes textures for pieces
-void Piece::bindTextures(GLint uTex)
+void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, ShapeData& shapeData)
 {
-    //TODO: implement for non-humanoid pieces (use if statement)
-    //---------------- Head ---------------------
-    //load image into buffer
-    TgaImage headImage;
-    if (!headImage.loadTGA(m_texture.headFile.c_str()))
+    for(int i = 0; i < NUM_CUBE_FACES; i++) //for each face of cube
     {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    
-    //apply texture for head
-    glGenTextures( 1, &m_texture.texture_head );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_head );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, headImage.width, headImage.height, 0,
-                 (headImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, headImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    
-    //------------------ Torso --------------------
-    //load image into buffer
-    TgaImage torsoImage;
-    if (!torsoImage.loadTGA(m_texture.torsoFile.c_str()))
-    {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    
-    //apply texture for torso
-    glGenTextures( 1, &m_texture.texture_torso );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_torso );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, torsoImage.width, torsoImage.height, 0,
-                 (torsoImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, torsoImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    
-    //---------------- Left Arm ----------------------
-    //load image into buffer
-    TgaImage leftArmImage;
-    if (!leftArmImage.loadTGA(m_texture.leftArmFile.c_str()))
-    {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    
-    //apply texture for left arm
-    glGenTextures( 1, &m_texture.texture_leftArm );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_leftArm );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, leftArmImage.width, leftArmImage.height, 0,
-                 (leftArmImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, leftArmImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    
-    //--------------- Right Arm -------------------
-    //load image into buffer
-    TgaImage rightArmImage;
-    if (!rightArmImage.loadTGA(m_texture.rightArmFile.c_str()))
-    {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    //apply texture for right arm
-    glGenTextures( 1, &m_texture.texture_rightArm );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_rightArm );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, rightArmImage.width, rightArmImage.height, 0,
-                 (leftArmImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, rightArmImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    
-    //------------- Left Leg ----------------------
-    //load image into buffer
-    TgaImage leftLegImage;
-    if (!leftLegImage.loadTGA(m_texture.leftLegFile.c_str()))
-    {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    
-    //apply texture for left leg
-    glGenTextures( 1, &m_texture.texture_leftLeg );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_leftLeg );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, leftLegImage.width, leftLegImage.height, 0,
-                 (leftLegImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, leftLegImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    
-    //------------- Right Leg ----------------------
-    //load image into buffer
-    TgaImage rightLegImage;
-    if (!rightLegImage.loadTGA(m_texture.rightLegFile.c_str()))
-    {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    
-    //apply texture for right leg
-    glGenTextures( 1, &m_texture.texture_rightLeg );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_rightLeg );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, rightLegImage.width, rightLegImage.height, 0,
-                 (rightLegImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, rightLegImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    
-    //------------- Weapon ----------------------
-    //load image into buffer
-    TgaImage weaponImage;
-    if (!weaponImage.loadTGA(m_texture.weaponFile.c_str()))
-    {
-        printf("Error loading image file\n");
-        exit(1);
-    }
-    
-    
-    //apply texture for weapon
-    glGenTextures( 1, &m_texture.texture_weapon );
-    glBindTexture( GL_TEXTURE_2D, m_texture.texture_weapon );
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, weaponImage.width, weaponImage.height, 0,
-                 (weaponImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, weaponImage.data );
-    
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    
-    //------------------
-    
-    // Set texture sampler variable to texture unit 0
-    // (set in glActiveTexture(GL_TEXTURE0))
-    glUniform1i( uTex, 0);
+        // Initialize and bind textures
+        TgaImage faceImage;
+        if (!faceImage.loadTGA(cubeTextures.faceFile[i].c_str()))
+        {
+            printf("Error loading image file\n");
+            exit(1);
+        }
+        
+        glGenTextures( 1, &cubeTextures.textureFace[i] );
+        glBindTexture( GL_TEXTURE_2D, cubeTextures.textureFace[i]  );
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, 4, faceImage.width, faceImage.height, 0,
+                     (faceImage.byteCount == 3) ? GL_BGR : GL_BGRA,
+                     GL_UNSIGNED_BYTE, faceImage.data );
+        
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        
+        //draw face
+        glUniform1i (uEnableTex, 1);
+        glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
+        glBindVertexArray( shapeData.vao );
+        glDrawArrays( GL_TRIANGLES, i*NUM_VERTICES_IN_FACE, NUM_VERTICES_IN_FACE );
+        glUniform1i(uEnableTex, 0);
+    }// end for
     
 }//end Piece::bindTextures()
+
+//---------------------------------------------------------------------------
 
 void Piece::setModelView(GLint uModelView, mat4 modelView, vec3 translate)
 {
     m_uModelView = uModelView;
     m_modelView  = modelView;
     m_translate  = translate;
-}
+}// end Piece::setModelView()
+
+//---------------------------------------------------------------------------
 
 // Performs color buffer picking by assigning unique color to each object
 void Piece::picking(GLuint shader)
@@ -365,127 +219,86 @@ void Piece::picking(GLuint shader)
                 this->getColorId()[2],
                 1.0);
 
-    this->draw( -1, -1, this->m_uModelView, this->m_modelView, this->m_translate );
-}
+    this->draw( -1, -1, this->m_uModelView, this->m_modelView);
+}// end Piece::picking()
 
 
 //============================== Utitility Functions for Drawing ========================
 // Draws any humanoid piece (has head, torso, two arms, two legs, and weapon)
-void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, vec3 translate)
+void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view)
 {
-    piece->setModelView(uModelView, model_view, translate);
-    
-    // Translate to proper position on board
-    model_view *= Translate(translate.x/PIECE_SCALE.x, TRANSLATE_Y/PIECE_SCALE.y, -translate.y/PIECE_SCALE.z);
     mat4 originalView = model_view;
     
-    //--------------- Draw head as a sphere -------------------------------------
-    model_view *= RotateX(180.0f);
+    float personThickness = 1.0f; //how thick each part of the person will be (scale coefficient for z-direction
+    //--------------- Draw head as a cube -------------------------------------
+    //model_view *= RotateY(30.0f);
+    model_view *= Translate(-0.1f, 0.04f, 0.0f);
+    model_view *= Scale(1.2f, 1.2f, personThickness);
     
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_head);
-    glUniform1i (uEnableTex, 1);
-    //draw Sphere
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.head.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.head.numVertices );
-    glUniform1i(uEnableTex, 0);
-    
-    model_view = originalView; //undo transformation for next objects
-    
-    //---------------- Draw torso as a cylinder ----------------------------------
-    model_view *= Translate(0.0f, -2.8f, 0.0f);
-    model_view *= Scale(0.9f, 1.8f, 0.7f);
-    model_view *= RotateX(90.0f);
-    
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_torso);
-    glUniform1i (uEnableTex, 1);
-    //draw Cylinder
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.torso.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.torso.numVertices );
-    glUniform1i(uEnableTex, 0);
-    
-    
-    model_view = originalView; //undo transformation for next objects
-    
-    //---------------------- Draw left arm as cylinder ---------------------------
-    model_view *= Scale(0.5f, 2.0f, 0.5f);
-    model_view *= RotateX(90.0f);
-    model_view *= RotateY(10.0f);
-    model_view *= Translate(2.6f, 0.0f, 1.8f);
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_leftArm);
-    glUniform1i (uEnableTex, 1);
-    //draw Cylinder
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.leftArm.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.leftArm.numVertices );
+    bindCubeFaceTextures(piece, piece->m_texture.head, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.head);
     
     model_view = originalView; //undo transformation for next objects
     
     
-    //---------------------- Draw right arm as cylinder ---------------------------
-    model_view *= Scale(0.5f, 2.0f, 0.5f);
-    model_view *= RotateX(90.0f);
-    model_view *= RotateY(-10.0f);
-    model_view *= Translate(-2.6f, 0.0f, 1.8f);
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_rightArm);
-    glUniform1i (uEnableTex, 1);
-    //draw Cylinder
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.rightArm.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.rightArm.numVertices );
+    //---------------- Draw torso as a cube ----------------------------------
+    model_view *= Translate(0.0f, -2.05f, 0.0f);
+    model_view *= Scale(2.0f, 3.0f, personThickness);
     
-    model_view = originalView; //undo transformation for next objects
-    
-    //-------------------- Draw left leg as cylinder -----------------------------
-    model_view *= Scale(0.5f, 2.0f, 0.5f);
-    model_view *= RotateX(90.0f);
-    model_view *= Translate(-0.9f, 0.0f, 3.3f);
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_leftLeg);
-    glUniform1i (uEnableTex, 1);
-    //draw Cylinder
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.leftLeg.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.leftLeg.numVertices );
+    bindCubeFaceTextures(piece, piece->m_texture.torso, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.torso);
     
     model_view = originalView; //undo transformation for next objects
     
     
-    //-------------------- Draw right leg as cylinder -----------------------------
-    model_view *= Scale(0.5f, 2.0f, 0.5f);
-    model_view *= RotateX(90.0f);
-    model_view *= Translate(0.9f, 0.0f, 3.3f);
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_rightLeg);
-    glUniform1i (uEnableTex, 1);
-    //draw Cylinder
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.rightLeg.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.rightLeg.numVertices );
+    //---------------------- Draw left arm as cube ---------------------------
+    model_view *= Translate(1.25f, -2.05f, 0.0f);
+    //model_view *= RotateY(270.0f);
+    model_view *= Scale(0.7f, 3.0f, personThickness);
+    
+    bindCubeFaceTextures(piece, piece->m_texture.leftArm, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.leftArm);
     
     model_view = originalView; //undo transformation for next objects
     
-    //----------------- Draw weapon as cylinder in right arm -----------------------------
+    
+    //---------------------- Draw right arm as cube ---------------------------
+    model_view *= Translate(-1.25f, -2.05f, 0.0f);
+    model_view *= Scale(0.7f, 3.0f, personThickness);
+    
+    bindCubeFaceTextures(piece, piece->m_texture.rightArm, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
+    
+    model_view = originalView; //undo transformation for next objects
+    
+    //-------------------- Draw left leg as cube -----------------------------
+    model_view *= Translate(0.4f, -5.0f, 0.0f);
+    model_view *= Scale(1.0f, 3.0f, personThickness);
+    
+    bindCubeFaceTextures(piece, piece->m_texture.leftLeg, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.leftLeg);
+    
+    model_view = originalView; //undo transformation for next objects
+    
+    
+    //-------------------- Draw right leg as cube -----------------------------
+    model_view *= Translate(-0.6f, -5.0f, 0.0f);
+    model_view *= Scale(1.0f, 3.0f, personThickness);
+    
+    bindCubeFaceTextures(piece, piece->m_texture.rightLeg, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightLeg);
+    
+    model_view = originalView; //undo transformation for next objects
+    
+    //----------------- Draw weapon as cube in right arm -----------------------------
     //TODO: add if clause for different weapon types
-    model_view *= RotateX(10.0f);
-    model_view *= Translate(-1.5f, -2.3f, 1.3f);
-    //model_view *= Scale(0.25f, 2.0f, 0.1f);
+    model_view *= Translate(-1.3f, -3.28f, 1.2f);
     model_view *= RotateX(90.0f);
-    glBindTexture( GL_TEXTURE_2D, piece->m_texture.texture_weapon);
-    glUniform1i (uEnableTex, 1);
-    //draw Cylinder
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
-    glBindVertexArray( piece->m_shapeData.weapon.vao );
-    glDrawArrays( GL_TRIANGLES, 0, piece->m_shapeData.weapon.numVertices );
+    model_view *= Scale(0.25f, 2.0f, 0.2f);
+    
+    bindCubeFaceTextures(piece, piece->m_texture.weapon, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
     
     model_view = originalView; //undo transformation for next objects
     
     //-------------------------------------------------------------
     
     glUniform1i(uEnableTex, 0);
-    
-    //TODO: implement
-    return;
-}// end drawPersonPiece
+}// end drawPersonPiece()
+
 
 
 
@@ -493,15 +306,13 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
 // Generate geometries (i.e. vertex arrays) for the Person piece
 void generatePersonPiece(Piece* piece, GLint program)
 {
-    generateSphere(program, &piece->m_shapeData.head);
-    generateCylinder(program, &piece->m_shapeData.torso);
+    generateCube(program, &piece->m_shapeData.head);
     generateCube(program, &piece->m_shapeData.torso);
-    generateCylinder(program, &piece->m_shapeData.leftArm);
-    generateCylinder(program, &piece->m_shapeData.rightArm);
-    generateCylinder(program, &piece->m_shapeData.leftLeg);
-    generateCylinder(program, &piece->m_shapeData.rightLeg);
-    generateCylinder(program, &piece->m_shapeData.weapon);
-    
+    generateCube(program, &piece->m_shapeData.leftArm);
+    generateCube(program, &piece->m_shapeData.rightArm);
+    generateCube(program, &piece->m_shapeData.leftLeg);
+    generateCube(program, &piece->m_shapeData.rightLeg);
+    generateCube(program, &piece->m_shapeData.weapon);
 }//end generatePersonPiece()
 
 
@@ -552,27 +363,31 @@ bool Pawn::canEnPassant()
 void Pawn::setMoved()
 {
     m_moved = true;
-}//end Pawn::setMoved()
+}// end Pawn::setMoved()
 
+
+//--------------------------------------------------------------
 bool Pawn::getMoved()
 {
 	return m_moved;
-}
+}// end Pawn::getMoved()
+
 
 //--------------------------------------------------------------
 void Pawn::generate(GLint program)
 {
+     //TODO: if statements to check if person piece
     generatePersonPiece(this, program);
 }//end Pawn:generate()
 
 
 //--------------------------------------------------------------
 // Generate the Pawn visual
-void Pawn::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
+void Pawn::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
 {
+    //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
-    
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
 }// end Pawn::draw()
 
 
@@ -623,25 +438,28 @@ void Rook::setMoved()
     m_moved = true;
 }// end Rook::setMoved()
 
+
+//--------------------------------------------------------------
 bool Rook::getMoved()
 {
 	return m_moved;
-}
+}// end Rook::getMoved()
 
 //--------------------------------------------------------------
-void Rook::generate(GLint program, GLint uTex)
+void Rook::generate(GLint program)
 {
-    
+    //TODO: if statements to check if person piece
+    generatePersonPiece(this, program);
 }// end Rook::generate()
 
 //--------------------------------------------------------------
 // Generate the Rook visual
-void Rook::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
+void Rook::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
 {
-    //TODO: implement
-    //TODO: need to bind variables + initialize shaders + set textures (see Source/main.cpp/init()
-    return;
-}//end Rook::draw()
+    //TODO: if statements to check if person piece
+    // draw the vertices + textures
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+}// end Rook::draw()
 
 
 //--------------------------------------------------------------
@@ -657,7 +475,7 @@ void Rook::animate(animationType aType)
     {
         return;
     }
-}//animate Rook
+}// end Rook::animate()
 
 
 
@@ -683,18 +501,19 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture)
 
 
 //--------------------------------------------------------------
-void Bishop::generate(GLint program, GLint uTex)
+void Bishop::generate(GLint program)
 {
-    
+    //TODO: if statements to check if person piece
+    generatePersonPiece(this, program);
 }// end Bishop::generate()
 
 //--------------------------------------------------------------
 // Generate Bishop visual
-void Bishop::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
+void Bishop::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
 {
-    //TODO: implement
-    //TODO: need to bind variables + initialize shaders + set textures (see Source/main.cpp/init()
-    return;
+    //TODO: if statements to check if person piece
+    // draw the vertices + textures
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
 }// end Bishop::draw()
 
 //--------------------------------------------------------------
@@ -736,18 +555,19 @@ Knight::Knight(int row, int col, int team, textureGroup texture)
 
 
 //--------------------------------------------------------------
-void Knight::generate(GLint program, GLint uTex)
+void Knight::generate(GLint program)
 {
-    
+    //TODO: if statements to check if person piece
+    generatePersonPiece(this, program);
 }// end Knight::generate()
 
 //--------------------------------------------------------------
 // Generate Knight visual
-void Knight::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
+void Knight::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
 {
-    //TODO: implement
-    //TODO: need to bind variables + initialize shaders + set textures (see Source/main.cpp/init()
-    return;
+    //TODO: if statements to check if person piece
+    // draw the vertices + textures
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
 }// end Knight::draw()
 
 //--------------------------------------------------------------
@@ -789,18 +609,19 @@ Queen::Queen(int row, int col, int team, textureGroup texture)
 
 
 //--------------------------------------------------------------
-void Queen::generate(GLint program, GLint uTex)
+void Queen::generate(GLint program)
 {
-    
+    //TODO: if statements to check if person piece
+    generatePersonPiece(this, program);
 }// end Queen::generate()
 
 //--------------------------------------------------------------
 // Generate Queen visual
-void Queen::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
+void Queen::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
 {
-    //TODO: implement
-    //TODO: need to bind variables + initialize shaders + set textures (see Source/main.cpp/init()
-    return;
+    //TODO: if statements to check if person piece
+    // draw the vertices + textures
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
 }// end Queen::draw()
 
 //--------------------------------------------------------------
@@ -869,24 +690,27 @@ void King::setMoved()
     m_moved = true;
 }// end King::setMoved()
 
+
+//--------------------------------------------------------------
 bool King::getMoved()
 {
 	return m_moved;
-}
+}// end King::getMoved()
 
 //--------------------------------------------------------------
-void King::generate(GLint program, GLint uTex)
+void King::generate(GLint program)
 {
-    
+    //TODO: if statements to check if person piece
+    generatePersonPiece(this, program);
 }// end King::generate()
 
 //--------------------------------------------------------------
 // Generate King visual
-void King::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
+void King::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
 {
-    //TODO: implement
-    //TODO: need to bind variables + initialize shaders + set textures (see Source/main.cpp/init()
-    return;
+    //TODO: if statements to check if person piece
+    // draw the vertices + textures
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
 }//end King::draw()
 
 
