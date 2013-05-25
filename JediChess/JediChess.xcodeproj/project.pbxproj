@@ -17,6 +17,7 @@
 		65322B091744D11300D012E8 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65322AFD1744D11300D012E8 /* Timer.cpp */; };
 		65322B161744D46700D012E8 /* vShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 65322B141744D46600D012E8 /* vShader.vert */; };
 		65322B171744D46700D012E8 /* fShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 65322B151744D46700D012E8 /* fShader.frag */; };
+		65DC680417504F00002BF4B9 /* AssignTextures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65DC680217504F00002BF4B9 /* AssignTextures.cpp */; };
 		D60873C017497BBD004FAE4D /* InitShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60873BE17497BBD004FAE4D /* InitShader.cpp */; };
 		D6C436A81745FC990094699C /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436A71745FC980094699C /* Square.cpp */; };
 		D6C436B01745FEA50094699C /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6C436AE1745FEA40094699C /* Board.cpp */; };
@@ -56,6 +57,8 @@
 		65322B001744D11300D012E8 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		65322B141744D46600D012E8 /* vShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = vShader.vert; sourceTree = "<group>"; };
 		65322B151744D46700D012E8 /* fShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fShader.frag; sourceTree = "<group>"; };
+		65DC680217504F00002BF4B9 /* AssignTextures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssignTextures.cpp; sourceTree = "<group>"; };
+		65DC680317504F00002BF4B9 /* AssignTextures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssignTextures.h; sourceTree = "<group>"; };
 		D60873BA17497B5E004FAE4D /* Angel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Angel.h; sourceTree = "<group>"; };
 		D60873BB17497B83004FAE4D /* CheckError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckError.h; sourceTree = "<group>"; };
 		D60873BC17497B96004FAE4D /* mat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mat.h; sourceTree = "<group>"; };
@@ -68,7 +71,6 @@
 		D6C58243174EB35000EEEEDB /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		D6C9EF63174972280043A8F5 /* Shapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shapes.cpp; sourceTree = "<group>"; };
 		D6C9EF64174972280043A8F5 /* Shapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shapes.h; sourceTree = "<group>"; };
-		D6C9EF66174979A40043A8F5 /* libpng16.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng16.16.dylib; path = ../../../../../../usr/local/lib/libpng16.16.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +90,6 @@
 		653227BC1744691300D012E8 = {
 			isa = PBXGroup;
 			children = (
-				D6C9EF66174979A40043A8F5 /* libpng16.16.dylib */,
 				653227D51744693400D012E8 /* libGLEW.dylib */,
 				653227D31744692100D012E8 /* OpenGL.framework */,
 				653227D11744691D00D012E8 /* GLUT.framework */,
@@ -117,6 +118,8 @@
 				65322AF11744D11300D012E8 /* gl.h */,
 				65322AF21744D11300D012E8 /* JediChess.1 */,
 				65322AF41744D11300D012E8 /* main.cpp */,
+				65DC680217504F00002BF4B9 /* AssignTextures.cpp */,
+				65DC680317504F00002BF4B9 /* AssignTextures.h */,
 				65322AF61744D11300D012E8 /* Object.cpp */,
 				65322AF71744D11300D012E8 /* Object.h */,
 				65322AF81744D11300D012E8 /* Piece.cpp */,
@@ -210,6 +213,7 @@
 				D6C9EF65174972280043A8F5 /* Shapes.cpp in Sources */,
 				D60873C017497BBD004FAE4D /* InitShader.cpp in Sources */,
 				D6C58244174EB35000EEEEDB /* GameManager.cpp in Sources */,
+				65DC680417504F00002BF4B9 /* AssignTextures.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
