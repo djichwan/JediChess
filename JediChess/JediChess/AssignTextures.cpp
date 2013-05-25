@@ -498,7 +498,7 @@ textureGroup createWhitePawnTexture()
 }// end createwhitePawnTexture
 
 //----------------------------------------------
-textureGroup createwhiteRookTexture()
+textureGroup createWhiteRookTexture()
 {
     textureGroup whiteRookTexture;
     

@@ -8,6 +8,18 @@
 #include <iostream>
 #include "Piece.h"
 
+textureGroup createBlackPawnTexture();
+textureGroup createBlackRookTexture();
+textureGroup createBlackBishopTexture();
+textureGroup createBlackKnightTexture();
+textureGroup createBlackKingTexture();
 textureGroup createBlackQueenTexture();
+
+textureGroup createWhitePawnTexture();
+textureGroup createWhiteRookTexture();
+textureGroup createWhiteBishopTexture();
+textureGroup createWhiteKnightTexture();
+textureGroup createWhiteKingTexture();
+textureGroup createWhiteQueenTexture();
 
 #endif /* defined(__JediChess__AssignTextures__) */
