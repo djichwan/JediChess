@@ -44,13 +44,13 @@
 #include "AssignTextures.h"
 
 //Global Variables
-int Window_Width = 1200;
-int Window_Height = 900;
-float Zoom = 0.8; // 1.0
-GLfloat theta = 0.0;
-GLfloat azimuth = 30.0; // 0.0
+int     Window_Width  = 1200;
+int     Window_Height = 900;
+float   Zoom          = 0.8; // 1.0
+GLfloat theta         = 0.0;
+GLfloat azimuth       = 30.0; // 0.0
 GLfloat horizontalPos = 0.0;
-GLfloat verticalPos = 0.0;
+GLfloat verticalPos   = 0.0;
 
 const int ESC_KEY               = 27;
 const int SPACE_KEY             = 32;
@@ -62,12 +62,12 @@ Angel::vec4 ref(0.0, 0.0, 0.0,1.0);
 Angel::vec4 up(0.0,1.0,0.0,0.0);
 
 //------------ Instantiate Timer variables --------------------
-Timer TM ;
+Timer  TM;
 double TIME;
 double TIME_LAST;
 double DTIME;
-double FRAME_TIME = 0;
-int FRAME_COUNT = 0;
+double FRAME_TIME  = 0;
+int    FRAME_COUNT = 0;
 
 using namespace std;
 
@@ -92,7 +92,7 @@ Board board;
 
 Queen blackQueen;
 
-int pieceIndex = 26; // Used for testing purposes, TODO: remove
+int pieceIndex = 3; // Used for testing purposes, TODO: remove
 
 //=========================================
 //----------------------------------------------------------------
@@ -122,7 +122,7 @@ void initScene()
 
     
     
-    blackQueen = Queen(1, 1, BLACKSIDE, blackQueenTexture);
+    blackQueen = Queen(1, 4, BLACKSIDE, blackQueenTexture);
     blackQueen.generate(program);
     //------------------------------------------------------
     
@@ -155,9 +155,10 @@ void initScene()
     
     // Initialize Board object
     board = Board(program, BOARD_DIM);
+    GameManager::getInstance().setBoard(&board); // Set board to GameManager
     
     // Add pieces to board
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackQueen);
+    board.add(board.convertPos(blackQueen.getRow(), blackQueen.getCol()), &blackQueen);
     
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
@@ -187,6 +188,7 @@ void drawScene()
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
     mat4 originalView = model_view;
+    
     //--------- Draw Board -----------------------------------
     glUniform1f( uBoard, 1.0 );
     model_view *= RotateX(BOARD_ROTATION);
@@ -201,9 +203,9 @@ void drawScene()
     
     //TODO: draw pieces
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
+    
     //TODO: draw pieces
-    model_view *= Translate(0.0f, 7.0f, 0.0f);
-    blackQueen.draw(uTex, uEnableTex, uModelView, model_view);
+    blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
     
 }// end drawScene()
 
@@ -271,9 +273,9 @@ void keyboardCallback(unsigned char key, int x, int y)
             board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
             break;
         case SPACE_KEY: //Reset camera position
-            Zoom = 1;
+            Zoom = 0.8; // 1.0
             theta = 0;
-            azimuth = 0;
+            azimuth = 30; // 0
             horizontalPos = 0;
             verticalPos = 0;
             break;
@@ -381,9 +383,7 @@ void callbackMouse(int button, int state, int x, int y)
         {
             if (prevPieceSelected == selectedPiece)
             {
-                // TODO: implement through piece class
-                // Test implementation for now
-                board.select(board.getSquare(pieceIndex)->getPos(), HIGHLIGHT);
+                board.select(selectedPiece->getSquare()->getPos(), HIGHLIGHT);
             }
             
             prevPieceSelected = NULL;

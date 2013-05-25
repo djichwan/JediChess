@@ -298,6 +298,7 @@ void Board::move( vec3 oldPos, vec3 newPos )
 {
     m_pieces.at(pos2id(newPos)) = m_pieces.at(pos2id(oldPos));
     m_squares.at(pos2id(newPos)).setPiece(m_squares.at(pos2id(oldPos)).getPiece());
+    m_squares.at(pos2id(oldPos)).getPiece()->setSquare(&m_squares.at(pos2id(newPos)));
     m_squares.at(pos2id(oldPos)).setPiece(NULL);
     m_pieces.at(pos2id(oldPos)) = NoType;
 }
@@ -305,6 +306,7 @@ void Board::move( vec3 oldPos, vec3 newPos )
 void Board::remove( vec3 pos )
 {
     m_pieces.at(pos2id(pos)) = NoType;
+    m_squares.at(pos2id(pos)).getPiece()->setSquare(NULL);
     m_squares.at(pos2id(pos)).setPiece(NULL);
 }
 
@@ -312,6 +314,7 @@ void Board::add( vec3 pos, Piece* piece )
 {
     m_pieces.at(pos2id(pos)) = piece->getType();
     m_squares.at(pos2id(pos)).setPiece(piece);
+    piece->setSquare(&m_squares.at(pos2id(pos)));
 }
 
 Square* Board::getSquare(int x, int y)
@@ -342,6 +345,19 @@ vec3 Board::convertPos( vec3 pos, bool rel2real )
     }
     
     return newPos;
+}
+
+/*
+ * Converts relative board position
+ *  - Top left is (1, 1) and Bottom right is (8, 8)
+ */
+vec3 Board::convertPos(int row, int col)
+{
+    //int index = 8 * (row - 1) + (col - 1);
+    GLfloat x = boardMin + increment * (col - 1);
+    GLfloat y = -boardMin - increment * (row - 1);
+    
+    return vec3( x, y, 0.0 );
 }
 
 int Board::pos2id( vec3 pos )

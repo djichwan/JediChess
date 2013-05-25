@@ -172,7 +172,7 @@ void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTe
         TgaImage faceImage;
         if (!faceImage.loadTGA(cubeTextures.faceFile[i].c_str()))
         {
-            printf("Error loading image file\n");
+            printf("Error loading image file: %s\n", cubeTextures.faceFile[i].c_str());
             exit(1);
         }
         
@@ -219,14 +219,19 @@ void Piece::picking(GLuint shader)
                 this->getColorId()[2],
                 1.0);
 
-    this->draw( -1, -1, this->m_uModelView, this->m_modelView);
+    this->draw( -1, -1, this->m_uModelView, this->m_modelView, this->m_translate );
 }// end Piece::picking()
 
 
 //============================== Utitility Functions for Drawing ========================
 // Draws any humanoid piece (has head, torso, two arms, two legs, and weapon)
-void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view)
+void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, vec3 translate)
 {
+    piece->setModelView(uModelView, model_view, translate);
+    
+    // Translate to proper position on board
+    model_view *= Translate(translate.x/PIECE_SCALE.x, TRANSLATE_Y/PIECE_SCALE.y, -translate.y/PIECE_SCALE.z);
+    
     mat4 originalView = model_view;
     
     float personThickness = 1.0f; //how thick each part of the person will be (scale coefficient for z-direction
@@ -383,11 +388,11 @@ void Pawn::generate(GLint program)
 
 //--------------------------------------------------------------
 // Generate the Pawn visual
-void Pawn::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
+void Pawn::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
 {
     //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
 }// end Pawn::draw()
 
 
@@ -454,11 +459,11 @@ void Rook::generate(GLint program)
 
 //--------------------------------------------------------------
 // Generate the Rook visual
-void Rook::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
+void Rook::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
 {
     //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
 }// end Rook::draw()
 
 
@@ -509,11 +514,11 @@ void Bishop::generate(GLint program)
 
 //--------------------------------------------------------------
 // Generate Bishop visual
-void Bishop::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
+void Bishop::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
 {
     //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
 }// end Bishop::draw()
 
 //--------------------------------------------------------------
@@ -563,11 +568,11 @@ void Knight::generate(GLint program)
 
 //--------------------------------------------------------------
 // Generate Knight visual
-void Knight::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
+void Knight::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
 {
     //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
 }// end Knight::draw()
 
 //--------------------------------------------------------------
@@ -617,11 +622,11 @@ void Queen::generate(GLint program)
 
 //--------------------------------------------------------------
 // Generate Queen visual
-void Queen::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
+void Queen::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
 {
     //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
 }// end Queen::draw()
 
 //--------------------------------------------------------------
@@ -706,11 +711,11 @@ void King::generate(GLint program)
 
 //--------------------------------------------------------------
 // Generate King visual
-void King::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
+void King::draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)
 {
     //TODO: if statements to check if person piece
     // draw the vertices + textures
-    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view);
+    drawPersonPiece(this, uTex, uEnableTex, uModelView, model_view, translate);
 }//end King::draw()
 
 

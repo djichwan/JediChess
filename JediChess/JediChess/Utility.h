@@ -23,30 +23,15 @@
 
 class Square; // To create MoveList
 
-//------------ Texture -----------------------------
-#define NO_RESULTS         -1
-#define TEXTURE_LOAD_ERROR 0
-#define USE_TEX            1.0
-#define NO_TEX             0.0
-
-//------------ Color Buffer Picking -----------------------------
-#define PICKING    1.0
-#define NO_PICKING 0.0
-
 //------------ Board -----------------------------
 #define BOARD_DIM      25.6
 #define BOARD_ROTATION -90
 #define HORIZONTAL     false
 #define LIGHT_DIFFUSE  3.0 // Diffuse for lighted square
 
-//------------ Piece -----------------------------
-#define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
-#define TRANSLATE_Y 2.0f / PIECE_SCALE.x
-const int WHITESIDE = 0;
-const int BLACKSIDE = 1;
-enum PieceType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
-enum WeaponType { NoWeapon, TypeGun, TypeSaber };
-enum animationType { TypeAttacking, TypeDying };
+//------------ Color Buffer Picking -----------------------------
+#define PICKING    1.0
+#define NO_PICKING 0.0
 
 //------------ Colors -----------------------------
 #define BLACK     vec4( 0.3, 0.3, 0.3, 1.0 ) // Texture not visible if 0.0
@@ -61,6 +46,23 @@ enum animationType { TypeAttacking, TypeDying };
 
 //------------ Game Manager -----------------------------
 typedef std::vector<Square*> MoveList;
+
+//------------ Piece -----------------------------
+#define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
+#define TRANSLATE_Y 1.6f / PIECE_SCALE.x
+const int WHITESIDE = 0;
+const int BLACKSIDE = 1;
+enum PieceType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
+enum WeaponType { NoWeapon, TypeGun, TypeSaber };
+enum animationType { TypeAttacking, TypeDying };
+
+//------------ Texture -----------------------------
+#define NO_RESULTS         -1
+#define TEXTURE_LOAD_ERROR 0
+#define USE_TEX            1.0
+#define NO_TEX             0.0
+
+//---------------------------------------------------
 
 //------------ General -----------------------------
 typedef Angel::vec2 vec2;

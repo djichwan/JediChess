@@ -80,7 +80,7 @@ public:
     
     void bindTextures(GLint uTex);      // initializes textures for pieces parts                  //TODO: implement for non-humanoid pieces
     virtual void generate(GLint program) = 0;   // generates the geometry for piece's parts
-    virtual void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)= 0 ;  	   //draws the Piece (pure virtual function)
+    virtual void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)= 0 ;  	   //draws the Piece (pure virtual function)
     virtual void animate(animationType aType) = 0;          //animates piece
     
     textureGroup m_texture;     // textures for piece               //TODO: implement for non-humanoid pieces
@@ -122,7 +122,7 @@ public:
     void setMoved();        //if Pawn has moved, call
 	bool getMoved();
     void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Pawn
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Pawn
     void animate(animationType aType);         //animate Pawn
 private:
     bool m_enPassant;     //true if just advanced two squares from starting position, else false
@@ -140,7 +140,7 @@ public:
     void setMoved();        //if Rook has moved from initial position, call
 	bool getMoved();
     void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Rook
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Rook
     void animate(animationType aType);         //animate Rook
 private:
     bool m_moved;        //if m_moved is false -> possible castling
@@ -155,7 +155,7 @@ public:
     Queen() {}
     Queen(int row, int col, int team, textureGroup texture);
     void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Queen
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Queen
     void animate(animationType aType);                                                //animate Queen
 }; //end class Queen
 
@@ -168,7 +168,7 @@ public:
     Bishop() {}
     Bishop(int row, int col, int team, textureGroup texture);
     void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Bishop
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Bishop
     void animate(animationType aType);                                                //animate Bishop
 }; //end class Bishop
 
@@ -181,7 +181,7 @@ public:
     Knight() {}
     Knight(int row, int col, int team, textureGroup texture);
     void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Knight
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Knight
     void animate(animationType aType);                                                //animate Knight
 }; //end class Knight
 
@@ -198,7 +198,7 @@ public:
     void setMoved();                                                //if Rook has moved from initial position, call
 	bool getMoved();
     void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for King
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for King
     void animate(animationType aType);                                               //animate King
 private:
     bool m_moved;        //if King has not moved yet -> possible castling

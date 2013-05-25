@@ -31,6 +31,7 @@ public:
 	bool isCheck(King *king); // return true whether the king is in check
 	bool isCheckmate(King *king); // return true whether king is in check/game is over
 	void fight(Square *square); // animate the fight if a black and white piece share the same square
+    void setBoard(Board *board); // Set board for game manager
 private:
 	GameManager();
 

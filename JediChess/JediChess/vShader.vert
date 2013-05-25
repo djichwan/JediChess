@@ -1,7 +1,6 @@
 #version 120
 attribute   vec4 vPosition;
 attribute   vec3 vNormal;
-attribute   vec4 vColor;
 attribute   vec2 vTexCoords;
 
 // output values that will be interpretated per-fragment
@@ -35,8 +34,8 @@ void main()
     gl_Position = Projection * ModelView * vPosition;
     
     if (Board == 1.0)
-        texCoord = vTexCoords;
+    texCoord = vTexCoords;
     else
-        gl_TexCoord[0].xy = vTexCoords;
+    gl_TexCoord[0].xy = vTexCoords;
     
 }//end main()
