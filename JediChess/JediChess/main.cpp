@@ -90,7 +90,40 @@ Piece*  prevPieceSelected; // Piece selected on mouse down
 // Board object
 Board board;
 
-Queen blackQueen;
+//------------ Piece instantiation ------------------------
+Pawn blackPawn1; // starts at (2,1)
+Pawn blackPawn2; // starts at (2,2)
+Pawn blackPawn3; // starts at (2,3)
+Pawn blackPawn4; // starts at (2,4)
+Pawn blackPawn5; // starts at (2,5)
+Pawn blackPawn6; // starts at (2,6)
+Pawn blackPawn7; // starts at (2,7)
+Pawn blackPawn8; // starts at (2,8)
+Rook blackRook1; // starts at (1,1)
+Rook blackRook2; // starts at (1,8)
+Bishop blackBishop1; // starts at (1,3)
+Bishop blackBishop2; // starts at (1,6)
+Knight blackKnight1;  // starts at (1,2)
+Knight blackKnight2;  // starts at (1,7)
+Queen blackQueen;   // starts at (1,4)
+King blackKing;     // starts at (1,5)
+
+Pawn whitePawn1; // starts at (7,1)
+Pawn whitePawn2; // starts at (7,2)
+Pawn whitePawn3; // starts at (7,3)
+Pawn whitePawn4; // starts at (7,4)
+Pawn whitePawn5; // starts at (7,5)
+Pawn whitePawn6; // starts at (7,6)
+Pawn whitePawn7; // starts at (7,7)
+Pawn whitePawn8; // starts at (7,8)
+Rook whiteRook1; // starts at (8,1)
+Rook whiteRook2; // starts at (8,8)
+Bishop whiteBishop1;  // starts at (8,3)
+Bishop whiteBishop2;  // starts at (8,6)
+Knight whiteKnight1;  // starts at (8,2)
+Knight whiteKnight2;  // starts at (8,7)
+Queen whiteQueen;     // starts at (8,4)
+King whiteKing;       // starts at (8,5)
 
 int pieceIndex = 3; // Used for testing purposes, TODO: remove
 
@@ -115,15 +148,98 @@ void initScene()
     glUseProgram(program);
     
     //--------- Assign texture files and generate pieces ------------
-    //TODO: add generate each piece (in separate function calls?)
-    //--------------------------------------------------------
+    //---------------- Black pieces --------------------------
+    textureGroup blackPawnTexture = createBlackPawnTexture();
+    blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn1.generate(program);
+    blackPawn2 = Pawn(2, 2, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn2.generate(program);
+    blackPawn3 = Pawn(2, 3, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn3.generate(program);
+    blackPawn4 = Pawn(2, 4, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn4.generate(program);
+    blackPawn5 = Pawn(2, 5, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn5.generate(program);
+    blackPawn6 = Pawn(2, 6, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn6.generate(program);
+    blackPawn7 = Pawn(2, 7, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn7.generate(program);
+    blackPawn8 = Pawn(2, 8, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn8.generate(program);
+    
+    textureGroup blackRookTexture = createBlackRookTexture();
+    blackRook1 = Rook(1, 1, BLACKSIDE, blackRookTexture, TypeSaber);
+    blackRook1.generate(program);
+    blackRook1 = Rook(1, 8, BLACKSIDE, blackRookTexture, TypeSaber);
+    blackRook1.generate(program);
+    
+    textureGroup blackBishopTexture = createBlackBishopTexture();
+    blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeSaber);
+    blackBishop1.generate(program);
+    blackBishop2 = Bishop(1, 6, BLACKSIDE, blackBishopTexture, TypeSaber);
+    blackBishop2.generate(program);
+    
+    textureGroup blackKnightTexture = createBlackKnightTexture();
+    blackKnight1 = Knight(1, 2, BLACKSIDE, blackKnightTexture, TypeSaber);
+    blackKnight1.generate(program);
+    blackKnight2 = Knight(1, 7, BLACKSIDE, blackKnightTexture, TypeSaber);
+    blackKnight2.generate(program);
+    
     textureGroup blackQueenTexture = createBlackQueenTexture();
-    //TODO: change so individual faces assigned potentially different image
-
-    
-    
-    blackQueen = Queen(1, 4, BLACKSIDE, blackQueenTexture);
+    blackQueen = Queen(1, 4, BLACKSIDE, blackQueenTexture, TypeSaber);
     blackQueen.generate(program);
+    
+    textureGroup blackKingTexture = createBlackKingTexture();
+    blackKing = King(1, 5, BLACKSIDE, blackKingTexture, TypeSaber);
+    blackKing.generate(program);
+    
+    
+    
+    //------------------ White pieces ------------------------
+    textureGroup whitePawnTexture = createWhitePawnTexture();
+    whitePawn1 = Pawn(7, 1, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn1.generate(program);
+    whitePawn2 = Pawn(7, 2, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn2.generate(program);
+    whitePawn3 = Pawn(7, 3, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn3.generate(program);
+    whitePawn4 = Pawn(7, 4, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn4.generate(program);
+    whitePawn5 = Pawn(7, 5, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn5.generate(program);
+    whitePawn6 = Pawn(7, 6, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn6.generate(program);
+    whitePawn7 = Pawn(7, 7, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn7.generate(program);
+    whitePawn8 = Pawn(7, 8, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn8.generate(program);
+    
+    textureGroup whiteRookTexture = createWhiteRookTexture();
+    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeSaber);
+    whiteRook1.generate(program);
+    whiteRook1 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeSaber);
+    whiteRook1.generate(program);
+    
+    textureGroup whiteBishopTexture = createWhiteBishopTexture();
+    whiteBishop1 = Bishop(8, 3, WHITESIDE, whiteBishopTexture, TypeSaber);
+    whiteBishop1.generate(program);
+    whiteBishop2 = Bishop(8, 6, WHITESIDE, whiteBishopTexture, TypeSaber);
+    whiteBishop2.generate(program);
+    
+    textureGroup whiteKnightTexture = createWhiteKnightTexture();
+    whiteKnight1 = Knight(8, 2, WHITESIDE, whiteKnightTexture, TypeGun);
+    whiteKnight1.generate(program);
+    whiteKnight2 = Knight(8, 7, WHITESIDE, whiteKnightTexture, TypeGun);
+    whiteKnight2.generate(program);
+    
+    textureGroup whiteQueenTexture = createWhiteQueenTexture();
+    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeSaber);
+    whiteQueen.generate(program);
+    
+    textureGroup whiteKingTexture = createWhiteKingTexture();
+    whiteKing = King(8, 5, WHITESIDE, whiteKingTexture, TypeSaber);
+    whiteKing.generate(program);
+    
     //------------------------------------------------------
     
     //link with vertex shader variables
@@ -156,10 +272,47 @@ void initScene()
     // Initialize Board object
     board = Board(program, BOARD_DIM);
     GameManager::getInstance().setBoard(&board); // Set board to GameManager
+
+    // ----------------- Add pieces to board --------------------
+    // Black
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn3);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn4);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn5);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn6);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn7);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn8);
     
-    // Add pieces to board
-    board.add(board.convertPos(blackQueen.getRow(), blackQueen.getCol()), &blackQueen);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackRook1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackRook2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackBishop1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackBishop2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackKnight1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackKnight2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackQueen);
+    board.add(board.getSquare(pieceIndex)->getPos(), &blackKing);
     
+
+    // White
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn3);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn4);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn5);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn6);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn7);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn8);
+    
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteRook1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteRook2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteBishop1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteBishop2);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteKnight1);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteKnight2);
+    
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteQueen);
+    board.add(board.getSquare(pieceIndex)->getPos(), &whiteKing);
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
     // (set in glActiveTexture(GL_TEXTURE0))
@@ -201,12 +354,17 @@ void drawScene()
     glUniform1f( uPicking, 0.0 );
     //---------------------------------------------------------
     
-    //TODO: draw pieces
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
+    originalView = model_view;
     
-    //TODO: draw pieces
-    blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
-    
+    //TODO: -------- draw pieces -----------------------
+    model_view *= Translate(0.0f, 7.0f, 0.0f);
+//    blackQueen.draw(uTex, uEnableTex, uModelView, model_view);
+//    model_view = originalView;      //return back to original position
+//        
+//    model_view *= Translate(6.0f, 7.0f, 0.0f);
+//    whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view);
+//    model_view = originalView;      //return back to original position
 }// end drawScene()
 
 

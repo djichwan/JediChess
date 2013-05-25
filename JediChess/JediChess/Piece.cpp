@@ -93,15 +93,20 @@ int Piece::getCol()
     return m_col;
 }// end Piece::getCol()
 
+
+//---------------------------------------------------------------
 MoveList* Piece::getMoveList()
 {
 	return &m_possibleMoves;
-}
+}// end Piece::getMoveList()
 
+
+//---------------------------------------------------------------
 void Piece::setMoveList(MoveList moveList)
 {
 	m_possibleMoves = moveList;
-}
+}// end Piece::setMoveList()
+
 
 //---------------------------------------------------------------
 // Accessor function for m_alive
@@ -110,12 +115,12 @@ bool Piece::isAlive()
     return m_alive;
 }// end Piece::isAlive()
 
+
 //---------------------------------------------------------------
-// Set function for m_square
-void Piece::setSquare(Square *square)
+WeaponType Piece::getWeapon()
 {
-    m_square = square;
-}// end Piece::setSquare()
+    return m_weapon;
+}// end Piece::getWeapon()
 
 //---------------------------------------------------------------
 // Accessor function for m_square
@@ -123,6 +128,16 @@ Square* Piece::getSquare()
 {
     return m_square;
 }// end Piece::getSquare()
+
+
+//--------------------- Assignment Functions -------------------
+// Set function for m_square
+void Piece::setSquare(Square *square)
+{
+    m_square = square;
+}// end Piece::setSquare()
+
+
 
 //---------------------------------------------------------------
 // Check if this piece is on same team as input
@@ -162,8 +177,30 @@ pieceShapeData Piece::getShapeData()
 }//end Piece::getShapeData()
 
 
+//---------------------------------------------------------------------------
+void Piece::setModelView(GLint uModelView, mat4 modelView, vec3 translate)
+{
+    m_uModelView = uModelView;
+    m_modelView  = modelView;
+    m_translate  = translate;
+}// end Piece::setModelView()
+
+
+// Performs color buffer picking by assigning unique color to each object
+void Piece::picking(GLuint shader)
+{
+    glUniform1f( glGetUniformLocation(shader, "Picking"), 1.0 );
+    glUniform4f( glGetUniformLocation(shader, "color"), (double) ( ( (double) this->getColorId()[0]) / 255 ),
+                this->getColorId()[1],
+                this->getColorId()[2],
+                1.0);
+    
+    this->draw( -1, -1, this->m_uModelView, this->m_modelView, this->m_translate );
+}// end Piece::picking()
+
+//============================== Utitility Functions for Drawing ========================
 //--------------------------------------------------------------
-// Initializes textures for pieces
+// Initializes textures for individual faces of a cube
 void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, ShapeData& shapeData)
 {
     for(int i = 0; i < NUM_CUBE_FACES; i++) //for each face of cube
@@ -197,31 +234,7 @@ void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTe
         glUniform1i(uEnableTex, 0);
     }// end for
     
-}//end Piece::bindTextures()
-
-//---------------------------------------------------------------------------
-
-void Piece::setModelView(GLint uModelView, mat4 modelView, vec3 translate)
-{
-    m_uModelView = uModelView;
-    m_modelView  = modelView;
-    m_translate  = translate;
-}// end Piece::setModelView()
-
-//---------------------------------------------------------------------------
-
-// Performs color buffer picking by assigning unique color to each object
-void Piece::picking(GLuint shader)
-{
-    glUniform1f( glGetUniformLocation(shader, "Picking"), 1.0 );
-    glUniform4f( glGetUniformLocation(shader, "color"), (double) ( ( (double) this->getColorId()[0]) / 255 ),
-                this->getColorId()[1],
-                this->getColorId()[2],
-                1.0);
-
-    this->draw( -1, -1, this->m_uModelView, this->m_modelView, this->m_translate );
-}// end Piece::picking()
-
+}//end bindCubeFaceTextures()
 
 //============================== Utitility Functions for Drawing ========================
 // Draws any humanoid piece (has head, torso, two arms, two legs, and weapon)
@@ -289,21 +302,32 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     model_view = originalView; //undo transformation for next objects
     
-    //----------------- Draw weapon as cube in right arm -----------------------------
-    //TODO: add if clause for different weapon types
-    model_view *= Translate(-1.3f, -3.28f, 1.2f);
-    model_view *= RotateX(90.0f);
-    model_view *= Scale(0.25f, 2.0f, 0.2f);
     
-    bindCubeFaceTextures(piece, piece->m_texture.weapon, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
+    //------------------- Draw weapon as cube in right arm ------------------------
     
-    model_view = originalView; //undo transformation for next objects
+    if(piece->getWeapon() == TypeSaber)     // Lightsaber
+    {
+        model_view *= Translate(-1.3f, -3.28f, 1.2f);
+        model_view *= RotateX(90.0f);
+        model_view *= Scale(0.25f, 2.0f, 0.2f);
+        
+        bindCubeFaceTextures(piece, piece->m_texture.weapon, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
+        
+        model_view = originalView; //undo transformation for next objects
+    }// end if
+    else if(piece->getWeapon() == TypeGun)  // Gun
+    {
+        model_view *= Translate(-1.4f, -3.28f, 1.2f);
+        model_view *= Scale(0.25f, 1.0f, 0.2f);
+        
+        bindCubeFaceTextures(piece, piece->m_texture.weapon, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
+        
+        model_view = originalView; //undo transformation for next objects
+    }// end else if
     
-    //-------------------------------------------------------------
     
     glUniform1i(uEnableTex, 0);
 }// end drawPersonPiece()
-
 
 
 
@@ -326,7 +350,7 @@ void generatePersonPiece(Piece* piece, GLint program)
 
 //======================================= Pawn Subclass =======================================
 //--------------------------------------------------------------
-Pawn::Pawn(int row, int col, int team, textureGroup texture)
+Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
 //    setFirstMove(this);
@@ -339,6 +363,7 @@ Pawn::Pawn(int row, int col, int team, textureGroup texture)
     m_type = TypePawn;           // Pawn piece
     m_texture = texture;
     m_enPassant = false;
+    m_weapon = weapon;
     //initially false (need to have just move exactly two positions from initial position to be true)
 }// end Pawn::Pawn()
 
@@ -419,7 +444,7 @@ void Pawn::animate(animationType aType)
 
 //======================================= Rook Subclass =======================================
 //--------------------------------------------------------------
-Rook::Rook(int row, int col, int team, textureGroup texture)
+Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
 //    setFirstMove(this);
@@ -432,6 +457,7 @@ Rook::Rook(int row, int col, int team, textureGroup texture)
     m_type = TypeRook;           // Rook piece
     m_texture = texture;
     m_moved = false;
+    m_weapon = weapon;
 }// end Rook::Rook()
 
 
@@ -490,7 +516,7 @@ void Rook::animate(animationType aType)
 
 //======================================= Bishop Subclass =======================================
 //--------------------------------------------------------------
-Bishop::Bishop(int row, int col, int team, textureGroup texture)
+Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
 //    setFirstMove(this);
@@ -502,6 +528,7 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture)
     m_alive = true;
     m_type = TypeBishop;           // Bishop piece
     m_texture = texture;
+    m_weapon = weapon;
 }// end Bishop::Bishop()
 
 
@@ -544,7 +571,7 @@ void Bishop::animate(animationType aType)
 
 //======================================= Knight Subclass =======================================
 //--------------------------------------------------------------
-Knight::Knight(int row, int col, int team, textureGroup texture)
+Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
 //    setFirstMove(this);
@@ -556,6 +583,7 @@ Knight::Knight(int row, int col, int team, textureGroup texture)
     m_alive = true;
     m_type = TypeKnight;           // Knight piece
     m_texture = texture;
+    m_weapon = weapon;
 }// end Knight::Knight()
 
 
@@ -598,7 +626,7 @@ void Knight::animate(animationType aType)
 
 //======================================= Queen Subclass =======================================
 //--------------------------------------------------------------
-Queen::Queen(int row, int col, int team, textureGroup texture)
+Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
 //    setFirstMove(this);
@@ -610,6 +638,7 @@ Queen::Queen(int row, int col, int team, textureGroup texture)
     m_alive = true;
     m_type = TypeQueen;           // Queen piece
     m_texture = texture;
+    m_weapon = weapon;
 }// end Queen::Queen()
 
 
@@ -652,7 +681,7 @@ void Queen::animate(animationType aType)
 
 //======================================= King Subclass =======================================
 //--------------------------------------------------------------
-King::King(int row, int col, int team, textureGroup texture)
+King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
     // TODO: change according to actual interface of MoveChecker as necesary
 //    setFirstMove(this);
@@ -666,6 +695,7 @@ King::King(int row, int col, int team, textureGroup texture)
     m_texture = texture;
     m_moved = false;
     m_checked = false;
+    m_weapon = weapon;
 }//end King::King()
 
 
