@@ -52,7 +52,13 @@ struct pieceShapeData
 };// end pieceShapeData
 
 
-
+struct textureImage
+{
+    int width;
+    int height;
+    unsigned char byteCount;
+    unsigned char* data;
+};
 
 
 
@@ -90,6 +96,8 @@ public:
     void setModelView(GLint uModelView, mat4 modelView, vec3 translate);
     
     void picking(GLuint shader); // To perform color buffer picking
+    void setPicking(bool on);
+    bool getPicking();
     
 protected:
     Square* m_square;           // square where piece is located
@@ -102,6 +110,7 @@ protected:
     WeaponType m_weapon;        // type of weapon piece wields
     
     // Used for picking
+    bool  m_picking = false;
     GLint m_uModelView;          
     mat4  m_modelView;
     vec3  m_translate;

@@ -18,8 +18,6 @@ class Square;
 
 using namespace std;
 
-const int NumSquares = 64; // 8 x 8 board
-
 /*
  * Initializes each square with dimension of board
  * Deals with drawing square in correct location
@@ -36,6 +34,8 @@ public:
     void    unhightlightAll(); // Disables all highlighted squares
     void    unSelect(); // Unselects square highlight
     void    move(vec3 oldPos, vec3 newPos); // Updates location of piece on board on m_map
+    void    move(vec3 pos, Piece* piece); // Moves to piece to square with center position pos
+    void    move(int id, Piece* piece); // Moves piece to square with given id (0-63)
     void    remove(vec3 pos);   // remove position to piece mapping from m_map
     void    add(vec3 pos, Piece* piece);  // Adds new mapping to m_map
     vec3    convertPos(vec3 pos, bool rel2real); // Converts relative position to real position
@@ -63,7 +63,8 @@ public:
 private:
     double             m_dim; // Dimesion of board
     vec3               m_pos[NumSquares]; // Array of positions
-    vec3               m_borderPos[NumSquares + 4]; // Array of border positions
+    vec3               m_borderPos[Num2DPoints]; // Array of border positions
+    vec3               m_3DborderPos[Num3DPoints]; // Array of 3D border positions
     vector<PieceType>  m_pieces; // Vector of type of piece object on each square
     vector<Square>     m_squares; // Vector of square objects
     GLuint             m_texture; // Texture object
@@ -72,7 +73,7 @@ private:
     mat4               m_modelView; // Model view matrix
     void               m_computePosition(); // Computes center positions for each square
     void               m_initTexture(string filename); // Initializes texture for board
-    void               m_getBorderCoord(vec4 points[4], vec3 pos); // Compute border position
+    void               m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
 //    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
 };
 

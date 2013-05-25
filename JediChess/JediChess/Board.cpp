@@ -148,7 +148,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
     }
     
-    //------------------ Draw border -------------------------------------------------
+    //------------------ Draw border 2D and 3D -------------------------------------------------
     
     // Initialize border texture
     m_initTexture( "border.tga" ); // Normal mapping
@@ -165,18 +165,43 @@ void Board::draw(GLint uModelView, mat4 modelView)
     // Border color
     glUniform4f( glGetUniformLocation(m_shader, "color"), GRAY.x, GRAY.y, GRAY.z, GRAY.w );
     
-    for (int i = 0; i < NumSquares + 4; i++)
+    // Set to default diffuse
+    glUniform4f(glGetUniformLocation( m_shader, "DiffuseProduct" ),
+                m_DiffuseCoefficient, m_DiffuseCoefficient, m_DiffuseCoefficient, 1.0f);
+    
+    // 2D Border
+    for (int i = 0; i < Num2DPoints; i++)
     {
-        // Set to default diffuse
-        glUniform4f(glGetUniformLocation( m_shader, "DiffuseProduct" ),
-                    m_DiffuseCoefficient, m_DiffuseCoefficient, m_DiffuseCoefficient, 1.0f);
-        
         vec4 points[NumSquareVertices];
-        m_getBorderCoord(points, m_borderPos[i]);
+        m_getBorderCoord(BORDER_2D, points, m_borderPos[i]);
         glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
         
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
     }
+    
+    // 3D Border
+    for (int i = 0; i < Num3DPoints; i++)
+    {
+        vec4 points[NumSquareVertices];
+        if (m_3DborderPos[i].x < m_pos[0].x - increment / 2 - increment / 4 ||
+            m_3DborderPos[i].x > m_pos[7].x + increment / 2 + increment / 4)
+            m_getBorderCoord(BORDER_3D_FRONT, points, m_3DborderPos[i]);
+        else
+            m_getBorderCoord(BORDER_3D_SIDE, points, m_3DborderPos[i]);
+        glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
+        
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+    }
+    
+    // 3D Border on bottom - huge square
+    vec4 points[NumSquareVertices] = {
+        vec4( m_pos[0].x  - increment, m_pos[0].y  + increment, m_pos[0].z  - increment / 2,  1.0 ),
+        vec4( m_pos[7].x  + increment, m_pos[7].y  + increment, m_pos[7].z  - increment / 2,  1.0 ),
+        vec4( m_pos[56].x - increment, m_pos[56].y - increment, m_pos[56].z - increment / 2,  1.0 ),
+        vec4( m_pos[63].x + increment, m_pos[63].y - increment, m_pos[63].z - increment / 2,  1.0 )
+    };
+    glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
 }
 
 // Determines whether a Square object is clicked and returns
@@ -303,6 +328,24 @@ void Board::move( vec3 oldPos, vec3 newPos )
     m_pieces.at(pos2id(oldPos)) = NoType;
 }
 
+void Board::move(vec3 pos, Piece* piece)
+{
+    m_pieces.at(pos2id(pos)) = m_pieces.at(piece->getSquare()->getId());
+    m_pieces.at(piece->getSquare()->getId()) = NoType;
+    piece->getSquare()->setPiece(NULL);
+    piece->setSquare(&m_squares.at(pos2id(pos)));
+    m_squares.at(pos2id(pos)).setPiece(piece);
+}
+
+void Board::move(int id, Piece* piece)
+{
+    m_pieces.at(id) = m_pieces.at(piece->getSquare()->getId());
+    m_pieces.at(piece->getSquare()->getId()) = NoType;
+    piece->getSquare()->setPiece(NULL);
+    piece->setSquare(&m_squares.at(id));
+    m_squares.at(id).setPiece(piece);
+}
+
 void Board::remove( vec3 pos )
 {
     m_pieces.at(pos2id(pos)) = NoType;
@@ -404,10 +447,16 @@ void Board::m_computePosition()
         m_borderPos[index] = vec3(m_pos[i].x - increment / 4,
                                   m_pos[i].y + increment / 2 + increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x - increment / 4,
+                                    m_pos[i].y + increment / 2 + increment / 2,
+                                    m_pos[i].z - increment / 4);
         index++;
         m_borderPos[index] = vec3(m_pos[i].x + increment / 4,
                                   m_pos[i].y + increment / 2 + increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x + increment / 4,
+                                    m_pos[i].y + increment / 2 + increment / 2,
+                                    m_pos[i].z - increment / 4);
         index++;
     }
     
@@ -417,10 +466,16 @@ void Board::m_computePosition()
         m_borderPos[index] = vec3(m_pos[i].x - increment / 2 - increment / 4,
                                   m_pos[i].y + increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x - increment / 2 - increment / 2,
+                                    m_pos[i].y + increment / 4,
+                                    m_pos[i].z - increment / 4);
         index++;
         m_borderPos[index] = vec3(m_pos[i].x - increment / 2 - increment / 4,
                                   m_pos[i].y - increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x - increment / 2 - increment / 2,
+                                    m_pos[i].y - increment / 4,
+                                    m_pos[i].z - increment / 4);
         index++;
     }
 
@@ -430,10 +485,16 @@ void Board::m_computePosition()
         m_borderPos[index] = vec3(m_pos[i].x - increment / 4,
                                   m_pos[i].y - increment / 2 - increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x - increment / 4,
+                                    m_pos[i].y - increment / 2 - increment / 2,
+                                    m_pos[i].z - increment / 4);
         index++;
         m_borderPos[index] = vec3(m_pos[i].x + increment / 4,
                                   m_pos[i].y - increment / 2 - increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x + increment / 4,
+                                    m_pos[i].y - increment / 2 - increment / 2,
+                                    m_pos[i].z - increment / 4);
         index++;
     }
     
@@ -443,35 +504,71 @@ void Board::m_computePosition()
         m_borderPos[index] = vec3(m_pos[i].x + increment / 2 + increment / 4,
                                   m_pos[i].y + increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x + increment / 2 + increment / 2,
+                                    m_pos[i].y + increment / 4,
+                                    m_pos[i].z - increment / 4);
         index++;
         m_borderPos[index] = vec3(m_pos[i].x + increment / 2 + increment / 4,
                                   m_pos[i].y - increment / 4,
                                   m_pos[i].z);
+        m_3DborderPos[index] = vec3(m_pos[i].x + increment / 2 + increment / 2,
+                                    m_pos[i].y - increment / 4,
+                                    m_pos[i].z - increment / 4);
         index++;
     }
+    
+    int index3D = index;
     
     // Compute top left border
     m_borderPos[index] = vec3(m_pos[0].x - increment / 2 - increment / 4,
                               m_pos[0].y + increment / 2 + increment / 4,
                               m_pos[0].z);
-    index++;
+    m_3DborderPos[index3D] = vec3(m_pos[0].x - increment / 2 - increment / 2,
+                                  m_pos[0].y + increment / 2 + increment / 4,
+                                  m_pos[0].z - increment / 4);
+    index3D++;
+    m_3DborderPos[index3D] = vec3(m_pos[0].x - increment / 2 - increment / 4,
+                                  m_pos[0].y + increment / 2 + increment / 2,
+                                  m_pos[0].z - increment / 4);
+    index++; index3D++;
     
     // Compute top right border
     m_borderPos[index] = vec3(m_pos[7].x + increment / 2 + increment / 4,
                               m_pos[7].y + increment / 2 + increment / 4,
                               m_pos[7].z);
-    index++;
+    m_3DborderPos[index3D] = vec3(m_pos[7].x + increment / 2 + increment / 2,
+                                  m_pos[7].y + increment / 2 + increment / 4,
+                                  m_pos[7].z - increment / 4);
+    index3D++;
+    m_3DborderPos[index3D] = vec3(m_pos[7].x + increment / 2 + increment / 4,
+                                  m_pos[7].y + increment / 2 + increment / 2,
+                                  m_pos[7].z - increment / 4);
+    index++; index3D++;
     
     // Compute bottom left border
     m_borderPos[index] = vec3(m_pos[56].x - increment / 2 - increment / 4,
                               m_pos[56].y - increment / 2 - increment / 4,
                               m_pos[56].z);
-    index++;
+    m_3DborderPos[index3D] = vec3(m_pos[56].x - increment / 2 - increment / 2,
+                                  m_pos[56].y - increment / 2 - increment / 4,
+                                  m_pos[56].z - increment / 4);
+    index3D++;
+    m_3DborderPos[index3D] = vec3(m_pos[56].x - increment / 2 - increment / 4,
+                                  m_pos[56].y - increment / 2 - increment / 2,
+                                  m_pos[56].z - increment / 4);
+    index++; index3D++;
     
     // Compute bottom right border
     m_borderPos[index] = vec3(m_pos[63].x + increment / 2 + increment / 4,
                               m_pos[63].y - increment / 2 - increment / 4,
                               m_pos[63].z);
+    m_3DborderPos[index3D] = vec3(m_pos[63].x + increment / 2 + increment / 2,
+                                  m_pos[63].y - increment / 2 - increment / 4,
+                                  m_pos[63].z - increment / 4);
+    index3D++;
+    m_3DborderPos[index3D] = vec3(m_pos[63].x + increment / 2 + increment / 4,
+                                  m_pos[63].y - increment / 2 - increment / 2,
+                                  m_pos[63].z - increment / 4);
 }
 
 void Board::m_initTexture( string filename )
@@ -494,14 +591,31 @@ void Board::m_initTexture( string filename )
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
-void Board::m_getBorderCoord( vec4 points[NumSquareVertices], vec3 pos )
+void Board::m_getBorderCoord( int borderType, vec4 points[NumSquareVertices], vec3 pos )
 {
     GLfloat v = m_dim / 8 / 4; // Dimension of cube in half
     
-    points[0] = vec4( -v, -v, 0.0, 1.0 );
-    points[1] = vec4(  v, -v, 0.0, 1.0 );
-    points[2] = vec4( -v,  v, 0.0, 1.0 );
-    points[3] = vec4(  v,  v, 0.0, 1.0 );
+    if (borderType == BORDER_2D)
+    {
+        points[0] = vec4( -v, -v, 0.0, 1.0 );
+        points[1] = vec4(  v, -v, 0.0, 1.0 );
+        points[2] = vec4( -v,  v, 0.0, 1.0 );
+        points[3] = vec4(  v,  v, 0.0, 1.0 );
+    }
+    else if (borderType == BORDER_3D_FRONT)
+    {
+        points[0] = vec4( 0.0, -v,  v, 1.0 );
+        points[1] = vec4( 0.0, -v, -v, 1.0 );
+        points[2] = vec4( 0.0,  v,  v, 1.0 );
+        points[3] = vec4( 0.0,  v, -v, 1.0 );
+    }
+    else if (borderType == BORDER_3D_SIDE)
+    {
+        points[0] = vec4( -v, 0.0,  v, 1.0 );
+        points[1] = vec4( -v, 0.0, -v, 1.0 );
+        points[2] = vec4(  v, 0.0,  v, 1.0 );
+        points[3] = vec4(  v, 0.0, -v, 1.0 );
+    }
     
     for (int i = 0; i < NumSquareVertices; i++)
     {
