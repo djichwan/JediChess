@@ -6,10 +6,10 @@
 
 //TODO: add more includes
 #ifdef _WIN32
-#include <windows.h>
-#include "GL/glew.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <Windows.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include <GL/freeglut_ext.h>
 #else
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -21,14 +21,11 @@
 #include <assert.h>
 
 #ifdef _WIN32
-#include "GL/freeglut.h"
 #else
 #include <GLUT/glut.h>
 #endif
 
 #include "tga.h"
-#include "Timer.h"
-#include "Angel.h"
 
 #ifdef __APPLE__
 #define glutInitContextVersion(a,b)
@@ -37,11 +34,9 @@
 #define glewInit()
 #endif
 
-#include "Utility.h"
-#include "Piece.h"
 #include "Timer.h"
-#include "Board.h"
 #include "AssignTextures.h"
+#include "Board.h"
 
 //Global Variables
 int     Window_Width  = 1200;
@@ -68,8 +63,6 @@ double TIME_LAST;
 double DTIME;
 double FRAME_TIME  = 0;
 int    FRAME_COUNT = 0;
-
-using namespace std;
 
 //------------ Global Variables -----------
 double rotation = 0;

@@ -19,10 +19,8 @@ class GameManager;
 
 #include "tga.h"
 #include "Shapes.h"
-#include "Square.h"
-#include "Utility.h"
+#include "Object.h"
 #include "GameManager.h"
-#include <vector>
 
 //----------------------- Structs -------------------------
 // Holds and organizes textures for separate body parts of the piece

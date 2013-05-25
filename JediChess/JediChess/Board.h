@@ -16,8 +16,6 @@ class Square;
 #include <map>
 #include <vector>
 
-using namespace std;
-
 const int NumSquares = 64; // 8 x 8 board
 
 /*
@@ -55,23 +53,23 @@ public:
     vec3 m_Color;
     
     // Default params
-    float m_AmbientCoefficient  = 0.2f;
-    float m_DiffuseCoefficient  = 0.6f;
-    float m_SpecularCoefficient = 0.2f;
-    float m_Shininess           = 100.0f;
+    float m_AmbientCoefficient;
+    float m_DiffuseCoefficient;
+    float m_SpecularCoefficient;
+    float m_Shininess;
     
 private:
     double             m_dim; // Dimesion of board
     vec3               m_pos[NumSquares]; // Array of positions
     vec3               m_borderPos[NumSquares + 4]; // Array of border positions
-    vector<PieceType>  m_pieces; // Vector of type of piece object on each square
-    vector<Square>     m_squares; // Vector of square objects
+    std::vector<PieceType>  m_pieces; // Vector of type of piece object on each square
+    std::vector<Square>     m_squares; // Vector of square objects
     GLuint             m_texture; // Texture object
     GLuint             m_shader; // Shader object
     GLint              m_uModelView; // Uniform model view variable
     mat4               m_modelView; // Model view matrix
     void               m_computePosition(); // Computes center positions for each square
-    void               m_initTexture(string filename); // Initializes texture for board
+    void               m_initTexture(std::string filename); // Initializes texture for board
     void               m_getBorderCoord(vec4 points[4], vec3 pos); // Compute border position
 //    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
 };

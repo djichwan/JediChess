@@ -4,7 +4,6 @@
 // Definitions for Piece subclasses
 //*********************************
 #include "Piece.h"
-#include "GameManager.h" //TODO: change as necessary
 
 //================================== Piece Base Class ==========================================
 //------------------------ Modifiers---------------------------

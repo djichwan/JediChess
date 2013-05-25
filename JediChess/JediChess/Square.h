@@ -8,9 +8,7 @@
 // To avoid circular dependency
 class Piece;
 
-#include "Object.h"
 #include "Piece.h"
-#include "Utility.h"
 
 const int NumSquareVertices = 4;
 const int pointsSize        = NumSquareVertices * sizeof(vec4);

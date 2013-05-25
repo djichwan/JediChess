@@ -1,23 +1,13 @@
 #ifndef JediChess_Utility_h
 #define JediChess_Utility_h
 
-#ifdef __APPLE__  //apple
-#  include <OpenGL/OpenGL.h>
-#  include <GLUT/glut.h>
-#elif __linux__ //linux
-#  include "GL/glew.h"
-#  include "GL/freeglut.h"
-#else //windows
-#  include <windows.h>
+#ifdef __linux__ //linux
 #  include "GL/glew.h"
 #  include "GL/freeglut.h"
 #endif
 
 #include <iostream>
 
-#include "CheckError.h"
-#include "mat.h"
-#include "vec.h"
 #include "Angel.h"
 #include <vector>
 
@@ -63,10 +53,5 @@ enum animationType { TypeAttacking, TypeDying };
 #define NO_TEX             0.0
 
 //---------------------------------------------------
-
-//------------ General -----------------------------
-typedef Angel::vec2 vec2;
-typedef Angel::vec3 vec3;
-typedef Angel::vec4 vec4;
 
 #endif

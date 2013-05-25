@@ -12,14 +12,24 @@ double boardMin, boardMax, increment;
 
 Board::Board()
 {
-    // Empty Constructor
+	// default values
+    m_AmbientCoefficient  = 0.2f;
+    m_DiffuseCoefficient  = 0.6f;
+    m_SpecularCoefficient = 0.2f;
+    m_Shininess           = 100.0f;
 }
 
 Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared to avoid compiler error
 {
     m_shader     = program;
     m_dim        = dim;
-    
+
+	// default values
+    m_AmbientCoefficient  = 0.2f;
+    m_DiffuseCoefficient  = 0.6f;
+    m_SpecularCoefficient = 0.2f;
+    m_Shininess           = 100.0f;
+
     m_computePosition();
     
     // Initialize parameters
@@ -474,12 +484,12 @@ void Board::m_computePosition()
                               m_pos[63].z);
 }
 
-void Board::m_initTexture( string filename )
+void Board::m_initTexture( std::string filename )
 {
     TgaImage image;
     if (!image.loadTGA(filename.c_str()))
     {
-        cerr << "Error load texture file" << endl;
+        std::cerr << "Error load texture file" << std::endl;
         exit( EXIT_FAILURE );
     }
     
