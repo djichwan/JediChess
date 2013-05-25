@@ -14,10 +14,16 @@
 class Square; // To create MoveList
 
 //------------ Board -----------------------------
-#define BOARD_DIM      25.6
-#define BOARD_ROTATION -90
-#define HORIZONTAL     false
-#define LIGHT_DIFFUSE  3.0 // Diffuse for lighted square
+#define BOARD_DIM       25.6
+#define BOARD_ROTATION  -90
+#define HORIZONTAL      false
+#define LIGHT_DIFFUSE   3.0 // Diffuse for lighted square
+#define BORDER_2D       0
+#define BORDER_3D_FRONT 1
+#define BORDER_3D_SIDE  2
+const int NumSquares  = 64; // 8 x 8 board
+const int Num2DPoints = NumSquares + 4;
+const int Num3DPoints = NumSquares + 2 * 4;
 
 //------------ Color Buffer Picking -----------------------------
 #define PICKING    1.0
@@ -52,6 +58,7 @@ enum animationType { TypeAttacking, TypeDying };
 #define USE_TEX            1.0
 #define NO_TEX             0.0
 
-//---------------------------------------------------
+//------------ General -----------------------------
+#define TESTING_NO_TEXTURE true
 
 #endif

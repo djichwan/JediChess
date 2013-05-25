@@ -66,7 +66,7 @@ int    FRAME_COUNT = 0;
 
 //------------ Global Variables -----------
 double rotation = 0;
-bool smooth = true;
+bool   smooth   = true;
 
 mat4         model_view;
 mat4         texture_view;
@@ -118,8 +118,6 @@ Knight whiteKnight2;  // starts at (8,7)
 Queen whiteQueen;     // starts at (8,4)
 King whiteKing;       // starts at (8,5)
 
-int pieceIndex = 3; // Used for testing purposes, TODO: remove
-
 //=========================================
 //----------------------------------------------------------------
 void set_color(float r, float g, float b)
@@ -163,8 +161,8 @@ void initScene()
     textureGroup blackRookTexture = createBlackRookTexture();
     blackRook1 = Rook(1, 1, BLACKSIDE, blackRookTexture, TypeSaber);
     blackRook1.generate(program);
-    blackRook1 = Rook(1, 8, BLACKSIDE, blackRookTexture, TypeSaber);
-    blackRook1.generate(program);
+    blackRook2 = Rook(1, 8, BLACKSIDE, blackRookTexture, TypeSaber);
+    blackRook2.generate(program);
     
     textureGroup blackBishopTexture = createBlackBishopTexture();
     blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeSaber);
@@ -210,8 +208,8 @@ void initScene()
     textureGroup whiteRookTexture = createWhiteRookTexture();
     whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeSaber);
     whiteRook1.generate(program);
-    whiteRook1 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeSaber);
-    whiteRook1.generate(program);
+    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeSaber);
+    whiteRook2.generate(program);
     
     textureGroup whiteBishopTexture = createWhiteBishopTexture();
     whiteBishop1 = Bishop(8, 3, WHITESIDE, whiteBishopTexture, TypeSaber);
@@ -268,44 +266,44 @@ void initScene()
 
     // ----------------- Add pieces to board --------------------
     // Black
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn3);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn4);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn5);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn6);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn7);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackPawn8);
+    board.add(board.convertPos(blackPawn1.getRow(), blackPawn1.getCol()), &blackPawn1);
+    board.add(board.convertPos(blackPawn2.getRow(), blackPawn2.getCol()), &blackPawn2);
+    board.add(board.convertPos(blackPawn3.getRow(), blackPawn3.getCol()), &blackPawn3);
+    board.add(board.convertPos(blackPawn4.getRow(), blackPawn4.getCol()), &blackPawn4);
+    board.add(board.convertPos(blackPawn5.getRow(), blackPawn5.getCol()), &blackPawn5);
+    board.add(board.convertPos(blackPawn6.getRow(), blackPawn6.getCol()), &blackPawn6);
+    board.add(board.convertPos(blackPawn7.getRow(), blackPawn7.getCol()), &blackPawn7);
+    board.add(board.convertPos(blackPawn8.getRow(), blackPawn8.getCol()), &blackPawn8);
     
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackRook1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackRook2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackBishop1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackBishop2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackKnight1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackKnight2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackQueen);
-    board.add(board.getSquare(pieceIndex)->getPos(), &blackKing);
+    board.add(board.convertPos(blackRook1.getRow(), blackRook1.getCol()), &blackRook1);
+    board.add(board.convertPos(blackRook2.getRow(), blackRook2.getCol()), &blackRook2);
+    board.add(board.convertPos(blackBishop1.getRow(), blackBishop1.getCol()), &blackBishop1);
+    board.add(board.convertPos(blackBishop2.getRow(), blackBishop2.getCol()), &blackBishop2);
+    board.add(board.convertPos(blackKnight1.getRow(), blackKnight1.getCol()), &blackKnight1);
+    board.add(board.convertPos(blackKnight2.getRow(), blackKnight2.getCol()), &blackKnight2);
+    board.add(board.convertPos(blackQueen.getRow(), blackQueen.getCol()), &blackQueen);
+    board.add(board.convertPos(blackKing.getRow(), blackKing.getCol()), &blackKing);
     
 
     // White
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn3);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn4);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn5);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn6);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn7);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whitePawn8);
+    board.add(board.convertPos(whitePawn1.getRow(), whitePawn1.getCol()), &whitePawn1);
+    board.add(board.convertPos(whitePawn2.getRow(), whitePawn2.getCol()), &whitePawn2);
+    board.add(board.convertPos(whitePawn3.getRow(), whitePawn3.getCol()), &whitePawn3);
+    board.add(board.convertPos(whitePawn4.getRow(), whitePawn4.getCol()), &whitePawn4);
+    board.add(board.convertPos(whitePawn5.getRow(), whitePawn5.getCol()), &whitePawn5);
+    board.add(board.convertPos(whitePawn6.getRow(), whitePawn6.getCol()), &whitePawn6);
+    board.add(board.convertPos(whitePawn7.getRow(), whitePawn7.getCol()), &whitePawn7);
+    board.add(board.convertPos(whitePawn8.getRow(), whitePawn8.getCol()), &whitePawn8);
     
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteRook1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteRook2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteBishop1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteBishop2);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteKnight1);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteKnight2);
+    board.add(board.convertPos(whiteRook1.getRow(), whiteRook1.getCol()), &whiteRook1);
+    board.add(board.convertPos(whiteRook2.getRow(), whiteRook2.getCol()), &whiteRook2);
+    board.add(board.convertPos(whiteBishop1.getRow(), whiteBishop1.getCol()), &whiteBishop1);
+    board.add(board.convertPos(whiteBishop2.getRow(), whiteBishop2.getCol()), &whiteBishop2);
+    board.add(board.convertPos(whiteKnight1.getRow(), whiteKnight1.getCol()), &whiteKnight1);
+    board.add(board.convertPos(whiteKnight2.getRow(), whiteKnight2.getCol()), &whiteKnight2);
+    board.add(board.convertPos(whiteQueen.getRow(), whiteQueen.getCol()), &whiteQueen);
+    board.add(board.convertPos(whiteKing.getRow(), whiteKing.getCol()), &whiteKing);
     
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteQueen);
-    board.add(board.getSquare(pieceIndex)->getPos(), &whiteKing);
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
     // (set in glActiveTexture(GL_TEXTURE0))
@@ -348,16 +346,44 @@ void drawScene()
     //---------------------------------------------------------
     
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
-    originalView = model_view;
     
     //TODO: -------- draw pieces -----------------------
-    model_view *= Translate(0.0f, 7.0f, 0.0f);
-//    blackQueen.draw(uTex, uEnableTex, uModelView, model_view);
-//    model_view = originalView;      //return back to original position
-//        
-//    model_view *= Translate(6.0f, 7.0f, 0.0f);
-//    whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view);
-//    model_view = originalView;      //return back to original position
+    // Back Pieces
+    blackPawn1.draw(uTex, uEnableTex, uModelView, model_view, blackPawn1.getSquare()->getPos());
+    blackPawn2.draw(uTex, uEnableTex, uModelView, model_view, blackPawn2.getSquare()->getPos());
+    blackPawn3.draw(uTex, uEnableTex, uModelView, model_view, blackPawn3.getSquare()->getPos());
+    blackPawn4.draw(uTex, uEnableTex, uModelView, model_view, blackPawn4.getSquare()->getPos());
+    blackPawn5.draw(uTex, uEnableTex, uModelView, model_view, blackPawn5.getSquare()->getPos());
+    blackPawn6.draw(uTex, uEnableTex, uModelView, model_view, blackPawn6.getSquare()->getPos());
+    blackPawn7.draw(uTex, uEnableTex, uModelView, model_view, blackPawn7.getSquare()->getPos());
+    blackPawn8.draw(uTex, uEnableTex, uModelView, model_view, blackPawn8.getSquare()->getPos());
+    blackRook1.draw(uTex, uEnableTex, uModelView, model_view, blackRook1.getSquare()->getPos());
+    blackRook2.draw(uTex, uEnableTex, uModelView, model_view, blackRook2.getSquare()->getPos());
+    blackBishop1.draw(uTex, uEnableTex, uModelView, model_view, blackBishop1.getSquare()->getPos());
+    blackBishop2.draw(uTex, uEnableTex, uModelView, model_view, blackBishop2.getSquare()->getPos());
+    blackKnight1.draw(uTex, uEnableTex, uModelView, model_view, blackKnight1.getSquare()->getPos());
+    blackKnight2.draw(uTex, uEnableTex, uModelView, model_view, blackKnight2.getSquare()->getPos());
+    blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
+    blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
+    
+    // White Pieces
+    whitePawn1.draw(uTex, uEnableTex, uModelView, model_view, whitePawn1.getSquare()->getPos());
+    whitePawn2.draw(uTex, uEnableTex, uModelView, model_view, whitePawn2.getSquare()->getPos());
+    whitePawn3.draw(uTex, uEnableTex, uModelView, model_view, whitePawn3.getSquare()->getPos());
+    whitePawn4.draw(uTex, uEnableTex, uModelView, model_view, whitePawn4.getSquare()->getPos());
+    whitePawn5.draw(uTex, uEnableTex, uModelView, model_view, whitePawn5.getSquare()->getPos());
+    whitePawn6.draw(uTex, uEnableTex, uModelView, model_view, whitePawn6.getSquare()->getPos());
+    whitePawn7.draw(uTex, uEnableTex, uModelView, model_view, whitePawn7.getSquare()->getPos());
+    whitePawn8.draw(uTex, uEnableTex, uModelView, model_view, whitePawn8.getSquare()->getPos());
+    whiteRook1.draw(uTex, uEnableTex, uModelView, model_view, whiteRook1.getSquare()->getPos());
+    whiteRook2.draw(uTex, uEnableTex, uModelView, model_view, whiteRook2.getSquare()->getPos());
+    whiteBishop1.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop1.getSquare()->getPos());
+    whiteBishop2.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop2.getSquare()->getPos());
+    whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight1.getSquare()->getPos());
+    whiteKnight2.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight2.getSquare()->getPos());
+    whiteQueen.draw(uTex, uEnableTex, uModelView, model_view, whiteQueen.getSquare()->getPos());
+    whiteKing.draw(uTex, uEnableTex, uModelView, model_view, whiteKing.getSquare()->getPos());
+    
 }// end drawScene()
 
 
@@ -412,17 +438,10 @@ void keyboardCallback(unsigned char key, int x, int y)
             board.unhightlightAll(); break;
         // Test for moving piece
         case 'm':
-            pieceIndex++;
-            if (pieceIndex == 64)
-                pieceIndex = 0;
-            board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
+            board.move(24, &blackPawn1);
             break;
         case 'M':
-            pieceIndex--;
-            if (pieceIndex == -1)
-                pieceIndex = 63;
-            board.move(board.getSquare(pieceIndex-1)->getPos(), board.getSquare(pieceIndex)->getPos());
-            break;
+            board.move(44, &whitePawn5);
         case SPACE_KEY: //Reset camera position
             Zoom = 0.8; // 1.0
             theta = 0;

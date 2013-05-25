@@ -16,7 +16,8 @@ public:
         byteCount = 0;
     }
     
-    ~TgaImage() { delete[] data; data = 0; }
+    ~TgaImage() { data = 0; }
+    //~TgaImage() { delete[] data; data = 0; }
     
     bool loadTGA(const char* filename);
     

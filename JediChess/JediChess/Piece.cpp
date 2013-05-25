@@ -193,9 +193,20 @@ void Piece::picking(GLuint shader)
                 this->getColorId()[1],
                 this->getColorId()[2],
                 1.0);
+    m_picking = true;
     
     this->draw( -1, -1, this->m_uModelView, this->m_modelView, this->m_translate );
 }// end Piece::picking()
+
+void Piece::setPicking(bool on)
+{
+    m_picking = on ? true : false;
+}
+
+bool Piece::getPicking()
+{
+    return m_picking;
+}
 
 //============================== Utitility Functions for Drawing ========================
 //--------------------------------------------------------------
@@ -204,26 +215,29 @@ void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTe
 {
     for(int i = 0; i < NUM_CUBE_FACES; i++) //for each face of cube
     {
-        // Initialize and bind textures
-        TgaImage faceImage;
-        if (!faceImage.loadTGA(cubeTextures.faceFile[i].c_str()))
+        if (!piece->getPicking() && !TESTING_NO_TEXTURE) // TODO: Remove testing clause
         {
-            printf("Error loading image file: %s\n", cubeTextures.faceFile[i].c_str());
-            exit(1);
+            // Initialize and bind textures
+            TgaImage faceImage;
+            if (!faceImage.loadTGA(cubeTextures.faceFile[i].c_str()))
+            {
+                printf("Error loading image file: %s\n", cubeTextures.faceFile[i].c_str());
+                exit(1);
+            }
+            
+            glGenTextures( 1, &cubeTextures.textureFace[i] );
+            glBindTexture( GL_TEXTURE_2D, cubeTextures.textureFace[i]  );
+            
+            glTexImage2D(GL_TEXTURE_2D, 0, 4, faceImage.width, faceImage.height, 0,
+                         (faceImage.byteCount == 3) ? GL_BGR : GL_BGRA,
+                         GL_UNSIGNED_BYTE, faceImage.data );
+            
+            glGenerateMipmap(GL_TEXTURE_2D);
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         }
-        
-        glGenTextures( 1, &cubeTextures.textureFace[i] );
-        glBindTexture( GL_TEXTURE_2D, cubeTextures.textureFace[i]  );
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, 4, faceImage.width, faceImage.height, 0,
-                     (faceImage.byteCount == 3) ? GL_BGR : GL_BGRA,
-                     GL_UNSIGNED_BYTE, faceImage.data );
-        
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         
         //draw face
         glUniform1i (uEnableTex, 1);
@@ -244,6 +258,9 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     // Translate to proper position on board
     model_view *= Translate(translate.x/PIECE_SCALE.x, TRANSLATE_Y/PIECE_SCALE.y, -translate.y/PIECE_SCALE.z);
     
+    if (piece->isOnTeam(WHITESIDE))
+        model_view *= RotateY(180);
+    
     mat4 originalView = model_view;
     
     float personThickness = 1.0f; //how thick each part of the person will be (scale coefficient for z-direction
@@ -252,7 +269,8 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     model_view *= Translate(-0.1f, 0.04f, 0.0f);
     model_view *= Scale(1.2f, 1.2f, personThickness);
     
-    bindCubeFaceTextures(piece, piece->m_texture.head, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.head);
+    if (!piece->getPicking())
+        bindCubeFaceTextures(piece, piece->m_texture.head, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.head);
     
     model_view = originalView; //undo transformation for next objects
     
@@ -326,6 +344,9 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     
     glUniform1i(uEnableTex, 0);
+    
+    piece->setPicking(false);
+    
 }// end drawPersonPiece()
 
 
@@ -363,6 +384,7 @@ Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_texture = texture;
     m_enPassant = false;
     m_weapon = weapon;
+	m_picking = false;
     //initially false (need to have just move exactly two positions from initial position to be true)
 }// end Pawn::Pawn()
 
@@ -457,6 +479,7 @@ Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_texture = texture;
     m_moved = false;
     m_weapon = weapon;
+	m_picking = false;
 }// end Rook::Rook()
 
 
@@ -528,6 +551,7 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weap
     m_type = TypeBishop;           // Bishop piece
     m_texture = texture;
     m_weapon = weapon;
+	m_picking = false;
 }// end Bishop::Bishop()
 
 
@@ -583,6 +607,7 @@ Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weap
     m_type = TypeKnight;           // Knight piece
     m_texture = texture;
     m_weapon = weapon;
+	m_picking = false;
 }// end Knight::Knight()
 
 
@@ -638,6 +663,7 @@ Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon
     m_type = TypeQueen;           // Queen piece
     m_texture = texture;
     m_weapon = weapon;
+	m_picking = false;
 }// end Queen::Queen()
 
 
@@ -695,6 +721,7 @@ King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_moved = false;
     m_checked = false;
     m_weapon = weapon;
+	m_picking = false;
 }//end King::King()
 
 
