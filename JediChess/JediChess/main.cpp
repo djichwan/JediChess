@@ -49,6 +49,8 @@ int Window_Height = 900;
 float Zoom = 1;
 GLfloat theta = 0.0;
 GLfloat azimuth = 0.0;
+GLfloat horizontalPos = 0.0;
+GLfloat verticalPos = 0.0;
 
 const int ESC_KEY               = 27;
 const int SPACE_KEY             = 32;
@@ -79,7 +81,7 @@ GLint        uModelView, uProjection, uView;
 GLint        uAmbient, uDiffuse, uSpecular, uLightPos, uShininess;
 GLint        uTex, uEnableTex, uTexture;
 
-Pawn whitePawn;
+Queen blackQueen;
 
 
 //=========================================
@@ -104,19 +106,64 @@ void initScene()
     glUseProgram(program);
     
     //--------- Assign texture files and generate pieces ------------
-    //TODO: add generate each piece
+    //TODO: add generate each piece (in separate function calls?)
     //--------------------------------------------------------
-    textureGroup whitePawnTexture;
-    whitePawnTexture.headFile = "DarthVaderFace.tga";
-    whitePawnTexture.torsoFile = "DarthVaderTorso.tga";
-    whitePawnTexture.leftArmFile = "DarthVaderLeftArm.tga";
-    whitePawnTexture.rightArmFile = "DarthVaderRightArm.tga";
-    whitePawnTexture.leftLegFile = "DarthVaderLeftLeg.tga";
-    whitePawnTexture.rightLegFile = "DarthVaderRightLeg.tga";
-    whitePawnTexture.weaponFile = "DarthVaderWeapon.tga";
+    textureGroup blackQueenTexture;
+    //TODO: change so individual faces assigned potentially different image
+    blackQueenTexture.head.faceFile[0] = "DarthVaderFace.tga";
+    blackQueenTexture.head.faceFile[1] = "DarthVaderHeadLeftSide.tga";
+    blackQueenTexture.head.faceFile[2] = "Blank.tga";
+    blackQueenTexture.head.faceFile[3] = "Blank.tga";
+    blackQueenTexture.head.faceFile[4] = "DarthVaderHeadBack.tga";
+    blackQueenTexture.head.faceFile[5] = "DarthVaderHeadRightSide.tga";
+
+    blackQueenTexture.torso.faceFile[0] = "DarthVaderTorso.tga";
+    blackQueenTexture.torso.faceFile[1] = "Blank.tga";
+    blackQueenTexture.torso.faceFile[2] = "Blank.tga";
+    blackQueenTexture.torso.faceFile[3] = "Blank.tga";
+    blackQueenTexture.torso.faceFile[4] = "DarthVaderTorsoBack.tga";
+    blackQueenTexture.torso.faceFile[5] = "Blank.tga";
     
-    whitePawn = Pawn(1, 1, WHITESIDE, whitePawnTexture);
-    whitePawn.generate(program);
+    blackQueenTexture.leftLeg.faceFile[0] = "DarthVaderLeftLeg.tga";
+    blackQueenTexture.leftLeg.faceFile[1] = "DarthVaderLeftLegSide.tga";
+    blackQueenTexture.leftLeg.faceFile[2] = "Blank.tga";
+    blackQueenTexture.leftLeg.faceFile[3] = "Blank.tga";
+    blackQueenTexture.leftLeg.faceFile[4] = "DarthVaderLeftLegBack.tga";
+    blackQueenTexture.leftLeg.faceFile[5] = "Blank.tga";
+
+    blackQueenTexture.rightLeg.faceFile[0] = "DarthVaderRightLeg.tga";
+    blackQueenTexture.rightLeg.faceFile[1] = "Blank.tga";
+    blackQueenTexture.rightLeg.faceFile[2] = "Blank.tga";
+    blackQueenTexture.rightLeg.faceFile[3] = "Blank.tga";
+    blackQueenTexture.rightLeg.faceFile[4] = "DarthVaderRightLegBack.tga";
+    blackQueenTexture.rightLeg.faceFile[5] = "DarthVaderRightLegSide.tga";
+    
+    
+    blackQueenTexture.leftArm.faceFile[0] = "DarthVaderLeftArmFront.tga";
+    blackQueenTexture.leftArm.faceFile[1] = "DarthVaderLeftArmSide.tga";
+    blackQueenTexture.leftArm.faceFile[2] = "Blank.tga";
+    blackQueenTexture.leftArm.faceFile[3] = "Blank.tga";
+    blackQueenTexture.leftArm.faceFile[4] = "DarthVaderLeftArmBack.tga";
+    blackQueenTexture.leftArm.faceFile[5] = "Blank.tga";
+    
+    blackQueenTexture.rightArm.faceFile[0] = "DarthVaderRightArmFront.tga";
+    blackQueenTexture.rightArm.faceFile[1] = "Blank.tga";
+    blackQueenTexture.rightArm.faceFile[2] = "Blank.tga";
+    blackQueenTexture.rightArm.faceFile[3] = "Blank.tga";
+    blackQueenTexture.rightArm.faceFile[4] = "DarthVaderRightArmBack.tga";
+    blackQueenTexture.rightArm.faceFile[5] = "DarthVaderRightArmSide.tga";
+    
+    
+    blackQueenTexture.weapon.faceFile[0] = "DarthVaderWeapon.tga";
+    blackQueenTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
+    blackQueenTexture.weapon.faceFile[2] = "Blank.tga";
+    blackQueenTexture.weapon.faceFile[3] = "DarthVaderWeaponTop.tga";
+    blackQueenTexture.weapon.faceFile[4] = "DarthVaderWeapon.tga";
+    blackQueenTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
+    
+
+    blackQueen = Queen(1, 1, BLACKSIDE, blackQueenTexture);
+    blackQueen.generate(program);
     //------------------------------------------------------
     
     //link with vertex shader variables
@@ -142,10 +189,6 @@ void initScene()
     glUniform4f(uLightPos,  15.0f, 15.0f, 30.0f, 0.0f);
     glUniform1f(uShininess, 100.0f);
     
-    //--------------- Bind textures to pieces ---------------
-    whitePawn.bindTextures(uTex);
-    
-    
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
     // (set in glActiveTexture(GL_TEXTURE0))
@@ -167,13 +210,15 @@ void drawScene()
     glUniformMatrix4fv( uView, 1, GL_TRUE, model_view );
     glUniformMatrix4fv( uTexture, 1, GL_TRUE, texture_view);
     
+    model_view *= Translate(horizontalPos, verticalPos, 0.0f);
     model_view *= Scale(Zoom);
     model_view *= Scale(0.7f, 0.7f, 0.7f);
     model_view *= RotateY(theta);
     model_view *= RotateX(azimuth);
     model_view *= Translate(0.0f, 0.0f, 1.0f);
+    
     //TODO: draw pieces
-    whitePawn.draw(uTex, uEnableTex, uModelView, model_view);
+    blackQueen.draw(uTex, uEnableTex, uModelView, model_view);
 }// end drawScene()
 
 
@@ -196,10 +241,28 @@ void keyboardCallback(unsigned char key, int x, int y)
         case 'O':
             Zoom  = Zoom * 0.97;
             break;
+        case 'w':       // Move camera up
+        case 'W':
+            verticalPos -= .5;
+            break;
+        case 'a':       // Move camera left
+        case 'A':
+            horizontalPos += .5;
+            break;
+        case 's':       //Move camera down
+        case 'S':
+            verticalPos += .5;
+            break;
+        case 'd':       // Move camera right
+        case 'D':
+            horizontalPos -= .5;
+            break;
         case SPACE_KEY: //Reset camera position
             Zoom = 1;
             theta = 0;
             azimuth = 0;
+            horizontalPos = 0;
+            verticalPos = 0;
             break;
     }//end switch
     
@@ -243,7 +306,6 @@ void reshapeCallback(int w, int h)
 
 void specialKeys(int key, int x, int y)
 {
-    //TODO: edit
     switch (key)
     {
         case GLUT_KEY_UP:       //Up arrow
@@ -253,10 +315,10 @@ void specialKeys(int key, int x, int y)
             azimuth += 5;       //Rotate around X-axis
             break;
         case GLUT_KEY_LEFT:     //Left arrow
-            theta -= 5;         //Rotate around Y-Axis
+            theta -= 3;         //Rotate around Y-Axis
             break;
         case GLUT_KEY_RIGHT:    //Right arrow
-            theta += 5;         //Rotate around Y-Axis
+            theta += 3;         //Rotate around Y-Axis
             break;
     }//end switch
     

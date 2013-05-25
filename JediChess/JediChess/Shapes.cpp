@@ -7,6 +7,7 @@ typedef Angel::vec4 point4;
 typedef Angel::vec3 point3;
 typedef Angel::vec2 point2;
 
+
 void setVertexAttrib(GLuint program, 
                      GLfloat* points,    GLsizeiptr psize, 
                      GLfloat* normals,   GLsizeiptr nsize,
@@ -61,7 +62,7 @@ point4 vertices[8] = {
     point4( -0.5,  0.5, -0.5, 1.0 ),
     point4(  0.5,  0.5, -0.5, 1.0 ),
     point4(  0.5, -0.5, -0.5, 1.0 )
-};
+};// end vertices
 
 // quad generates two triangles for each face and assigns normals and texture coordinates
 //    to the vertices
@@ -80,24 +81,24 @@ void quad( int a, int b, int c, int d, const point3& normal )
     cubeUV[Index] = point2(1.0f, 0.0f); Index++;
     cubePoints[Index] = vertices[d]; cubeNormals[Index] = normal;
     cubeUV[Index] = point2(1.0f, 1.0f); Index++;
-}
+}// end quad()
 
 // generate 12 triangles: 36 vertices, 36 normals, 36 texture coordinates
-void colorcube()
-{
-    quad( 1, 0, 3, 2, point3( 0.0f,  0.0f,  1.0f) );
-    quad( 2, 3, 7, 6, point3( 1.0f,  0.0f,  0.0f) );
-    quad( 3, 0, 4, 7, point3( 0.0f, -1.0f,  0.0f) );
-    quad( 6, 5, 1, 2, point3( 0.0f,  1.0f,  0.0f) );
-    quad( 4, 5, 6, 7, point3( 0.0f,  0.0f, -1.0f) );
-    quad( 5, 4, 0, 1, point3(-1.0f,  0.0f,  0.0f) );
-}
+void colorcube(cubeFaceTextures cubeTextures)
+{                                                  // if cube front facing viewer:
+    quad( 1, 0, 3, 2, point3( 0.0f,  0.0f,  1.0f) );    // front face
+    quad( 2, 3, 7, 6, point3( 1.0f,  0.0f,  0.0f) );    // left face
+    quad( 3, 0, 4, 7, point3( 0.0f, -1.0f,  0.0f) );    // bottom face
+    quad( 6, 5, 1, 2, point3( 0.0f,  1.0f,  0.0f) );    // top face
+    quad( 6, 7, 4, 5, point3( 0.0f,  0.0f, -1.0f) );    // back face
+    quad( 5, 4, 0, 1, point3(-1.0f,  0.0f,  0.0f) );    // right face
+}// end colorcube()
 
 // initialization
-void generateCube(GLuint program, ShapeData* cubeData)
+void generateCube(GLuint program, ShapeData* cubeData, cubeFaceTextures cubeTextures)
 {
     Index = 0;
-    colorcube();
+    colorcube(cubeTextures);
     cubeData->numVertices = numCubeVertices;
 
     // Create a vertex array object
@@ -109,7 +110,7 @@ void generateCube(GLuint program, ShapeData* cubeData)
         (float*)cubePoints,  sizeof(cubePoints), 
         (float*)cubeNormals, sizeof(cubeNormals),
         (float*)cubeUV,      sizeof(cubeUV));
-}
+}// end generateCube()
 
 
 //----------------------------------------------------------------------------
@@ -298,16 +299,16 @@ void generateCylinder(GLuint program, ShapeData* cylData)
         point3 p2(circlePoints[i2].x, circlePoints[i2].y, 1.0f);
         point3 p3(circlePoints[i].x,  circlePoints[i].y,  1.0f);
         //point3 n = cross(p3-p2, p1-p2);
-        cylPoints[Index] = p1; cylNormals[Index] = point3(p1.x, p1.y, 0.0f); cylUVs[Index] = point2((acos(cylPoints[i].y)/(2*M_PI)), cylPoints[i].z); Index++;
-        cylPoints[Index] = p2; cylNormals[Index] = point3(p2.x, p2.y, 0.0f); cylUVs[Index] = point2((acos(cylPoints[i].y)/(2*M_PI)), cylPoints[i].z); Index++;
-        cylPoints[Index] = p3; cylNormals[Index] = point3(p3.x, p3.y, 0.0f); cylUVs[Index] = point2((acos(cylPoints[i].y)/(2*M_PI)), cylPoints[i].z); Index++;
+        cylPoints[Index] = p1; cylNormals[Index] = point3(p1.x, p1.y, 0.0f); cylUVs[Index] = point2( acos(cylPoints[Index].x)/(2*M_PI) , (cylPoints[Index].z+1)/2); Index++;
+        cylPoints[Index] = p2; cylNormals[Index] = point3(p2.x, p2.y, 0.0f); cylUVs[Index] = point2( acos(cylPoints[Index].x)/(2*M_PI) , (cylPoints[Index].z+1)/2); Index++;
+        cylPoints[Index] = p3; cylNormals[Index] = point3(p3.x, p3.y, 0.0f); cylUVs[Index] = point2( acos(cylPoints[Index].x)/(2*M_PI) , (cylPoints[Index].z+1)/2); Index++;
         p1 = point3(circlePoints[i2].x, circlePoints[i2].y, -1.0f);
         p2 = point3(circlePoints[i].x,  circlePoints[i].y,  1.0f);
         p3 = point3(circlePoints[i].x,  circlePoints[i].y,  -1.0f);
         //n = cross(p3-p2, p1-p2);
-        cylPoints[Index] = p1; cylNormals[Index] = point3(p1.x, p1.y, 0.0f); cylUVs[Index] = point2((acos(cylPoints[i].y)/(2*M_PI)), cylPoints[i].z); Index++;
-        cylPoints[Index] = p2; cylNormals[Index] = point3(p2.x, p2.y, 0.0f); cylUVs[Index] = point2((acos(cylPoints[i].y)/(2*M_PI)), cylPoints[i].z); Index++;
-        cylPoints[Index] = p3; cylNormals[Index] = point3(p3.x, p3.y, 0.0f); cylUVs[Index] = point2((acos(cylPoints[i].y)/(2*M_PI)), cylPoints[i].z); Index++;
+        cylPoints[Index] = p1; cylNormals[Index] = point3(p1.x, p1.y, 0.0f); cylUVs[Index] = point2( acos(cylPoints[Index].x)/(2*M_PI) , (cylPoints[Index].z+1)/2); Index++;
+        cylPoints[Index] = p2; cylNormals[Index] = point3(p2.x, p2.y, 0.0f); cylUVs[Index] = point2( acos(cylPoints[Index].x)/(2*M_PI) , (cylPoints[Index].z+1)/2); Index++;
+        cylPoints[Index] = p3; cylNormals[Index] = point3(p3.x, p3.y, 0.0f); cylUVs[Index] = point2( acos(cylPoints[Index].x)/(2*M_PI) , (cylPoints[Index].z+1)/2); Index++;
     }
     
     cylData->numVertices = numCylVertices;
