@@ -77,6 +77,7 @@ public:
     PieceType getType();                // accessor function for m_type
     textureGroup getTexture();          // accessor function for m_texture
     pieceShapeData getShapeData();      // accessor function for m_shapeData
+    WeaponType getWeapon();             // accessor function for m_weapon
     
     void bindTextures(GLint uTex);      // initializes textures for pieces parts                  //TODO: implement for non-humanoid pieces
     virtual void generate(GLint program) = 0;   // generates the geometry for piece's parts
@@ -98,14 +99,13 @@ protected:
     int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)
     bool m_alive;               // whether alive (true) or captured (false)
     PieceType m_type;           // type of chess piece
+    WeaponType m_weapon;        // type of weapon piece wields
     
     // Used for picking
     GLint m_uModelView;          
     mat4  m_modelView;
     vec3  m_translate;
     
-    
-    WeaponType m_weapon;        // type of weapon piece wields
 }; //end class Piece
 
 
@@ -116,7 +116,7 @@ class Pawn : public Piece
 {
 public:
     Pawn() {}
-    Pawn(int row, int col, int team, textureGroup texture);
+    Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void setEnPassant(bool enPassant);
     bool canEnPassant();
     void setMoved();        //if Pawn has moved, call
@@ -136,7 +136,7 @@ class Rook: public Piece
 {
 public:
     Rook() {}
-    Rook(int row, int col, int team, textureGroup texture);
+    Rook(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void setMoved();        //if Rook has moved from initial position, call
 	bool getMoved();
     void generate(GLint program);
@@ -153,7 +153,7 @@ class Queen: public Piece
 {
 public:
     Queen() {}
-    Queen(int row, int col, int team, textureGroup texture);
+    Queen(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void generate(GLint program);
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Queen
     void animate(animationType aType);                                                //animate Queen
@@ -166,7 +166,7 @@ class Bishop: public Piece
 {
 public:
     Bishop() {}
-    Bishop(int row, int col, int team, textureGroup texture);
+    Bishop(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void generate(GLint program);
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Bishop
     void animate(animationType aType);                                                //animate Bishop
@@ -179,7 +179,7 @@ class Knight: public Piece
 {
 public:
     Knight() {}
-    Knight(int row, int col, int team, textureGroup texture);
+    Knight(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void generate(GLint program);
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view); //implement specifically for Knight
     void animate(animationType aType);                                                //animate Knight
@@ -192,7 +192,7 @@ class King: public Piece
 {
 public:
     King() {}
-    King(int row, int col, int team, textureGroup texture);
+    King(int row, int col, int team, textureGroup texture, WeaponType weapon);
     bool isChecked();                                               //accessor function for m_checked
     void setChecked(bool a_checked);                                //set m_checked
     void setMoved();                                                //if Rook has moved from initial position, call
