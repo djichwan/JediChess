@@ -99,6 +99,11 @@ public:
     void setPicking(bool on);
     bool getPicking();
     
+    // Initialize textures for each piece
+    void      initTextures();
+    TgaImage* m_images[NUM_TEXTURE_PARTS*NUM_CUBE_FACES];
+    GLuint    m_textures[NUM_TEXTURE_PARTS][NUM_CUBE_FACES];
+    
 protected:
     Square* m_square;           // square where piece is located
 	MoveList m_possibleMoves;  // array of squares a pieces can move to

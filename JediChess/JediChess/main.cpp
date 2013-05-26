@@ -449,6 +449,7 @@ void keyboardCallback(unsigned char key, int x, int y)
             break;
         case 'M':
             board.move(44, &whitePawn5);
+            break;
         case SPACE_KEY: //Reset camera position
             Zoom = 0.8; // 1.0
             theta = 0;

@@ -58,6 +58,7 @@ typedef std::vector<Square*> MoveList;
 #define TRANSLATE_Y 1.6f / PIECE_SCALE.x
 const int WHITESIDE = 0;
 const int BLACKSIDE = 1;
+const int NUM_TEXTURE_PARTS = 7;
 enum PieceType { NoType, TypePawn, TypeRook, TypeBishop, TypeKnight, TypeQueen, TypeKing };
 enum WeaponType { NoWeapon, TypeGun, TypeSaber };
 enum animationType { TypeAttacking, TypeDying };
@@ -75,6 +76,6 @@ typedef Angel::vec2 vec2;
 typedef Angel::vec3 vec3;
 typedef Angel::vec4 vec4;
 
-#define TESTING_NO_TEXTURE true
+#define TESTING_NO_TEXTURE false
 
 #endif

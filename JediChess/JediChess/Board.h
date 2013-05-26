@@ -67,12 +67,15 @@ private:
     vec3               m_3DborderPos[Num3DPoints]; // Array of 3D border positions
     vector<PieceType>  m_pieces; // Vector of type of piece object on each square
     vector<Square>     m_squares; // Vector of square objects
-    GLuint             m_texture; // Texture object
+    GLuint             m_textureBoard;
+    GLuint             m_textureBorder;
+    TgaImage*          m_imageBoard = new TgaImage();
+    TgaImage*          m_imageBorder = new TgaImage();
     GLuint             m_shader; // Shader object
     GLint              m_uModelView; // Uniform model view variable
     mat4               m_modelView; // Model view matrix
     void               m_computePosition(); // Computes center positions for each square
-    void               m_initTexture(string filename); // Initializes texture for board
+    void               m_initTexture(TgaImage* image, GLuint* texture, string filename); // Initializes texture for board
     void               m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
 //    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
 };

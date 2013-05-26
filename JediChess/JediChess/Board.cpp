@@ -60,6 +60,10 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
     
     //load and compile shaders on GPU, use current shader program
     glUseProgram(m_shader);
+    
+    // Initialize textures
+    m_initTexture( m_imageBoard, &m_textureBoard, "battleground.tga" ); // Normal mapping
+    m_initTexture( m_imageBorder,&m_textureBorder, "border.tga" ); // Normal mapping
 }
 
 void Board::draw(GLint uModelView, mat4 modelView)
@@ -84,7 +88,8 @@ void Board::draw(GLint uModelView, mat4 modelView)
     
     GLuint vao[1], buffer[1];
     
-    m_initTexture( "battleground.tga" ); // Normal mapping
+    // Board texture
+    glBindTexture( GL_TEXTURE_2D, m_textureBoard );
     
     // Create a vertex array object
 #ifdef __APPLE__
@@ -150,8 +155,8 @@ void Board::draw(GLint uModelView, mat4 modelView)
     
     //------------------ Draw border 2D and 3D -------------------------------------------------
     
-    // Initialize border texture
-    m_initTexture( "border.tga" ); // Normal mapping
+    // Bind border texture
+    glBindTexture( GL_TEXTURE_2D, m_textureBorder );
     
     // Use whole texture for each border square
     vec2 borderTexture[NumSquareVertices] = {
@@ -571,21 +576,21 @@ void Board::m_computePosition()
                                   m_pos[63].z - increment / 4);
 }
 
-void Board::m_initTexture( string filename )
+void Board::m_initTexture( TgaImage* image, GLuint* texture, string filename )
 {
-    TgaImage image;
-    if (!image.loadTGA(filename.c_str()))
+    //TgaImage image;
+    if (!image->loadTGA(filename.c_str()))
     {
         cerr << "Error load texture file" << endl;
         exit( EXIT_FAILURE );
     }
     
-    glGenTextures( 1, &m_texture );
-    glBindTexture( GL_TEXTURE_2D, m_texture );
+    glGenTextures( 1, texture );
+    glBindTexture( GL_TEXTURE_2D, *texture );
     
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, image.width, image.height, 0,
-                 (image.byteCount == 3) ? GL_BGR : GL_BGRA,
-                 GL_UNSIGNED_BYTE, image.data );
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, image->width, image->height, 0,
+                 (image->byteCount == 3) ? GL_BGR : GL_BGRA,
+                 GL_UNSIGNED_BYTE, image->data );
     
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
