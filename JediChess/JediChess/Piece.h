@@ -19,10 +19,8 @@ class GameManager;
 
 #include "tga.h"
 #include "Shapes.h"
-#include "Square.h"
-#include "Utility.h"
+#include "Object.h"
 #include "GameManager.h"
-#include <vector>
 
 //----------------------- Structs -------------------------
 // Holds and organizes textures for separate body parts of the piece
@@ -115,7 +113,7 @@ protected:
     WeaponType m_weapon;        // type of weapon piece wields
     
     // Used for picking
-    bool  m_picking = false;
+    bool  m_picking;
     GLint m_uModelView;          
     mat4  m_modelView;
     vec3  m_translate;

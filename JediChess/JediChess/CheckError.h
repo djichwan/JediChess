@@ -9,8 +9,7 @@
 
 #include <stdio.h>
 
-#ifdef WIN32
-#include <GL/gl.h>
+#ifdef _WIN32
 #else
 #include <OpenGL/gl.h>
 #endif

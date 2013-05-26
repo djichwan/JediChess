@@ -16,10 +16,7 @@ class King;
 class Board;
 class Square;
 
-#include "Piece.h"
 #include "Board.h"
-#include "Square.h"
-#include <vector>
 
 // singleton
 class GameManager

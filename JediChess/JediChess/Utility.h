@@ -7,10 +7,10 @@
 #elif __linux__ //linux
 #  include "GL/glew.h"
 #  include "GL/freeglut.h"
-#else //windows
-#  include <windows.h>
-#  include "GL/glew.h"
-#  include "GL/freeglut.h"
+//#else //windows
+//#  include <windows.h>
+//#  include "GL/glew.h"
+//#  include "GL/freeglut.h"
 #endif
 
 #include <iostream>

@@ -10,7 +10,6 @@
 #define _Object_h
 
 #include "Utility.h"
-#include <vector>
 #include <queue>
 
 #define GRAVITY_CONSTANT 9.8

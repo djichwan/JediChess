@@ -4,7 +4,6 @@
 // Definitions for Piece subclasses
 //*********************************
 #include "Piece.h"
-#include "GameManager.h" //TODO: change as necessary
 
 int textureIndex = 0;
 
@@ -413,7 +412,9 @@ Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_type = TypePawn;           // Pawn piece
     m_texture = texture;
     m_enPassant = false;
-    m_weapon = weapon;initTextures();
+    m_weapon = weapon;
+	m_picking = false;
+    initTextures();
     //initially false (need to have just move exactly two positions from initial position to be true)
 }// end Pawn::Pawn()
 
@@ -507,7 +508,9 @@ Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_type = TypeRook;           // Rook piece
     m_texture = texture;
     m_moved = false;
-    m_weapon = weapon;initTextures();
+    m_weapon = weapon;
+	m_picking = false;
+    initTextures();
 }// end Rook::Rook()
 
 
@@ -578,7 +581,9 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weap
     m_alive = true;
     m_type = TypeBishop;           // Bishop piece
     m_texture = texture;
-    m_weapon = weapon;initTextures();
+    m_weapon = weapon;
+	m_picking = false;
+    initTextures();
 }// end Bishop::Bishop()
 
 
@@ -633,7 +638,9 @@ Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weap
     m_alive = true;
     m_type = TypeKnight;           // Knight piece
     m_texture = texture;
-    m_weapon = weapon;initTextures();
+    m_weapon = weapon;
+	m_picking = false;
+    initTextures();
 }// end Knight::Knight()
 
 
@@ -688,7 +695,9 @@ Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon
     m_alive = true;
     m_type = TypeQueen;           // Queen piece
     m_texture = texture;
-    m_weapon = weapon;initTextures();
+    m_weapon = weapon;
+	m_picking = false;
+    initTextures();
 }// end Queen::Queen()
 
 
@@ -745,7 +754,9 @@ King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_texture = texture;
     m_moved = false;
     m_checked = false;
-    m_weapon = weapon;initTextures();
+    m_weapon = weapon;
+	m_picking = false;
+    initTextures();
 }//end King::King()
 
 
