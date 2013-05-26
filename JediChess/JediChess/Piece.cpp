@@ -5,8 +5,6 @@
 //*********************************
 #include "Piece.h"
 
-int textureIndex = 0;
-
 //================================== Piece Base Class ==========================================
 //------------------------ Modifiers---------------------------
 // Move piece to (row, col), need to check if valid move
@@ -210,54 +208,6 @@ bool Piece::getPicking()
     return m_picking;
 }
 
-// Binds texture to texture variable
-//  - Only need to initialize image once
-void Piece::initTextures()
-{
-    // Skip if running without texture
-    if (TESTING_NO_TEXTURE)
-        return;
-    
-    cubeFaceTextures cubeTextures[NUM_TEXTURE_PARTS] = {
-        this->m_texture.head,
-        this->m_texture.torso,
-        this->m_texture.leftArm,
-        this->m_texture.rightArm,
-        this->m_texture.leftLeg,
-        this->m_texture.rightLeg,
-        this->m_texture.weapon
-    };
-    
-    for (int j = 0; j < NUM_TEXTURE_PARTS; j++)
-    {
-        for (int i = 0; i < NUM_CUBE_FACES; i++)
-        {
-            // Initialize and bind textures
-            m_images[NUM_CUBE_FACES*j + i] = new TgaImage();
-            if (!m_images[NUM_CUBE_FACES*j + i]->loadTGA(cubeTextures[j].faceFile[i].c_str()))
-            {
-                printf("Error loading image file: %s\n", cubeTextures[j].faceFile[i].c_str());
-                exit(1);
-            }
-            
-            glGenTextures( 1, &m_textures[j][i] );
-            glBindTexture( GL_TEXTURE_2D, m_textures[j][i] );
-            
-            glTexImage2D(GL_TEXTURE_2D, 0, 4, m_images[NUM_CUBE_FACES*j + i]->width,
-                         m_images[NUM_CUBE_FACES*j + i]->height, 0,
-                         (m_images[NUM_CUBE_FACES*j + i]->byteCount == 3) ? GL_BGR : GL_BGRA,
-                         GL_UNSIGNED_BYTE, m_images[NUM_CUBE_FACES*j + i]->data );
-            
-            glGenerateMipmap(GL_TEXTURE_2D);
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            
-        }
-    }
-}
-
 //============================== Utitility Functions for Drawing ========================
 //--------------------------------------------------------------
 // Initializes textures for individual faces of a cube
@@ -268,7 +218,9 @@ void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTe
         if (!piece->getPicking() && !TESTING_NO_TEXTURE) // TODO: Remove testing clause
         {
             // Bind corresponding texture
-            glBindTexture( GL_TEXTURE_2D, piece->m_textures[textureIndex][i] );
+            if (piece->m_textureBind != NULL)
+                glBindTexture( GL_TEXTURE_2D,
+                              piece->m_textureBind->textureVarMap.find(cubeTextures.faceFile[i])->second );
         }
         
         //draw face
@@ -280,14 +232,12 @@ void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTe
         
     }// end for
     
-    textureIndex++;
 }//end bindCubeFaceTextures()
 
 //============================== Utitility Functions for Drawing ========================
 // Draws any humanoid piece (has head, torso, two arms, two legs, and weapon)
 void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, vec3 translate)
 {
-    textureIndex = 0; // Reset texture index
     piece->setModelView(uModelView, model_view, translate);
     
     // Translate to proper position on board
@@ -420,7 +370,7 @@ Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_enPassant = false;
     m_weapon = weapon;
 	m_picking = false;
-    initTextures();
+    m_textureBind = NULL;
     //initially false (need to have just move exactly two positions from initial position to be true)
 }// end Pawn::Pawn()
 
@@ -516,7 +466,7 @@ Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_moved = false;
     m_weapon = weapon;
 	m_picking = false;
-    initTextures();
+    m_textureBind = NULL;
 }// end Rook::Rook()
 
 
@@ -589,7 +539,7 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weap
     m_texture = texture;
     m_weapon = weapon;
 	m_picking = false;
-    initTextures();
+    m_textureBind = NULL;
 }// end Bishop::Bishop()
 
 
@@ -646,7 +596,7 @@ Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weap
     m_texture = texture;
     m_weapon = weapon;
 	m_picking = false;
-    initTextures();
+    m_textureBind = NULL;
 }// end Knight::Knight()
 
 
@@ -703,7 +653,7 @@ Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon
     m_texture = texture;
     m_weapon = weapon;
 	m_picking = false;
-    initTextures();
+    m_textureBind = NULL;
 }// end Queen::Queen()
 
 
@@ -762,7 +712,7 @@ King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_checked = false;
     m_weapon = weapon;
 	m_picking = false;
-    initTextures();
+    m_textureBind = NULL;
 }//end King::King()
 
 

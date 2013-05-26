@@ -22,7 +22,8 @@
 #include <vector>
 #include <map>
 
-class Square; // To create MoveList
+class Square;   // To create MoveList
+class TgaImage; // To create texture map
 
 //------------ Board -----------------------------
 #define BOARD_DIM       25.6
@@ -70,6 +71,12 @@ enum animationType { TypeAttacking, TypeDying };
 #define USE_TEX            1.0
 #define NO_TEX             0.0
 
+// Structure for texture binding
+struct TextureBind {
+    TgaImage* textureImageArray[NUM_TEXTURE_PARTS*6];
+    std::map<std::string, GLuint>    textureVarMap;
+} typedef TextureBind;
+
 //---------------------------------------------------
 
 //------------ General -----------------------------
@@ -77,6 +84,6 @@ typedef Angel::vec2 vec2;
 typedef Angel::vec3 vec3;
 typedef Angel::vec4 vec4;
 
-#define TESTING_NO_TEXTURE true
+#define TESTING_NO_TEXTURE false
 
 #endif

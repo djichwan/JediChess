@@ -42,7 +42,7 @@ public:
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index); // Returns square given index
     virtual void UpdateAll(double dt){};
-    //~Board() {};  // Empty destructor
+    ~Board() {};  // Empty destructor
 
 public:
     vec3 m_Center; //For generating translation Angel::matrix

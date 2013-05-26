@@ -8,6 +8,8 @@
 #include <iostream>
 #include "Piece.h"
 
+void initTextures(textureGroup texture, TextureBind* textureBind);
+
 textureGroup createBlackPawnTexture();
 textureGroup createBlackRookTexture();
 textureGroup createBlackBishopTexture();

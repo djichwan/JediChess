@@ -98,9 +98,7 @@ public:
     bool getPicking();
     
     // Initialize textures for each piece
-    void      initTextures();
-    TgaImage* m_images[NUM_TEXTURE_PARTS*NUM_CUBE_FACES];
-    GLuint    m_textures[NUM_TEXTURE_PARTS][NUM_CUBE_FACES];
+    TextureBind* m_textureBind;
     
 protected:
     Square* m_square;           // square where piece is located

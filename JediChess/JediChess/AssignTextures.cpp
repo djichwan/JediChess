@@ -5,7 +5,10 @@
 
 #include "AssignTextures.h"
 
-void initTextures( textureGroup texture )
+int texIndex = 0;
+
+// Initializes unique texture images 
+void initTextures( textureGroup texture, TextureBind* textureBind )
 {
     // Skip if running without texture
     if (TESTING_NO_TEXTURE)
@@ -25,21 +28,25 @@ void initTextures( textureGroup texture )
     {
         for (int i = 0; i < NUM_CUBE_FACES; i++)
         {
+            if (textureBind->textureVarMap.find(textureParts[j].faceFile[i]) != textureBind->textureVarMap.end())
+                continue; // Skip if already in map
+            
             // Initialize and bind textures
-            m_images[NUM_CUBE_FACES*j + i] = new TgaImage();
-            if (!m_images[NUM_CUBE_FACES*j + i]->loadTGA(cubeTextures[j].faceFile[i].c_str()))
+            textureBind->textureImageArray[texIndex] = new TgaImage();
+            if (!textureBind->textureImageArray[texIndex]->loadTGA(textureParts[j].faceFile[i].c_str()))
             {
-                printf("Error loading image file: %s\n", cubeTextures[j].faceFile[i].c_str());
+                printf("Error loading image file: %s\n", textureParts[j].faceFile[i].c_str());
                 exit(1);
             }
             
-            glGenTextures( 1, &m_textures[j][i] );
-            glBindTexture( GL_TEXTURE_2D, m_textures[j][i] );
+            GLuint tex;
+            glGenTextures( 1, &tex );
+            glBindTexture( GL_TEXTURE_2D, tex );
             
-            glTexImage2D(GL_TEXTURE_2D, 0, 4, m_images[NUM_CUBE_FACES*j + i]->width,
-                         m_images[NUM_CUBE_FACES*j + i]->height, 0,
-                         (m_images[NUM_CUBE_FACES*j + i]->byteCount == 3) ? GL_BGR : GL_BGRA,
-                         GL_UNSIGNED_BYTE, m_images[NUM_CUBE_FACES*j + i]->data );
+            glTexImage2D(GL_TEXTURE_2D, 0, 4, textureBind->textureImageArray[texIndex]->width,
+                         textureBind->textureImageArray[texIndex]->height, 0,
+                         (textureBind->textureImageArray[texIndex]->byteCount == 3) ? GL_BGR : GL_BGRA,
+                         GL_UNSIGNED_BYTE, textureBind->textureImageArray[texIndex]->data );
             
             glGenerateMipmap(GL_TEXTURE_2D);
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
@@ -47,6 +54,9 @@ void initTextures( textureGroup texture )
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             
+            textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(textureParts[j].faceFile[i], tex));
+            
+            texIndex++;
         }
     }
 }
