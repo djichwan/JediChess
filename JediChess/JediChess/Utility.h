@@ -20,6 +20,7 @@
 #include "vec.h"
 #include "Angel.h"
 #include <vector>
+#include <map>
 
 class Square; // To create MoveList
 
@@ -76,6 +77,6 @@ typedef Angel::vec2 vec2;
 typedef Angel::vec3 vec3;
 typedef Angel::vec4 vec4;
 
-#define TESTING_NO_TEXTURE false
+#define TESTING_NO_TEXTURE true
 
 #endif

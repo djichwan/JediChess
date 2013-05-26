@@ -5,6 +5,52 @@
 
 #include "AssignTextures.h"
 
+void initTextures( textureGroup texture )
+{
+    // Skip if running without texture
+    if (TESTING_NO_TEXTURE)
+        return;
+    
+    cubeFaceTextures textureParts[NUM_TEXTURE_PARTS] = {
+        texture.head,
+        texture.torso,
+        texture.leftLeg,
+        texture.rightLeg,
+        texture.leftArm,
+        texture.rightArm,
+        texture.weapon
+    };
+    
+    for (int j = 0; j < NUM_TEXTURE_PARTS; j++)
+    {
+        for (int i = 0; i < NUM_CUBE_FACES; i++)
+        {
+            // Initialize and bind textures
+            m_images[NUM_CUBE_FACES*j + i] = new TgaImage();
+            if (!m_images[NUM_CUBE_FACES*j + i]->loadTGA(cubeTextures[j].faceFile[i].c_str()))
+            {
+                printf("Error loading image file: %s\n", cubeTextures[j].faceFile[i].c_str());
+                exit(1);
+            }
+            
+            glGenTextures( 1, &m_textures[j][i] );
+            glBindTexture( GL_TEXTURE_2D, m_textures[j][i] );
+            
+            glTexImage2D(GL_TEXTURE_2D, 0, 4, m_images[NUM_CUBE_FACES*j + i]->width,
+                         m_images[NUM_CUBE_FACES*j + i]->height, 0,
+                         (m_images[NUM_CUBE_FACES*j + i]->byteCount == 3) ? GL_BGR : GL_BGRA,
+                         GL_UNSIGNED_BYTE, m_images[NUM_CUBE_FACES*j + i]->data );
+            
+            glGenerateMipmap(GL_TEXTURE_2D);
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            
+        }
+    }
+}
+
 
 //============================ Black ====================================
 
@@ -15,65 +61,64 @@ textureGroup createBlackPawnTexture()
     
     //TODO: implement
     //Head
-    blackPawnTexture.head.faceFile[0] = "Blank.tga";
-    blackPawnTexture.head.faceFile[1] = "Blank.tga";
+    blackPawnTexture.head.faceFile[0] = "StormTrooperFace.tga";
+    blackPawnTexture.head.faceFile[1] = "StormTrooperHeadLeftSide.tga";
     blackPawnTexture.head.faceFile[2] = "Blank.tga";
-    blackPawnTexture.head.faceFile[3] = "Blank.tga";
-    blackPawnTexture.head.faceFile[4] = "Blank.tga";
-    blackPawnTexture.head.faceFile[5] = "Blank.tga";
+    blackPawnTexture.head.faceFile[3] = "StormTrooperHeadTop.tga";
+    blackPawnTexture.head.faceFile[4] = "StormTrooperHeadBack.tga";
+    blackPawnTexture.head.faceFile[5] = "StormTrooperHeadRightSide.tga";
     
     
     //Torso
-    blackPawnTexture.torso.faceFile[0] = "Blank.tga";
+    blackPawnTexture.torso.faceFile[0] = "StormTrooperTorso.tga";
     blackPawnTexture.torso.faceFile[1] = "Blank.tga";
     blackPawnTexture.torso.faceFile[2] = "Blank.tga";
-    blackPawnTexture.torso.faceFile[3] = "Blank.tga";
-    blackPawnTexture.torso.faceFile[4] = "Blank.tga";
+    blackPawnTexture.torso.faceFile[3] = "Blank.tga"; // White
+    blackPawnTexture.torso.faceFile[4] = "StormTrooperTorsoBack.tga";
     blackPawnTexture.torso.faceFile[5] = "Blank.tga";
     
     
     //Left Leg
-    blackPawnTexture.leftLeg.faceFile[0] = "Blank.tga";
-    blackPawnTexture.leftLeg.faceFile[1] = "Blank.tga";
+    blackPawnTexture.leftLeg.faceFile[0] = "StormTrooperLeftLeg.tga";
+    blackPawnTexture.leftLeg.faceFile[1] = "StormTrooperLegSide.tga";
     blackPawnTexture.leftLeg.faceFile[2] = "Blank.tga";
     blackPawnTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackPawnTexture.leftLeg.faceFile[4] = "Blank.tga";
+    blackPawnTexture.leftLeg.faceFile[4] = "StormTrooperLegBack.tga";
     blackPawnTexture.leftLeg.faceFile[5] = "Blank.tga";
     
     
     //Right Leg
-    blackPawnTexture.rightLeg.faceFile[0] = "Blank.tga";
+    blackPawnTexture.rightLeg.faceFile[0] = "StormTrooperRightLeg.tga";
     blackPawnTexture.rightLeg.faceFile[1] = "Blank.tga";
     blackPawnTexture.rightLeg.faceFile[2] = "Blank.tga";
     blackPawnTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackPawnTexture.rightLeg.faceFile[4] = "Blank.tga";
-    blackPawnTexture.rightLeg.faceFile[5] = "Blank.tga";
-    
+    blackPawnTexture.rightLeg.faceFile[4] = "StormTrooperLegBack.tga";
+    blackPawnTexture.rightLeg.faceFile[5] = "StormTrooperLegSide.tga";
     
     //Left Arm
-    blackPawnTexture.leftArm.faceFile[0] = "Blank.tga";
-    blackPawnTexture.leftArm.faceFile[1] = "Blank.tga";
+    blackPawnTexture.leftArm.faceFile[0] = "StormTrooperLeftArm.tga";
+    blackPawnTexture.leftArm.faceFile[1] = "StormTrooperArmSide.tga";
     blackPawnTexture.leftArm.faceFile[2] = "Blank.tga";
-    blackPawnTexture.leftArm.faceFile[3] = "Blank.tga";
-    blackPawnTexture.leftArm.faceFile[4] = "Blank.tga";
+    blackPawnTexture.leftArm.faceFile[3] = "Blank.tga"; // White
+    blackPawnTexture.leftArm.faceFile[4] = "StormTrooperLeftArmBack.tga";
     blackPawnTexture.leftArm.faceFile[5] = "Blank.tga";
     
     
     //Right Arm
-    blackPawnTexture.rightArm.faceFile[0] = "Blank.tga";
+    blackPawnTexture.rightArm.faceFile[0] = "StormTrooperRightArm.tga";
     blackPawnTexture.rightArm.faceFile[1] = "Blank.tga";
     blackPawnTexture.rightArm.faceFile[2] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[3] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[4] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[5] = "Blank.tga";
+    blackPawnTexture.rightArm.faceFile[3] = "Blank.tga"; // White
+    blackPawnTexture.rightArm.faceFile[4] = "StormTrooperRightArmBack.tga";
+    blackPawnTexture.rightArm.faceFile[5] = "StormTrooperArmSide.tga";
     
     //Weapon
-    blackPawnTexture.weapon.faceFile[0] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[1] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[2] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[3] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[4] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[5] = "Blank.tga";
+    blackPawnTexture.weapon.faceFile[0] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[1] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[2] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[3] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[4] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[5] = "BlankDark.tga";
     
     return blackPawnTexture;
 }// end createBlackPawnTexture

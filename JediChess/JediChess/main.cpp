@@ -141,21 +141,21 @@ void initScene()
     //--------- Assign texture files and generate pieces ------------
     //---------------- Black pieces --------------------------
     textureGroup blackPawnTexture = createBlackPawnTexture();
-    blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn1.generate(program);
-    blackPawn2 = Pawn(2, 2, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn2 = Pawn(2, 2, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn2.generate(program);
-    blackPawn3 = Pawn(2, 3, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn3 = Pawn(2, 3, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn3.generate(program);
-    blackPawn4 = Pawn(2, 4, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn4 = Pawn(2, 4, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn4.generate(program);
-    blackPawn5 = Pawn(2, 5, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn5 = Pawn(2, 5, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn5.generate(program);
-    blackPawn6 = Pawn(2, 6, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn6 = Pawn(2, 6, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn6.generate(program);
-    blackPawn7 = Pawn(2, 7, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn7 = Pawn(2, 7, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn7.generate(program);
-    blackPawn8 = Pawn(2, 8, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn8 = Pawn(2, 8, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn8.generate(program);
     
     textureGroup blackRookTexture = createBlackRookTexture();

@@ -210,8 +210,14 @@ bool Piece::getPicking()
     return m_picking;
 }
 
+// Binds texture to texture variable
+//  - Only need to initialize image once
 void Piece::initTextures()
 {
+    // Skip if running without texture
+    if (TESTING_NO_TEXTURE)
+        return;
+    
     cubeFaceTextures cubeTextures[NUM_TEXTURE_PARTS] = {
         this->m_texture.head,
         this->m_texture.torso,

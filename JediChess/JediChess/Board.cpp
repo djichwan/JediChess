@@ -17,6 +17,9 @@ Board::Board()
     m_DiffuseCoefficient  = 0.6f;
     m_SpecularCoefficient = 0.2f;
     m_Shininess           = 100.0f;
+    
+    m_imageBoard   = new TgaImage();
+    m_imageBorder  = new TgaImage();
 }
 
 Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared to avoid compiler error
@@ -30,6 +33,7 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
     m_SpecularCoefficient = 0.2f;
     m_Shininess           = 100.0f;
 
+    // Compute position of squares and borders
     m_computePosition();
     
     // Initialize parameters
@@ -72,6 +76,8 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
     glUseProgram(m_shader);
     
     // Initialize textures
+    m_imageBoard   = new TgaImage();
+    m_imageBorder  = new TgaImage();
     m_initTexture( m_imageBoard, &m_textureBoard, "battleground.tga" ); // Normal mapping
     m_initTexture( m_imageBorder,&m_textureBorder, "border.tga" ); // Normal mapping
 }
@@ -586,9 +592,9 @@ void Board::m_computePosition()
                                   m_pos[63].z - increment / 4);
 }
 
+// Only need to call once per image
 void Board::m_initTexture( TgaImage* image, GLuint* texture, std::string filename )
 {
-    //TgaImage image;
     if (!image->loadTGA(filename.c_str()))
     {
         std::cerr << "Error load texture file" << std::endl;

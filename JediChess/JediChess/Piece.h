@@ -104,7 +104,7 @@ public:
     
 protected:
     Square* m_square;           // square where piece is located
-	MoveList m_possibleMoves;  // array of squares a pieces can move to
+	MoveList m_possibleMoves;   // array of squares a pieces can move to
     int m_row;                  // row where piece locationed (1-8)
     int m_col;                  // column where piece locationed (1-8)
     int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)
