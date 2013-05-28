@@ -316,7 +316,17 @@ Piece* Board::pickingPiece( vec2 coord )
 
 void Board::select( vec3 pos, bool on )
 {
-    m_squares.at(pos2id(pos)).highlight(on, HIGHLIGHT);
+    vec4 color = HIGHLIGHT;
+    if (m_squares.at(pos2id(pos)).getPiece())
+        if (!m_squares.at(pos2id(pos)).getPiece()->getOnTheMove())
+            color = KILL;
+    
+    select( pos, on, color );
+}
+
+void Board::select( vec3 pos, bool on, vec4 color )
+{
+    m_squares.at(pos2id(pos)).highlight(on, color);
     m_squares.at(pos2id(pos)).m_DiffuseCoefficient = on ? LIGHT_DIFFUSE : m_DiffuseCoefficient;
 }
 
@@ -330,6 +340,17 @@ void Board::unhightlightAll()
             m_squares.at(i).m_DiffuseCoefficient = m_DiffuseCoefficient;
         }
     }
+}
+
+bool Board::isHighlightMode()
+{
+    for (int i = 0; i < m_squares.size(); i++)
+    {
+        if (m_squares.at(i).isHighlight())
+            return true;
+    }
+    
+    return false;
 }
 
 // WARNING: Bug in code, don't use for now
@@ -397,10 +418,6 @@ void Board::add( vec3 pos, Piece* piece )
     m_pieces.at(pos2id(pos)) = piece->getType();
     m_squares.at(pos2id(pos)).setPiece(piece);
     piece->setSquare(&m_squares.at(pos2id(pos)));
-    
-    // Update row, col
-    piece->setRow(id2Coord(piece->getSquare()->getId()).x);
-    piece->setCol(id2Coord(piece->getSquare()->getId()).y);
 }
 
 Square* Board::getSquare(int x, int y)

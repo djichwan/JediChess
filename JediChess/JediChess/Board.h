@@ -28,19 +28,21 @@ public:
     void    draw(GLint uModelView, mat4 modelView); // Draws board on screen
     Square* picking(vec2 coord); // Color buffer picking on board side, returns selected Square object
     Piece*  pickingPiece(vec2 coord);
-    void    select(vec3 pos, bool on);   // Input is position of square selected - function will highlight possible moves
+    void    select(vec3 pos, bool on); // Input is position of square selected - function will highlight possible moves
+    void    select(vec3 pos, bool on, vec4 color); // Input is position of square selected - function will highlight possible moves, can select color
     void    unhightlightAll(); // Disables all highlighted squares
+    bool    isHighlightMode(); // Returns true if any square is highlighted
     void    unSelect(); // Unselects square highlight
     void    move(vec3 oldPos, vec3 newPos); // Updates location of piece on board on m_map
     void    move(vec3 pos, Piece* piece); // Moves to piece to square with center position pos
     void    move(int id, Piece* piece); // Moves piece to square with given id (0-63)
     void    remove(vec3 pos);   // remove position to piece mapping from m_map
-    void    remove(Piece* piece); // Remove piece from board
+    void    remove(Piece* piece);
     void    add(vec3 pos, Piece* piece);  // Adds new mapping to m_map
     vec3    convertPos(vec3 pos, bool rel2real); // Converts relative position to real position
     vec3    convertPos(int row, int col); // Converts (row, col) to real position
     int     pos2id(vec3 pos); // Converts position input to square id
-    vec2    id2Coord(int id); // Converts square id to (1,1) to (8,8) coordinate
+    vec2    id2Coord(int id); // Converts square id to coordinate between (1,1) and (8,8)
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index); // Returns square given index
     virtual void UpdateAll(double dt){};

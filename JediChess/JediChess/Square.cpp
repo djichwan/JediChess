@@ -114,8 +114,14 @@ void Square::setColor( vec4 color )
 
 void Square::unselect()
 {
+    vec4 color = HIGHLIGHT;
+    
+    if (this->getPiece())
+        if (!this->getPiece()->getOnTheMove())
+            color = KILL;
+        
     for (int i = 0; i < NumSquareVertices; i++)
-        m_colors[i] = HIGHLIGHT;
+        m_colors[i] = color;
     
     m_selected = false;
 }

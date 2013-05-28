@@ -75,6 +75,8 @@ public:
     int getCol();                       // accessor function for m_col
     void setRow(int row);
     void setCol(int col);
+    bool getOnTheMove();                // accessor function for m_onTheMove
+    void setOnTheMove(bool move);
     bool isAlive();                     // accessor function for m_alive
     void setSquare(Square* square);
 	Square* getSquare();                // accessor function for m_square
@@ -111,6 +113,7 @@ protected:
     bool m_alive;               // whether alive (true) or captured (false)
     PieceType m_type;           // type of chess piece
     WeaponType m_weapon;        // type of weapon piece wields
+    bool m_onTheMove;           // whether piece is currently on the move
     
     // Used for picking
     bool  m_picking;

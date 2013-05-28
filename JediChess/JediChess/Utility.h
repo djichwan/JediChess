@@ -46,10 +46,14 @@ const int Num3DPoints = NumSquares + 2 * 4;
 #define YELLOW    vec4( 1.0, 1.0, 0.0, 1.0 )
 #define BABY_BLUE vec4( 0.8, 1.0, 1.0, 1.0 )
 #define GRAY      vec4( 0.5, 0.5, 0.5, 1.0 )
+#define PINK      vec4( 1.0, 0.4, 0.7, 1.0 )
 #define BLACK3    vec3( 0.3, 0.3, 0.3 )
 #define WHITE3    vec3( 1.0, 1.0, 1.0 )
 #define HIGHLIGHT BABY_BLUE
 #define SELECT    YELLOW
+#define KILL      PINK
+
+#define HIGHLIGHT_ON true
 
 //------------ Game Manager -----------------------------
 typedef std::vector<Square*> MoveList;
@@ -58,6 +62,8 @@ const double TURN_ROTATION_SPEED  = 90;
 //------------ Piece -----------------------------
 #define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
 #define TRANSLATE_Y 1.6f / PIECE_SCALE.x
+#define ON_MOVE     true
+#define NOT_ON_MOVE false
 const int WHITESIDE = 0;
 const int BLACKSIDE = 1;
 const int NUM_TEXTURE_PARTS = 7;

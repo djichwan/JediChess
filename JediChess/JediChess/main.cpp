@@ -642,6 +642,7 @@ void callbackMouse(int button, int state, int x, int y)
     
     glUniform1f( uBoard, 0.0 );
     
+    // Neither piece or square selected
     if (selectedPiece == NULL && selected == NULL)
     {
         if (prevSelected != NULL)
@@ -659,13 +660,22 @@ void callbackMouse(int button, int state, int x, int y)
     {
         if (selectedPiece == NULL) // CASE Board Square
         {
-            if (selected->isHighlight() && prevId == selected->getId())
-                board.unhightlightAll(); // Unhighlight all squares
-            else
-                if (prevSelected->isHighlight())
-                    prevSelected->unselect(); // Turn off select light
+            bool notMove = false; // So no move takes place when square is not lit
             
-			if (pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected))
+            if (selected->isHighlight() && prevId == selected->getId())
+            {
+                board.unhightlightAll(); // Unhighlight all squares
+                pieceToMove->setOnTheMove(NOT_ON_MOVE);
+            }
+            else
+            {
+                if (prevSelected && prevSelected->isHighlight())
+                    prevSelected->unselect(); // Turn off select light
+                else // No square lit
+                    notMove = true;
+            }
+            
+			if (!notMove && pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected))
 			{
 				PieceType ptmType = pieceToMove->getType();
 
@@ -689,19 +699,21 @@ void callbackMouse(int button, int state, int x, int y)
         {
             if (prevPieceSelected == selectedPiece)
             {
+                selectedPiece->setOnTheMove(ON_MOVE);
 				GameManager::getInstance().buildMoveList(selectedPiece);
-                board.select(selectedPiece->getSquare()->getPos(), HIGHLIGHT);
+                board.select(selectedPiece->getSquare()->getPos(), HIGHLIGHT_ON);
 				MoveList* pm = selectedPiece->getMoveList();
 				for (MoveList::size_type i = 0; i != pm->size(); i++)
 				{
-					board.select((*pm)[i]->getPos(), HIGHLIGHT);
+					board.select((*pm)[i]->getPos(), HIGHLIGHT_ON);
 				}
 				pieceToMove = selectedPiece;
             }
             else
             {
-                if (prevSelected->isHighlight())
-                    prevSelected->unselect(); // Turn off select light
+                if (prevSelected)
+                    if (prevSelected->isHighlight())
+                        prevSelected->unselect(); // Turn off select light
             }
             
             prevPieceSelected = NULL;
@@ -726,6 +738,7 @@ void callbackMouse(int button, int state, int x, int y)
             {
 				prevPieceSelected = selectedPiece;
 				board.unhightlightAll();
+                selectedPiece->setOnTheMove(NOT_ON_MOVE);
 			}
         }
     }

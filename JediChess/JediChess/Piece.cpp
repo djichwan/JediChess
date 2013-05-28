@@ -107,6 +107,16 @@ void Piece::setCol(int col)
     m_col = col;
 }
 
+bool Piece::getOnTheMove()
+{
+    return m_onTheMove;
+}
+
+void Piece::setOnTheMove( bool move )
+{
+    m_onTheMove = move;
+}
+
 //---------------------------------------------------------------
 MoveList* Piece::getMoveList()
 {
@@ -386,6 +396,7 @@ Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
 	m_picking = false;
 	m_moved = false;
     m_textureBind = NULL;
+    m_onTheMove = false;
     //initially false (need to have just move exactly two positions from initial position to be true)
 }// end Pawn::Pawn()
 
@@ -482,6 +493,7 @@ Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_weapon = weapon;
 	m_picking = false;
     m_textureBind = NULL;
+    m_onTheMove = false;
 }// end Rook::Rook()
 
 
@@ -555,6 +567,7 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weap
     m_weapon = weapon;
 	m_picking = false;
     m_textureBind = NULL;
+    m_onTheMove = false;
 }// end Bishop::Bishop()
 
 
@@ -612,6 +625,7 @@ Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weap
     m_weapon = weapon;
 	m_picking = false;
     m_textureBind = NULL;
+    m_onTheMove = false;
 }// end Knight::Knight()
 
 
@@ -669,6 +683,7 @@ Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon
     m_weapon = weapon;
 	m_picking = false;
     m_textureBind = NULL;
+    m_onTheMove = false;
 }// end Queen::Queen()
 
 
@@ -728,6 +743,7 @@ King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_weapon = weapon;
 	m_picking = false;
     m_textureBind = NULL;
+    m_onTheMove = false;
 }//end King::King()
 
 
