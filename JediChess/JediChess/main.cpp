@@ -643,8 +643,18 @@ void callbackMouse(int button, int state, int x, int y)
     glUniform1f( uBoard, 0.0 );
     
     if (selectedPiece == NULL && selected == NULL)
+    {
+        if (prevSelected != NULL)
+        {
+            if (prevSelected->isHighlight())
+            {
+                prevSelected->unselect(); // Turn off select light
+                glutPostRedisplay();
+            }
+        }
         return;
-        
+    }
+    
     if (state == GLUT_UP) // Mouse up
     {
         if (selectedPiece == NULL) // CASE Board Square
@@ -687,6 +697,11 @@ void callbackMouse(int button, int state, int x, int y)
 					board.select((*pm)[i]->getPos(), HIGHLIGHT);
 				}
 				pieceToMove = selectedPiece;
+            }
+            else
+            {
+                if (prevSelected->isHighlight())
+                    prevSelected->unselect(); // Turn off select light
             }
             
             prevPieceSelected = NULL;

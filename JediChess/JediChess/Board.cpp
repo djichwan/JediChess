@@ -356,6 +356,10 @@ void Board::move(vec3 pos, Piece* piece)
     piece->getSquare()->setPiece(NULL);
     piece->setSquare(&m_squares.at(pos2id(pos)));
     m_squares.at(pos2id(pos)).setPiece(piece);
+    
+    // Update row, col
+    piece->setRow(id2Coord(piece->getSquare()->getId()).x);
+    piece->setCol(id2Coord(piece->getSquare()->getId()).y);
 }
 
 void Board::move(int id, Piece* piece)
@@ -367,8 +371,8 @@ void Board::move(int id, Piece* piece)
     m_squares.at(id).setPiece(piece);
     
     // Update row, col
-    piece->setCol(id2Coord(piece->getSquare()->getId()).x);
-    piece->setRow(id2Coord(piece->getSquare()->getId()).y);
+    piece->setRow(id2Coord(piece->getSquare()->getId()).x);
+    piece->setCol(id2Coord(piece->getSquare()->getId()).y);
 }
 
 void Board::remove( vec3 pos )
@@ -393,6 +397,10 @@ void Board::add( vec3 pos, Piece* piece )
     m_pieces.at(pos2id(pos)) = piece->getType();
     m_squares.at(pos2id(pos)).setPiece(piece);
     piece->setSquare(&m_squares.at(pos2id(pos)));
+    
+    // Update row, col
+    piece->setRow(id2Coord(piece->getSquare()->getId()).x);
+    piece->setCol(id2Coord(piece->getSquare()->getId()).y);
 }
 
 Square* Board::getSquare(int x, int y)
