@@ -33,6 +33,7 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
     m_SpecularCoefficient = 0.2f;
     m_Shininess           = 100.0f;
 
+    // Compute position of squares and borders
     m_computePosition();
     
     // Initialize parameters
