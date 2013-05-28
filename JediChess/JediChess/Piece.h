@@ -98,13 +98,11 @@ public:
     bool getPicking();
     
     // Initialize textures for each piece
-    void      initTextures();
-    TgaImage* m_images[NUM_TEXTURE_PARTS*NUM_CUBE_FACES];
-    GLuint    m_textures[NUM_TEXTURE_PARTS][NUM_CUBE_FACES];
+    TextureBind* m_textureBind;
     
 protected:
     Square* m_square;           // square where piece is located
-	MoveList m_possibleMoves;  // array of squares a pieces can move to
+	MoveList m_possibleMoves;   // array of squares a pieces can move to
     int m_row;                  // row where piece locationed (1-8)
     int m_col;                  // column where piece locationed (1-8)
     int m_team;                 // what team the piece is on (WHITESIDE if white, BLACKSIDE if black)

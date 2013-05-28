@@ -42,7 +42,7 @@ public:
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index); // Returns square given index
     virtual void UpdateAll(double dt){};
-    //~Board() {};  // Empty destructor
+    ~Board() {};  // Empty destructor
 
 public:
     vec3 m_Center; //For generating translation Angel::matrix
@@ -59,23 +59,22 @@ public:
     float m_Shininess;
     
 private:
-    double             m_dim; // Dimesion of board
-    vec3               m_pos[NumSquares]; // Array of positions
-    std::vector<PieceType>  m_pieces; // Vector of type of piece object on each square
-    std::vector<Square>     m_squares; // Vector of square objects
-    vec3               m_borderPos[Num2DPoints]; // Array of border positions
-    vec3               m_3DborderPos[Num3DPoints]; // Array of 3D border positions
-    GLuint             m_textureBoard;
-    GLuint             m_textureBorder;
-    TgaImage*          m_imageBoard;
-    TgaImage*          m_imageBorder;
-    GLuint             m_shader; // Shader object
-    GLint              m_uModelView; // Uniform model view variable
-    mat4               m_modelView; // Model view matrix
-    void               m_computePosition(); // Computes center positions for each square
-    void               m_initTexture(TgaImage* image, GLuint* texture, std::string filename); // Initializes texture for board
-    void               m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
-//    void               m_getBorderCoord(vec4 points[NumSquareVertices], vec3 pos); // Compute border position
+    double                 m_dim; // Dimesion of board
+    vec3                   m_pos[NumSquares]; // Array of positions
+    std::vector<PieceType> m_pieces; // Vector of type of piece object on each square
+    std::vector<Square>    m_squares; // Vector of square objects
+    vec3                   m_borderPos[Num2DPoints]; // Array of border positions
+    vec3                   m_3DborderPos[Num3DPoints]; // Array of 3D border positions
+    GLuint                 m_textureBoard;
+    GLuint                 m_textureBorder;
+    TgaImage*              m_imageBoard;
+    TgaImage*              m_imageBorder;
+    GLuint                 m_shader; // Shader object
+    GLint                  m_uModelView; // Uniform model view variable
+    mat4                   m_modelView; // Model view matrix
+    void                   m_computePosition(); // Computes center positions for each square
+    void                   m_initTexture(TgaImage* image, GLuint* texture, std::string filename); // Initializes texture for board
+    void                   m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
 };
 
 #endif /* defined(__JediChess__Board__) */

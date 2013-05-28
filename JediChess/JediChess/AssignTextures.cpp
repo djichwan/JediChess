@@ -5,6 +5,62 @@
 
 #include "AssignTextures.h"
 
+int texIndex = 0;
+
+// Initializes unique texture images 
+void initTextures( textureGroup texture, TextureBind* textureBind )
+{
+    // Skip if running without texture
+    if (TESTING_NO_TEXTURE)
+        return;
+    
+    cubeFaceTextures textureParts[NUM_TEXTURE_PARTS] = {
+        texture.head,
+        texture.torso,
+        texture.leftLeg,
+        texture.rightLeg,
+        texture.leftArm,
+        texture.rightArm,
+        texture.weapon
+    };
+    
+    for (int j = 0; j < NUM_TEXTURE_PARTS; j++)
+    {
+        for (int i = 0; i < NUM_CUBE_FACES; i++)
+        {
+            if (textureBind->textureVarMap.find(textureParts[j].faceFile[i]) != textureBind->textureVarMap.end())
+                continue; // Skip if already in map
+            
+            // Initialize and bind textures
+            textureBind->textureImageArray[texIndex] = new TgaImage();
+			if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(textureParts[j].faceFile[i])).c_str()))
+            {
+                printf("Error loading image file: %s\n", textureParts[j].faceFile[i].c_str());
+                exit(1);
+            }
+            
+            GLuint tex;
+            glGenTextures( 1, &tex );
+            glBindTexture( GL_TEXTURE_2D, tex );
+            
+            glTexImage2D(GL_TEXTURE_2D, 0, 4, textureBind->textureImageArray[texIndex]->width,
+                         textureBind->textureImageArray[texIndex]->height, 0,
+                         (textureBind->textureImageArray[texIndex]->byteCount == 3) ? GL_BGR : GL_BGRA,
+                         GL_UNSIGNED_BYTE, textureBind->textureImageArray[texIndex]->data );
+            
+            glGenerateMipmap(GL_TEXTURE_2D);
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            
+            textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(textureParts[j].faceFile[i], tex));
+            
+            texIndex++;
+        }
+    }
+}
+
 
 //============================ Black ====================================
 
@@ -15,65 +71,64 @@ textureGroup createBlackPawnTexture()
     
     //TODO: implement
     //Head
-    blackPawnTexture.head.faceFile[0] = "Blank.tga";
-    blackPawnTexture.head.faceFile[1] = "Blank.tga";
+    blackPawnTexture.head.faceFile[0] = "StormTrooperFace.tga";
+    blackPawnTexture.head.faceFile[1] = "StormTrooperHeadLeftSide.tga";
     blackPawnTexture.head.faceFile[2] = "Blank.tga";
-    blackPawnTexture.head.faceFile[3] = "Blank.tga";
-    blackPawnTexture.head.faceFile[4] = "Blank.tga";
-    blackPawnTexture.head.faceFile[5] = "Blank.tga";
+    blackPawnTexture.head.faceFile[3] = "StormTrooperHeadTop.tga";
+    blackPawnTexture.head.faceFile[4] = "StormTrooperHeadBack.tga";
+    blackPawnTexture.head.faceFile[5] = "StormTrooperHeadRightSide.tga";
     
     
     //Torso
-    blackPawnTexture.torso.faceFile[0] = "Blank.tga";
+    blackPawnTexture.torso.faceFile[0] = "StormTrooperTorso.tga";
     blackPawnTexture.torso.faceFile[1] = "Blank.tga";
     blackPawnTexture.torso.faceFile[2] = "Blank.tga";
-    blackPawnTexture.torso.faceFile[3] = "Blank.tga";
-    blackPawnTexture.torso.faceFile[4] = "Blank.tga";
+    blackPawnTexture.torso.faceFile[3] = "Blank.tga"; // White
+    blackPawnTexture.torso.faceFile[4] = "StormTrooperTorsoBack.tga";
     blackPawnTexture.torso.faceFile[5] = "Blank.tga";
     
     
     //Left Leg
-    blackPawnTexture.leftLeg.faceFile[0] = "Blank.tga";
-    blackPawnTexture.leftLeg.faceFile[1] = "Blank.tga";
+    blackPawnTexture.leftLeg.faceFile[0] = "StormTrooperLeftLeg.tga";
+    blackPawnTexture.leftLeg.faceFile[1] = "StormTrooperLegSide.tga";
     blackPawnTexture.leftLeg.faceFile[2] = "Blank.tga";
     blackPawnTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackPawnTexture.leftLeg.faceFile[4] = "Blank.tga";
+    blackPawnTexture.leftLeg.faceFile[4] = "StormTrooperLegBack.tga";
     blackPawnTexture.leftLeg.faceFile[5] = "Blank.tga";
     
     
     //Right Leg
-    blackPawnTexture.rightLeg.faceFile[0] = "Blank.tga";
+    blackPawnTexture.rightLeg.faceFile[0] = "StormTrooperRightLeg.tga";
     blackPawnTexture.rightLeg.faceFile[1] = "Blank.tga";
     blackPawnTexture.rightLeg.faceFile[2] = "Blank.tga";
     blackPawnTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackPawnTexture.rightLeg.faceFile[4] = "Blank.tga";
-    blackPawnTexture.rightLeg.faceFile[5] = "Blank.tga";
-    
+    blackPawnTexture.rightLeg.faceFile[4] = "StormTrooperLegBack.tga";
+    blackPawnTexture.rightLeg.faceFile[5] = "StormTrooperLegSide.tga";
     
     //Left Arm
-    blackPawnTexture.leftArm.faceFile[0] = "Blank.tga";
-    blackPawnTexture.leftArm.faceFile[1] = "Blank.tga";
+    blackPawnTexture.leftArm.faceFile[0] = "StormTrooperLeftArm.tga";
+    blackPawnTexture.leftArm.faceFile[1] = "StormTrooperArmSide.tga";
     blackPawnTexture.leftArm.faceFile[2] = "Blank.tga";
-    blackPawnTexture.leftArm.faceFile[3] = "Blank.tga";
-    blackPawnTexture.leftArm.faceFile[4] = "Blank.tga";
+    blackPawnTexture.leftArm.faceFile[3] = "Blank.tga"; // White
+    blackPawnTexture.leftArm.faceFile[4] = "StormTrooperLeftArmBack.tga";
     blackPawnTexture.leftArm.faceFile[5] = "Blank.tga";
     
     
     //Right Arm
-    blackPawnTexture.rightArm.faceFile[0] = "Blank.tga";
+    blackPawnTexture.rightArm.faceFile[0] = "StormTrooperRightArm.tga";
     blackPawnTexture.rightArm.faceFile[1] = "Blank.tga";
     blackPawnTexture.rightArm.faceFile[2] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[3] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[4] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[5] = "Blank.tga";
+    blackPawnTexture.rightArm.faceFile[3] = "Blank.tga"; // White
+    blackPawnTexture.rightArm.faceFile[4] = "StormTrooperRightArmBack.tga";
+    blackPawnTexture.rightArm.faceFile[5] = "StormTrooperArmSide.tga";
     
     //Weapon
-    blackPawnTexture.weapon.faceFile[0] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[1] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[2] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[3] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[4] = "Blank.tga";
-    blackPawnTexture.weapon.faceFile[5] = "Blank.tga";
+    blackPawnTexture.weapon.faceFile[0] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[1] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[2] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[3] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[4] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[5] = "BlankDark.tga";
     
     return blackPawnTexture;
 }// end createBlackPawnTexture
@@ -417,7 +472,7 @@ textureGroup createBlackQueenTexture()
     blackQueenTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[2] = "Blank.tga";
     blackQueenTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
-    blackQueenTexture.weapon.faceFile[4] = "DarthVaderWeaponBack.tga";
+    blackQueenTexture.weapon.faceFile[4] = "Blank.tga";
     blackQueenTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
 
     return blackQueenTexture;

@@ -86,6 +86,9 @@ int		turnRotation;
 // Board object
 Board board;
 
+// Texture bind object
+TextureBind textureBind;
+
 //------------ Piece instantiation ------------------------
 Pawn blackPawn1; // starts at (2,1)
 Pawn blackPawn2; // starts at (2,2)
@@ -147,21 +150,21 @@ void initScene()
     //--------- Assign texture files and generate pieces ------------
     //---------------- Black pieces --------------------------
     textureGroup blackPawnTexture = createBlackPawnTexture();
-    blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn1.generate(program);
-    blackPawn2 = Pawn(2, 2, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn2 = Pawn(2, 2, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn2.generate(program);
-    blackPawn3 = Pawn(2, 3, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn3 = Pawn(2, 3, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn3.generate(program);
-    blackPawn4 = Pawn(2, 4, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn4 = Pawn(2, 4, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn4.generate(program);
-    blackPawn5 = Pawn(2, 5, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn5 = Pawn(2, 5, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn5.generate(program);
-    blackPawn6 = Pawn(2, 6, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn6 = Pawn(2, 6, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn6.generate(program);
-    blackPawn7 = Pawn(2, 7, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn7 = Pawn(2, 7, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn7.generate(program);
-    blackPawn8 = Pawn(2, 8, BLACKSIDE, blackPawnTexture, TypeSaber);
+    blackPawn8 = Pawn(2, 8, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn8.generate(program);
     
     textureGroup blackRookTexture = createBlackRookTexture();
@@ -171,6 +174,7 @@ void initScene()
     blackRook2.generate(program);
     
     textureGroup blackBishopTexture = createBlackBishopTexture();
+    
     blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeSaber);
     blackBishop1.generate(program);
     blackBishop2 = Bishop(1, 6, BLACKSIDE, blackBishopTexture, TypeSaber);
@@ -266,10 +270,56 @@ void initScene()
     
     
     
-    // Initialize Board object
+    // ----------------- Initialize Board object --------------------
     board = Board(program, BOARD_DIM);
     GameManager::getInstance().setBoard(&board); // Set board to GameManager
-
+    
+    // ----------------- Initialize texture images for each piece type --------------------
+    initTextures(blackPawnTexture, &textureBind);
+    initTextures(blackRookTexture, &textureBind);
+    initTextures(blackBishopTexture, &textureBind);
+    initTextures(blackKnightTexture, &textureBind);
+    initTextures(blackQueenTexture, &textureBind);
+    initTextures(blackKingTexture, &textureBind);
+    initTextures(whitePawnTexture, &textureBind);
+    initTextures(whiteRookTexture, &textureBind);
+    initTextures(whiteBishopTexture, &textureBind);
+    initTextures(whiteKnightTexture, &textureBind);
+    initTextures(whiteQueenTexture, &textureBind);
+    initTextures(whiteKingTexture, &textureBind);
+    
+    // ----------------- Bind texture to pieces --------------------
+    blackPawn1.m_textureBind   = &textureBind;
+    blackPawn2.m_textureBind   = &textureBind;
+    blackPawn3.m_textureBind   = &textureBind;
+    blackPawn4.m_textureBind   = &textureBind;
+    blackPawn5.m_textureBind   = &textureBind;
+    blackPawn6.m_textureBind   = &textureBind;
+    blackPawn7.m_textureBind   = &textureBind;
+    blackPawn8.m_textureBind   = &textureBind;
+    blackRook1.m_textureBind   = &textureBind;
+    blackRook2.m_textureBind   = &textureBind;
+    blackKnight1.m_textureBind = &textureBind;
+    blackKnight2.m_textureBind = &textureBind;
+    blackQueen.m_textureBind   = &textureBind;
+    blackKing.m_textureBind    = &textureBind;
+    whitePawn1.m_textureBind   = &textureBind;
+    whitePawn2.m_textureBind   = &textureBind;
+    whitePawn3.m_textureBind   = &textureBind;
+    whitePawn4.m_textureBind   = &textureBind;
+    whitePawn5.m_textureBind   = &textureBind;
+    whitePawn6.m_textureBind   = &textureBind;
+    whitePawn7.m_textureBind   = &textureBind;
+    whitePawn8.m_textureBind   = &textureBind;
+    whiteRook1.m_textureBind   = &textureBind;
+    whiteRook2.m_textureBind   = &textureBind;
+    whiteBishop1.m_textureBind = &textureBind;
+    whiteBishop2.m_textureBind = &textureBind;
+    whiteKnight1.m_textureBind = &textureBind;
+    whiteKnight2.m_textureBind = &textureBind;
+    whiteQueen.m_textureBind   = &textureBind;
+    whiteKing.m_textureBind    = &textureBind;
+    
     // ----------------- Add pieces to board --------------------
     // Black
     board.add(board.convertPos(blackPawn1.getRow(), blackPawn1.getCol()), &blackPawn1);
@@ -452,6 +502,7 @@ void keyboardCallback(unsigned char key, int x, int y)
         case SPACE_KEY: //Reset camera position
             Zoom = 0.8; // 1.0
             theta = 0;
+			oldTheta = -180;
             azimuth = 30; // 0
             horizontalPos = 0.5;
             verticalPos = 0;

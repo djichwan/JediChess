@@ -14,12 +14,15 @@
 #  include <GL/freeglut_ext.h>
 #endif
 
+#include <string>
 #include <iostream>
 
 #include "Angel.h"
 #include <vector>
+#include <map>
 
-class Square; // To create MoveList
+class Square;   // To create MoveList
+class TgaImage; // To create texture map
 
 //------------ Board -----------------------------
 #define BOARD_DIM       25.6
@@ -51,6 +54,7 @@ const int Num3DPoints = NumSquares + 2 * 4;
 //------------ Game Manager -----------------------------
 typedef std::vector<Square*> MoveList;
 const double TURN_ROTATION_SPEED  = 90;
+
 //------------ Piece -----------------------------
 #define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
 #define TRANSLATE_Y 1.6f / PIECE_SCALE.x
@@ -66,6 +70,12 @@ enum animationType { TypeAttacking, TypeDying };
 #define TEXTURE_LOAD_ERROR 0
 #define USE_TEX            1.0
 #define NO_TEX             0.0
+
+// Structure for texture binding
+struct TextureBind {
+    TgaImage* textureImageArray[NUM_TEXTURE_PARTS*6];
+	std::map<std::string, GLuint>    textureVarMap;
+} typedef TextureBind;
 
 //------------ General -----------------------------
 
