@@ -67,8 +67,8 @@ private:
     vec3               m_3DborderPos[Num3DPoints]; // Array of 3D border positions
     GLuint             m_textureBoard;
     GLuint             m_textureBorder;
-    TgaImage*          m_imageBoard = new TgaImage();
-    TgaImage*          m_imageBorder = new TgaImage();
+    TgaImage*          m_imageBoard;
+    TgaImage*          m_imageBorder;
     GLuint             m_shader; // Shader object
     GLint              m_uModelView; // Uniform model view variable
     mat4               m_modelView; // Model view matrix

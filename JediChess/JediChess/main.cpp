@@ -41,10 +41,11 @@
 //Global Variables
 int     Window_Width  = 1200;
 int     Window_Height = 900;
-float   Zoom          = 0.8; // 1.0
+float   Zoom          = 0.7; // 1.0
 GLfloat theta         = 0.0;
+GLfloat oldTheta	  = -180.0;
 GLfloat azimuth       = 30.0; // 0.0
-GLfloat horizontalPos = 0.0;
+GLfloat horizontalPos = 0.5;
 GLfloat verticalPos   = 0.0;
 
 const int ESC_KEY               = 27;
@@ -79,6 +80,8 @@ GLint        uBoard, uPicking;
 int     prevId; // Square selected on mouse down
 Square* prevSelected; // Square selected on mouse down, used to unhighlight square
 Piece*  prevPieceSelected; // Piece selected on mouse down
+Piece*	pieceToMove;
+int		turnRotation;
 
 // Board object
 Board board;
@@ -138,6 +141,9 @@ void initScene()
     GLuint program = InitShader( "vShader.vert", "fShader.frag" );
     glUseProgram(program);
     
+	TIME_LAST = TM.GetElapsedTime();
+	DTIME = 0.0;
+
     //--------- Assign texture files and generate pieces ------------
     //---------------- Black pieces --------------------------
     textureGroup blackPawnTexture = createBlackPawnTexture();
@@ -447,7 +453,7 @@ void keyboardCallback(unsigned char key, int x, int y)
             Zoom = 0.8; // 1.0
             theta = 0;
             azimuth = 30; // 0
-            horizontalPos = 0;
+            horizontalPos = 0.5;
             verticalPos = 0;
             break;
         default:
@@ -471,7 +477,21 @@ void displayCallback()
 // Callback for idle
 void idleCallback()
 {
-    //TODO: add functions
+	if ((theta - oldTheta) < 180)
+	{
+		TIME = TM.GetElapsedTime();
+
+		DTIME = TIME - TIME_LAST;
+		TIME_LAST = TIME;
+
+		theta += DTIME * TURN_ROTATION_SPEED;
+		if (turnRotation)
+			azimuth -= DTIME * TURN_ROTATION_SPEED/3.0;
+		else
+			azimuth += DTIME * TURN_ROTATION_SPEED/3.0;
+
+		glutPostRedisplay();
+	}
 }// end idleCallback()
 
 
@@ -548,13 +568,38 @@ void callbackMouse(int button, int state, int x, int y)
                 if (prevSelected->isHighlight())
                     prevSelected->unselect(); // Turn off select light
             
+			if (pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected))
+			{
+				PieceType ptmType = pieceToMove->getType();
+
+				if (ptmType == TypePawn)
+					((Pawn *) pieceToMove)->setMoved();
+				else if (ptmType == TypeRook)
+					((Rook *) pieceToMove)->setMoved();
+				else if (ptmType == TypeKing)
+					((King *) pieceToMove)->setMoved();
+
+				pieceToMove = NULL;
+				turnRotation = GameManager::getInstance().incTurns() % 2;
+
+				oldTheta = theta;
+				TIME_LAST = TM.GetElapsedTime();
+			}
+
             printf("Selected: %i\n", selected->getId());
         }
         else // CASE Piece
         {
             if (prevPieceSelected == selectedPiece)
             {
+				GameManager::getInstance().buildMoveList(selectedPiece);
                 board.select(selectedPiece->getSquare()->getPos(), HIGHLIGHT);
+				MoveList* pm = selectedPiece->getMoveList();
+				for (MoveList::size_type i = 0; i != pm->size(); i++)
+				{
+					board.select((*pm)[i]->getPos(), HIGHLIGHT);
+				}
+				pieceToMove = selectedPiece;
             }
             
             prevPieceSelected = NULL;
@@ -575,7 +620,11 @@ void callbackMouse(int button, int state, int x, int y)
         }
         else // CASE Piece
         {
-            prevPieceSelected = selectedPiece;
+			if (selectedPiece->isOnTeam(turnRotation))
+            {
+				prevPieceSelected = selectedPiece;
+				board.unhightlightAll();
+			}
         }
     }
     
@@ -586,7 +635,7 @@ void callbackMouse(int button, int state, int x, int y)
 //Assign callback functions
 void assign_callback()
 {
-    glutIdleFunc( idleCallback );
+	glutIdleFunc( idleCallback );
 	glutReshapeFunc ( reshapeCallback );
     glutKeyboardFunc( keyboardCallback );
     glutDisplayFunc( displayCallback );

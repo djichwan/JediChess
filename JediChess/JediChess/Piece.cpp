@@ -10,7 +10,7 @@ int textureIndex = 0;
 //================================== Piece Base Class ==========================================
 //------------------------ Modifiers---------------------------
 // Move piece to (row, col), need to check if valid move
-void Piece::move(Square* destSquare)
+bool Piece::move(Square* destSquare)
 {
     //TODO: change implementation as MoveChecker interface changes
 //    updateMoveList(this);   //update possible moves list
@@ -18,7 +18,7 @@ void Piece::move(Square* destSquare)
     
     //--------- check if valid move -----------------
     bool isValidMove = false;
-    for( int i = 0; i < m_possibleMoves.size(); i++)    //go through possible move list
+	for( MoveList::size_type i = 0; i < m_possibleMoves.size(); i++)    //go through possible move list
     {
         if(destSquare->getId() == m_possibleMoves[i]->getId())
         {
@@ -27,7 +27,7 @@ void Piece::move(Square* destSquare)
     }//end for
     if (!isValidMove) //if not valid move:
     {
-        return;       // don't do anything
+        return false;       // don't do anything
     }
     
     
@@ -42,12 +42,17 @@ void Piece::move(Square* destSquare)
     }
     
     //move piece to destination square
+	m_square->setPiece(NULL);
     destSquare->setPiece(this);
     m_square = destSquare;
     //TODO: add row, col update when Square/Board implement
-    
+	int squareId = m_square->getId();
+	m_row = (squareId / 8) + 1;
+	m_col = (squareId % 8) + 1;
+
+
 //    buildMoveList(this);    //build new possible moves list for new square position
-    
+    return true;
 }// end Piece::move()
 
 
@@ -414,6 +419,7 @@ Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_enPassant = false;
     m_weapon = weapon;
 	m_picking = false;
+	m_moved = false;
     initTextures();
     //initially false (need to have just move exactly two positions from initial position to be true)
 }// end Pawn::Pawn()

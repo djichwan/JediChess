@@ -7,17 +7,15 @@
 #elif __linux__ //linux
 #  include "GL/glew.h"
 #  include "GL/freeglut.h"
-//#else //windows
-//#  include <windows.h>
-//#  include "GL/glew.h"
-//#  include "GL/freeglut.h"
+#else //windows
+#  include <windows.h>
+#  include <GL/glew.h>
+#  include <GL/freeglut.h>
+#  include <GL/freeglut_ext.h>
 #endif
 
 #include <iostream>
 
-#include "CheckError.h"
-#include "mat.h"
-#include "vec.h"
 #include "Angel.h"
 #include <vector>
 
@@ -52,7 +50,7 @@ const int Num3DPoints = NumSquares + 2 * 4;
 
 //------------ Game Manager -----------------------------
 typedef std::vector<Square*> MoveList;
-
+const double TURN_ROTATION_SPEED  = 90;
 //------------ Piece -----------------------------
 #define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
 #define TRANSLATE_Y 1.6f / PIECE_SCALE.x
@@ -69,12 +67,7 @@ enum animationType { TypeAttacking, TypeDying };
 #define USE_TEX            1.0
 #define NO_TEX             0.0
 
-//---------------------------------------------------
-
 //------------ General -----------------------------
-typedef Angel::vec2 vec2;
-typedef Angel::vec3 vec3;
-typedef Angel::vec4 vec4;
 
 #define TESTING_NO_TEXTURE false
 
