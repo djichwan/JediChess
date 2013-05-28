@@ -630,6 +630,7 @@ void callbackMouse(int button, int state, int x, int y)
     
     glUniform1f( uBoard, 0.0 );
     
+    // Determines piece selected, NULL if none
     Piece* selectedPiece = board.pickingPiece( vec2( x, y ) );
     
     glUniform1f( uBoard, 1.0 );
@@ -646,13 +647,10 @@ void callbackMouse(int button, int state, int x, int y)
     if (selectedPiece == NULL && selected == NULL)
     {
         if (prevSelected != NULL)
-        {
             if (prevSelected->isHighlight())
-            {
                 prevSelected->unselect(); // Turn off select light
-                glutPostRedisplay();
-            }
-        }
+        
+        glutPostRedisplay();
         return;
     }
     

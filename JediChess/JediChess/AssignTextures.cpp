@@ -43,7 +43,7 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
             glGenTextures( 1, &tex );
             glBindTexture( GL_TEXTURE_2D, tex );
             
-            glTexImage2D(GL_TEXTURE_2D, 0, 4, textureBind->textureImageArray[texIndex]->width,
+            glTexImage2D(GL_TEXTURE_2D, 0, textureBind->textureImageArray[texIndex]->byteCount, textureBind->textureImageArray[texIndex]->width,
                          textureBind->textureImageArray[texIndex]->height, 0,
                          (textureBind->textureImageArray[texIndex]->byteCount == 3) ? GL_BGR : GL_BGRA,
                          GL_UNSIGNED_BYTE, textureBind->textureImageArray[texIndex]->data );
@@ -140,7 +140,7 @@ textureGroup createBlackRookTexture()
     
     //TODO: implement
     //Head
-    blackRookTexture.head.faceFile[0] = "Blank.tga";
+    blackRookTexture.head.faceFile[0] = "DarthVaderWeaponBack.tga";
     blackRookTexture.head.faceFile[1] = "Blank.tga";
     blackRookTexture.head.faceFile[2] = "Blank.tga";
     blackRookTexture.head.faceFile[3] = "Blank.tga";
@@ -629,65 +629,124 @@ textureGroup createWhiteBishopTexture()
     
     //TODO: implement
     //Head
-    whiteBishopTexture.head.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.head.faceFile[1] = "Blank.tga";
+    
+    whiteBishopTexture.head.faceFile[0] = "ChewbaccaHeadFront.tga";
+    
+    whiteBishopTexture.head.faceFile[1] = "ChewbaccaHeadLeft.tga";
+    
     whiteBishopTexture.head.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.head.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.head.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.head.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.head.faceFile[3] = "ChewbaccaHeadTop.tga";
+    
+    whiteBishopTexture.head.faceFile[4] = "ChewbaccaHeadBack.tga";
+    
+    whiteBishopTexture.head.faceFile[5] = "ChewbaccaHeadRight.tga";
+    
+    
+    
     
     
     //Torso
-    whiteBishopTexture.torso.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.torso.faceFile[1] = "Blank.tga";
+    
+    whiteBishopTexture.torso.faceFile[0] = "ChewbaccaTorsoFront.tga";
+    
+    whiteBishopTexture.torso.faceFile[1] = "ChewbaccaTorsoLeft.tga";
+    
     whiteBishopTexture.torso.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.torso.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.torso.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.torso.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.torso.faceFile[3] = "ChewbaccaTorsoTop.tga";
+    
+    whiteBishopTexture.torso.faceFile[4] = "ChewbaccaTorsoBack.tga";
+    
+    whiteBishopTexture.torso.faceFile[5] = "ChewbaccaTorsoRight.tga";
+    
+    
+    
     
     
     //Left Leg
-    whiteBishopTexture.leftLeg.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.leftLeg.faceFile[1] = "Blank.tga";
+    
+    whiteBishopTexture.leftLeg.faceFile[0] = "ChewbaccaLeftLegFront.tga";
+    
+    whiteBishopTexture.leftLeg.faceFile[1] = "ChewbaccaLeftLegLeft.tga";
+    
     whiteBishopTexture.leftLeg.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.leftLeg.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.leftLeg.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.leftLeg.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.leftLeg.faceFile[3] = "ChewbaccaLeftLegTop.tga";
+    
+    whiteBishopTexture.leftLeg.faceFile[4] = "ChewbaccaLeftLegBack.tga";
+    
+    whiteBishopTexture.leftLeg.faceFile[5] = "ChewbaccaLeftLegRight.tga";
+    
+    
+    
     
     
     //Right Leg
-    whiteBishopTexture.rightLeg.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.rightLeg.faceFile[1] = "Blank.tga";
+    
+    whiteBishopTexture.rightLeg.faceFile[0] = "ChewbaccaRightLegFront.tga";
+    
+    whiteBishopTexture.rightLeg.faceFile[1] = "ChewbaccaRightLegLeft.tga";
+    
     whiteBishopTexture.rightLeg.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.rightLeg.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.rightLeg.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.rightLeg.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.rightLeg.faceFile[3] = "ChewbaccaRightLegTop.tga";
+    
+    whiteBishopTexture.rightLeg.faceFile[4] = "ChewbaccaRightLegBack.tga";
+    
+    whiteBishopTexture.rightLeg.faceFile[5] = "ChewbaccaRightLegRight.tga";
+    
+    
+    
     
     
     //Left Arm
-    whiteBishopTexture.leftArm.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.leftArm.faceFile[1] = "Blank.tga";
-    whiteBishopTexture.leftArm.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.leftArm.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.leftArm.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.leftArm.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.leftArm.faceFile[0] = "ChewbaccaLeftArmFront.tga";
+    
+    whiteBishopTexture.leftArm.faceFile[1] = "ChewbaccaLeftArmLeft.tga";
+    
+    whiteBishopTexture.leftArm.faceFile[2] = "ChewbaccaLeftArmTop.tga";
+    
+    whiteBishopTexture.leftArm.faceFile[3] = "ChewbaccaLeftArmTop.tga";
+    
+    whiteBishopTexture.leftArm.faceFile[4] = "ChewbaccaLeftArmBack.tga";
+    
+    whiteBishopTexture.leftArm.faceFile[5] = "ChewbaccaLeftArmRight.tga";
+    
+    
+    
     
     
     //Right Arm
-    whiteBishopTexture.rightArm.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.rightArm.faceFile[1] = "Blank.tga";
-    whiteBishopTexture.rightArm.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.rightArm.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.rightArm.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.rightArm.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.rightArm.faceFile[0] = "ChewbaccaRightArmFront.tga";
+    
+    whiteBishopTexture.rightArm.faceFile[1] = "ChewbaccaRightArmLeft.tga";
+    
+    whiteBishopTexture.rightArm.faceFile[2] = "ChewbaccaRightArmTop.tga";
+    
+    whiteBishopTexture.rightArm.faceFile[3] = "ChewbaccaRightArmTop.tga";
+    
+    whiteBishopTexture.rightArm.faceFile[4] = "ChewbaccaRightArmBack.tga";
+    
+    whiteBishopTexture.rightArm.faceFile[5] = "ChewbaccaRightArmRight.tga";
+    
+    
     
     //Weapon
-    whiteBishopTexture.weapon.faceFile[0] = "Blank.tga";
-    whiteBishopTexture.weapon.faceFile[1] = "Blank.tga";
-    whiteBishopTexture.weapon.faceFile[2] = "Blank.tga";
-    whiteBishopTexture.weapon.faceFile[3] = "Blank.tga";
-    whiteBishopTexture.weapon.faceFile[4] = "Blank.tga";
-    whiteBishopTexture.weapon.faceFile[5] = "Blank.tga";
+    
+    whiteBishopTexture.weapon.faceFile[0] = "ChewbaccaGunFront.tga";
+    
+    whiteBishopTexture.weapon.faceFile[1] = "ChewbaccaGunLeft.tga";
+    
+    whiteBishopTexture.weapon.faceFile[2] = "ChewbaccaGunBottom.tga";
+    
+    whiteBishopTexture.weapon.faceFile[3] = "ChewbaccaGunTop.tga";
+    
+    whiteBishopTexture.weapon.faceFile[4] = "ChewbaccaGunBack.tga";
+    
+    whiteBishopTexture.weapon.faceFile[5] = "ChewbaccaGunRight.tga";
     
     return whiteBishopTexture;
 }// end createWhiteBishopTexture()

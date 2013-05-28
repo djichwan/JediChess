@@ -46,12 +46,12 @@ const int Num3DPoints = NumSquares + 2 * 4;
 #define YELLOW    vec4( 1.0, 1.0, 0.0, 1.0 )
 #define BABY_BLUE vec4( 0.8, 1.0, 1.0, 1.0 )
 #define GRAY      vec4( 0.5, 0.5, 0.5, 1.0 )
-#define PINK      vec4( 1.0, 0.4, 0.7, 1.0 )
+#define RED       vec4( 0.8, 0.0, 0.0, 1.0 )
 #define BLACK3    vec3( 0.3, 0.3, 0.3 )
 #define WHITE3    vec3( 1.0, 1.0, 1.0 )
 #define HIGHLIGHT BABY_BLUE
 #define SELECT    YELLOW
-#define KILL      PINK
+#define KILL      RED
 
 #define HIGHLIGHT_ON true
 
@@ -79,7 +79,7 @@ enum animationType { TypeAttacking, TypeDying };
 
 // Structure for texture binding
 struct TextureBind {
-    TgaImage* textureImageArray[NUM_TEXTURE_PARTS*6];
+    TgaImage* textureImageArray[1000];
 	std::map<std::string, GLuint>    textureVarMap;
 } typedef TextureBind;
 
