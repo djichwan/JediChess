@@ -65,7 +65,7 @@ struct textureImage
 class Piece : public Object
 {
 public:
-    void move(Square* destSquare);        // move piece to destSquare, need to check if valid move
+    bool move(Square* destSquare);        // move piece to destSquare, need to check if valid move
     void select();                      // respond to being selected by mouse click
     void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
     void captured();                    // call if captured

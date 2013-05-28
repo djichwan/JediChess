@@ -7,17 +7,16 @@
 #elif __linux__ //linux
 #  include "GL/glew.h"
 #  include "GL/freeglut.h"
-//#else //windows
-//#  include <windows.h>
-//#  include "GL/glew.h"
-//#  include "GL/freeglut.h"
+#else //windows
+#  include <windows.h>
+#  include <GL/glew.h>
+#  include <GL/freeglut.h>
+#  include <GL/freeglut_ext.h>
 #endif
 
+#include <string>
 #include <iostream>
 
-#include "CheckError.h"
-#include "mat.h"
-#include "vec.h"
 #include "Angel.h"
 #include <vector>
 #include <map>
@@ -54,6 +53,7 @@ const int Num3DPoints = NumSquares + 2 * 4;
 
 //------------ Game Manager -----------------------------
 typedef std::vector<Square*> MoveList;
+const double TURN_ROTATION_SPEED  = 90;
 
 //------------ Piece -----------------------------
 #define PIECE_SCALE vec3( 0.5f, 0.5f, 0.5f )
@@ -74,15 +74,10 @@ enum animationType { TypeAttacking, TypeDying };
 // Structure for texture binding
 struct TextureBind {
     TgaImage* textureImageArray[NUM_TEXTURE_PARTS*6];
-    std::map<std::string, GLuint>    textureVarMap;
+	std::map<std::string, GLuint>    textureVarMap;
 } typedef TextureBind;
 
-//---------------------------------------------------
-
 //------------ General -----------------------------
-typedef Angel::vec2 vec2;
-typedef Angel::vec3 vec3;
-typedef Angel::vec4 vec4;
 
 #define TESTING_NO_TEXTURE false
 

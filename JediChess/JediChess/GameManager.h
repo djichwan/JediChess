@@ -29,6 +29,7 @@ public:
 	bool isCheckmate(King *king); // return true whether king is in check/game is over
 	void fight(Square *square); // animate the fight if a black and white piece share the same square
     void setBoard(Board *board); // Set board for game manager
+	int	 incTurns();
 private:
 	GameManager();
 
@@ -48,6 +49,7 @@ private:
 	void kingMoveHelper(Square *square, int side, MoveList* pm);
 
 	Board* m_board;
+	int m_turns;
 };
 
 #endif

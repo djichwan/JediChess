@@ -2,13 +2,18 @@
 
 GameManager::GameManager()
 {
-    //	m_board = &Board();
+    m_turns = 0;
 }
 
 GameManager& GameManager::getInstance()
 {
 	static GameManager instance;
 	return instance;
+}
+
+int GameManager::incTurns()
+{
+	return ++m_turns;
 }
 
 void GameManager::buildMoveList(Piece *piece)
@@ -51,9 +56,9 @@ void GameManager::setBoard(Board *board)
 void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 {
 	MoveList possibleMoves;
-	int dir = 1;
+	int dir = -1;
 	if (side == BLACKSIDE)
-		dir = -1;
+		dir = 1;
     
 	int x = pawn->getCol();
 	int y = pawn->getRow();
@@ -69,7 +74,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 	
 	offset = dir;
 	Square *square = m_board->getSquare(x, y + offset);
-	if (square->getPiece())
+	if (!square->getPiece())
 		possibleMoves.insert(possibleMoves.end(), square);
 	
 	if ((square = m_board->getSquare(x + 1, y + offset)))
@@ -122,7 +127,7 @@ void GameManager::knightMoveList(Knight *knight, int side, Square *currentSquare
 		moveBuilderHelper(square, side, &possibleMoves);
 	if ((square = m_board->getSquare(x - longSide, y + shortSide)))
 		moveBuilderHelper(square, side, &possibleMoves);
-	if ((square = m_board->getSquare(x - longSide, y + shortSide)))
+	if ((square = m_board->getSquare(x - longSide, y - shortSide)))
 		moveBuilderHelper(square, side, &possibleMoves);
 	if ((square = m_board->getSquare(x + shortSide, y + longSide)))
 		moveBuilderHelper(square, side, &possibleMoves);
@@ -200,9 +205,6 @@ void GameManager::kingMoveList(King *king, int side, Square *square)
 		
 		if (square == NULL)
 			possibleMoves.insert(possibleMoves.end(), m_board->getSquare(x - 2, y));
-        
-		if (possibleMoves.size() == 0)
-			king->setMoved();
 	}
 	
 	//Square *square = NULL;
@@ -295,6 +297,9 @@ bool GameManager::moveBuilderHelper(Square *square, int side, MoveList* pm)
 			((King *) piece)->setChecked(piece);
 		return false;
 	}
+	else
+		return false;
+
 	return true;
 }
 

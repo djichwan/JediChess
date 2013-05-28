@@ -33,7 +33,7 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
             
             // Initialize and bind textures
             textureBind->textureImageArray[texIndex] = new TgaImage();
-            if (!textureBind->textureImageArray[texIndex]->loadTGA(textureParts[j].faceFile[i].c_str()))
+			if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(textureParts[j].faceFile[i])).c_str()))
             {
                 printf("Error loading image file: %s\n", textureParts[j].faceFile[i].c_str());
                 exit(1);
@@ -472,7 +472,7 @@ textureGroup createBlackQueenTexture()
     blackQueenTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[2] = "Blank.tga";
     blackQueenTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
-    blackQueenTexture.weapon.faceFile[4] = "DarthVaderWeaponBack.tga";
+    blackQueenTexture.weapon.faceFile[4] = "Blank.tga";
     blackQueenTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
 
     return blackQueenTexture;

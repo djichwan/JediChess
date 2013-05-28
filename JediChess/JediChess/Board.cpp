@@ -17,7 +17,7 @@ Board::Board()
     m_DiffuseCoefficient  = 0.6f;
     m_SpecularCoefficient = 0.2f;
     m_Shininess           = 100.0f;
-    
+
     m_imageBoard   = new TgaImage();
     m_imageBorder  = new TgaImage();
 }
@@ -397,11 +397,14 @@ void Board::add( vec3 pos, Piece* piece )
 
 Square* Board::getSquare(int x, int y)
 {
-	return getSquare( pos2id( vec3( x, y, 0 ) ) );
+	return getSquare( pos2id( convertPos(y, x) ));
 }
 
 Square* Board::getSquare(int index)
 {
+	if (index >= NumSquares || index < 0)
+		return NULL;
+
     return &m_squares.at(index);
 }
 
