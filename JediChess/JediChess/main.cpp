@@ -324,7 +324,6 @@ void initScene()
     board.add(board.convertPos(blackPawn6.getRow(), blackPawn6.getCol()), &blackPawn6);
     board.add(board.convertPos(blackPawn7.getRow(), blackPawn7.getCol()), &blackPawn7);
     board.add(board.convertPos(blackPawn8.getRow(), blackPawn8.getCol()), &blackPawn8);
-    
     board.add(board.convertPos(blackRook1.getRow(), blackRook1.getCol()), &blackRook1);
     board.add(board.convertPos(blackRook2.getRow(), blackRook2.getCol()), &blackRook2);
     board.add(board.convertPos(blackBishop1.getRow(), blackBishop1.getCol()), &blackBishop1);
@@ -334,7 +333,6 @@ void initScene()
     board.add(board.convertPos(blackQueen.getRow(), blackQueen.getCol()), &blackQueen);
     board.add(board.convertPos(blackKing.getRow(), blackKing.getCol()), &blackKing);
     
-
     // White
     board.add(board.convertPos(whitePawn1.getRow(), whitePawn1.getCol()), &whitePawn1);
     board.add(board.convertPos(whitePawn2.getRow(), whitePawn2.getCol()), &whitePawn2);
@@ -344,7 +342,6 @@ void initScene()
     board.add(board.convertPos(whitePawn6.getRow(), whitePawn6.getCol()), &whitePawn6);
     board.add(board.convertPos(whitePawn7.getRow(), whitePawn7.getCol()), &whitePawn7);
     board.add(board.convertPos(whitePawn8.getRow(), whitePawn8.getCol()), &whitePawn8);
-    
     board.add(board.convertPos(whiteRook1.getRow(), whiteRook1.getCol()), &whiteRook1);
     board.add(board.convertPos(whiteRook2.getRow(), whiteRook2.getCol()), &whiteRook2);
     board.add(board.convertPos(whiteBishop1.getRow(), whiteBishop1.getCol()), &whiteBishop1);
@@ -399,40 +396,72 @@ void drawScene()
     
     //TODO: -------- draw pieces -----------------------
     // Back Pieces
-    blackPawn1.draw(uTex, uEnableTex, uModelView, model_view, blackPawn1.getSquare()->getPos());
-    blackPawn2.draw(uTex, uEnableTex, uModelView, model_view, blackPawn2.getSquare()->getPos());
-    blackPawn3.draw(uTex, uEnableTex, uModelView, model_view, blackPawn3.getSquare()->getPos());
-    blackPawn4.draw(uTex, uEnableTex, uModelView, model_view, blackPawn4.getSquare()->getPos());
-    blackPawn5.draw(uTex, uEnableTex, uModelView, model_view, blackPawn5.getSquare()->getPos());
-    blackPawn6.draw(uTex, uEnableTex, uModelView, model_view, blackPawn6.getSquare()->getPos());
-    blackPawn7.draw(uTex, uEnableTex, uModelView, model_view, blackPawn7.getSquare()->getPos());
-    blackPawn8.draw(uTex, uEnableTex, uModelView, model_view, blackPawn8.getSquare()->getPos());
-    blackRook1.draw(uTex, uEnableTex, uModelView, model_view, blackRook1.getSquare()->getPos());
-    blackRook2.draw(uTex, uEnableTex, uModelView, model_view, blackRook2.getSquare()->getPos());
-    blackBishop1.draw(uTex, uEnableTex, uModelView, model_view, blackBishop1.getSquare()->getPos());
-    blackBishop2.draw(uTex, uEnableTex, uModelView, model_view, blackBishop2.getSquare()->getPos());
-    blackKnight1.draw(uTex, uEnableTex, uModelView, model_view, blackKnight1.getSquare()->getPos());
-    blackKnight2.draw(uTex, uEnableTex, uModelView, model_view, blackKnight2.getSquare()->getPos());
-    blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
-    blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
+    if (blackPawn1.getSquare())
+        blackPawn1.draw(uTex, uEnableTex, uModelView, model_view, blackPawn1.getSquare()->getPos());
+    if (blackPawn2.getSquare())
+        blackPawn2.draw(uTex, uEnableTex, uModelView, model_view, blackPawn2.getSquare()->getPos());
+    if (blackPawn3.getSquare())
+        blackPawn3.draw(uTex, uEnableTex, uModelView, model_view, blackPawn3.getSquare()->getPos());
+    if (blackPawn4.getSquare())
+        blackPawn4.draw(uTex, uEnableTex, uModelView, model_view, blackPawn4.getSquare()->getPos());
+    if (blackPawn5.getSquare())
+        blackPawn5.draw(uTex, uEnableTex, uModelView, model_view, blackPawn5.getSquare()->getPos());
+    if (blackPawn6.getSquare())
+        blackPawn6.draw(uTex, uEnableTex, uModelView, model_view, blackPawn6.getSquare()->getPos());
+    if (blackPawn7.getSquare())
+        blackPawn7.draw(uTex, uEnableTex, uModelView, model_view, blackPawn7.getSquare()->getPos());
+    if (blackPawn8.getSquare())
+        blackPawn8.draw(uTex, uEnableTex, uModelView, model_view, blackPawn8.getSquare()->getPos());
+    if (blackRook1.getSquare())
+        blackRook1.draw(uTex, uEnableTex, uModelView, model_view, blackRook1.getSquare()->getPos());
+    if (blackRook2.getSquare())
+        blackRook2.draw(uTex, uEnableTex, uModelView, model_view, blackRook2.getSquare()->getPos());
+    if (blackBishop1.getSquare())
+        blackBishop1.draw(uTex, uEnableTex, uModelView, model_view, blackBishop1.getSquare()->getPos());
+    if (blackBishop2.getSquare())
+        blackBishop2.draw(uTex, uEnableTex, uModelView, model_view, blackBishop2.getSquare()->getPos());
+    if (blackKnight1.getSquare())
+        blackKnight1.draw(uTex, uEnableTex, uModelView, model_view, blackKnight1.getSquare()->getPos());
+    if (blackKnight2.getSquare())
+        blackKnight2.draw(uTex, uEnableTex, uModelView, model_view, blackKnight2.getSquare()->getPos());
+    if (blackQueen.getSquare())
+        blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
+    if (blackKing.getSquare())
+        blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
     
     // White Pieces
-    whitePawn1.draw(uTex, uEnableTex, uModelView, model_view, whitePawn1.getSquare()->getPos());
-    whitePawn2.draw(uTex, uEnableTex, uModelView, model_view, whitePawn2.getSquare()->getPos());
-    whitePawn3.draw(uTex, uEnableTex, uModelView, model_view, whitePawn3.getSquare()->getPos());
-    whitePawn4.draw(uTex, uEnableTex, uModelView, model_view, whitePawn4.getSquare()->getPos());
-    whitePawn5.draw(uTex, uEnableTex, uModelView, model_view, whitePawn5.getSquare()->getPos());
-    whitePawn6.draw(uTex, uEnableTex, uModelView, model_view, whitePawn6.getSquare()->getPos());
-    whitePawn7.draw(uTex, uEnableTex, uModelView, model_view, whitePawn7.getSquare()->getPos());
-    whitePawn8.draw(uTex, uEnableTex, uModelView, model_view, whitePawn8.getSquare()->getPos());
-    whiteRook1.draw(uTex, uEnableTex, uModelView, model_view, whiteRook1.getSquare()->getPos());
-    whiteRook2.draw(uTex, uEnableTex, uModelView, model_view, whiteRook2.getSquare()->getPos());
-    whiteBishop1.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop1.getSquare()->getPos());
-    whiteBishop2.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop2.getSquare()->getPos());
-    whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight1.getSquare()->getPos());
-    whiteKnight2.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight2.getSquare()->getPos());
-    whiteQueen.draw(uTex, uEnableTex, uModelView, model_view, whiteQueen.getSquare()->getPos());
-    whiteKing.draw(uTex, uEnableTex, uModelView, model_view, whiteKing.getSquare()->getPos());
+    if (whitePawn1.getSquare())
+        whitePawn1.draw(uTex, uEnableTex, uModelView, model_view, whitePawn1.getSquare()->getPos());
+    if (whitePawn2.getSquare())
+        whitePawn2.draw(uTex, uEnableTex, uModelView, model_view, whitePawn2.getSquare()->getPos());
+    if (whitePawn3.getSquare())
+        whitePawn3.draw(uTex, uEnableTex, uModelView, model_view, whitePawn3.getSquare()->getPos());
+    if (whitePawn4.getSquare())
+        whitePawn4.draw(uTex, uEnableTex, uModelView, model_view, whitePawn4.getSquare()->getPos());
+    if (whitePawn5.getSquare())
+        whitePawn5.draw(uTex, uEnableTex, uModelView, model_view, whitePawn5.getSquare()->getPos());
+    if (whitePawn6.getSquare())
+        whitePawn6.draw(uTex, uEnableTex, uModelView, model_view, whitePawn6.getSquare()->getPos());
+    if (whitePawn7.getSquare())
+        whitePawn7.draw(uTex, uEnableTex, uModelView, model_view, whitePawn7.getSquare()->getPos());
+    if (whitePawn8.getSquare())
+        whitePawn8.draw(uTex, uEnableTex, uModelView, model_view, whitePawn8.getSquare()->getPos());
+    if (whiteRook1.getSquare())
+        whiteRook1.draw(uTex, uEnableTex, uModelView, model_view, whiteRook1.getSquare()->getPos());
+    if (whiteRook2.getSquare())
+        whiteRook2.draw(uTex, uEnableTex, uModelView, model_view, whiteRook2.getSquare()->getPos());
+    if (whiteBishop1.getSquare())
+        whiteBishop1.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop1.getSquare()->getPos());
+    if (whiteBishop2.getSquare())
+        whiteBishop2.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop2.getSquare()->getPos());
+    if (whiteKnight1.getSquare())
+        whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight1.getSquare()->getPos());
+    if (whiteKnight2.getSquare())
+        whiteKnight2.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight2.getSquare()->getPos());
+    if (whiteQueen.getSquare())
+        whiteQueen.draw(uTex, uEnableTex, uModelView, model_view, whiteQueen.getSquare()->getPos());
+    if (whiteKing.getSquare())
+        whiteKing.draw(uTex, uEnableTex, uModelView, model_view, whiteKing.getSquare()->getPos());
     
 }// end drawScene()
 
@@ -492,6 +521,13 @@ void keyboardCallback(unsigned char key, int x, int y)
             break;
         case 'M':
             board.move(44, &whitePawn5);
+            break;
+        // Test for add and remove piece
+        case 'r':
+            board.remove(&blackPawn1);
+            break;
+        case 'R':
+            board.add(board.convertPos(blackPawn1.getRow(), blackPawn1.getCol()), &blackPawn1);
             break;
         case SPACE_KEY: //Reset camera position
             Zoom = 0.8; // 1.0

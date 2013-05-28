@@ -73,6 +73,8 @@ public:
     
     int getRow();                       // accessor function for m_row
     int getCol();                       // accessor function for m_col
+    void setRow(int row);
+    void setCol(int col);
     bool isAlive();                     // accessor function for m_alive
     void setSquare(Square* square);
 	Square* getSquare();                // accessor function for m_square

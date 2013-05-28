@@ -365,6 +365,10 @@ void Board::move(int id, Piece* piece)
     piece->getSquare()->setPiece(NULL);
     piece->setSquare(&m_squares.at(id));
     m_squares.at(id).setPiece(piece);
+    
+    // Update row, col
+    piece->setCol(id2Coord(piece->getSquare()->getId()).x);
+    piece->setRow(id2Coord(piece->getSquare()->getId()).y);
 }
 
 void Board::remove( vec3 pos )
@@ -372,6 +376,16 @@ void Board::remove( vec3 pos )
     m_pieces.at(pos2id(pos)) = NoType;
     m_squares.at(pos2id(pos)).getPiece()->setSquare(NULL);
     m_squares.at(pos2id(pos)).setPiece(NULL);
+}
+
+void Board::remove( Piece* piece )
+{
+    if (piece->getSquare())
+    {
+        m_pieces.at(pos2id(piece->getSquare()->getPos())) = NoType;
+        piece->getSquare()->setPiece(NULL);
+        piece->setSquare(NULL);
+    }
 }
 
 void Board::add( vec3 pos, Piece* piece )
@@ -438,6 +452,11 @@ int Board::pos2id( vec3 pos )
     }
     
     return NO_RESULTS;
+}
+
+vec2 Board::id2Coord( int id )
+{
+    return vec2( id / 8 + 1, id % 8 + 1 );
 }
 
 void Board::m_computePosition()

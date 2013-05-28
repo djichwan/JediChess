@@ -92,6 +92,15 @@ int Piece::getCol()
     return m_col;
 }// end Piece::getCol()
 
+void Piece::setRow(int row)
+{
+    m_row = row;
+}
+
+void Piece::setCol(int col)
+{
+    m_col = col;
+}
 
 //---------------------------------------------------------------
 MoveList* Piece::getMoveList()

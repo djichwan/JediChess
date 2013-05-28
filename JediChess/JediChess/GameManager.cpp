@@ -54,7 +54,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 	int dir = 1;
 	if (side == BLACKSIDE)
 		dir = -1;
-	
+    
 	int x = pawn->getCol();
 	int y = pawn->getRow();
 	

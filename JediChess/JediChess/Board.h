@@ -35,10 +35,12 @@ public:
     void    move(vec3 pos, Piece* piece); // Moves to piece to square with center position pos
     void    move(int id, Piece* piece); // Moves piece to square with given id (0-63)
     void    remove(vec3 pos);   // remove position to piece mapping from m_map
+    void    remove(Piece* piece); // Remove piece from board
     void    add(vec3 pos, Piece* piece);  // Adds new mapping to m_map
     vec3    convertPos(vec3 pos, bool rel2real); // Converts relative position to real position
     vec3    convertPos(int row, int col); // Converts (row, col) to real position
     int     pos2id(vec3 pos); // Converts position input to square id
+    vec2    id2Coord(int id); // Converts square id to (1,1) to (8,8) coordinate
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index); // Returns square given index
     virtual void UpdateAll(double dt){};
