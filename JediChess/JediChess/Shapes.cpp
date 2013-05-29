@@ -87,9 +87,9 @@ void colorcube()
 {                                                   // if cube front facing viewer:
     quad( 1, 0, 3, 2, point3( 0.0f,  0.0f,  1.0f) );    // front face
     quad( 2, 3, 7, 6, point3( 1.0f,  0.0f,  0.0f) );    // left face
-    quad( 3, 0, 4, 7, point3( 0.0f, -1.0f,  0.0f) );    // bottom face
+    quad( 0, 4, 7, 3, point3( 0.0f, -1.0f,  0.0f) );    // bottom face
     quad( 5, 1, 2, 6, point3( 0.0f,  1.0f,  0.0f) );    // top face
-    quad( 4, 5, 6, 7, point3( 0.0f,  0.0f, -1.0f) );    // back face
+    quad( 6, 7, 4, 5, point3( 0.0f,  0.0f, -1.0f) );    // back face
     quad( 5, 4, 0, 1, point3(-1.0f,  0.0f,  0.0f) );    // right face
 }// end colorcube()
 

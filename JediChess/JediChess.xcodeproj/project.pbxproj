@@ -110,6 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				D60873B917497B1F004FAE4D /* Angel */,
+				65DC680217504F00002BF4B9 /* AssignTextures.cpp */,
+				65DC680317504F00002BF4B9 /* AssignTextures.h */,
 				D6C436AE1745FEA40094699C /* Board.cpp */,
 				D6C436AF1745FEA50094699C /* Board.h */,
 				65322B151744D46700D012E8 /* fShader.frag */,
@@ -118,8 +120,6 @@
 				65322AF11744D11300D012E8 /* gl.h */,
 				65322AF21744D11300D012E8 /* JediChess.1 */,
 				65322AF41744D11300D012E8 /* main.cpp */,
-				65DC680217504F00002BF4B9 /* AssignTextures.cpp */,
-				65DC680317504F00002BF4B9 /* AssignTextures.h */,
 				65322AF61744D11300D012E8 /* Object.cpp */,
 				65322AF71744D11300D012E8 /* Object.h */,
 				65322AF81744D11300D012E8 /* Piece.cpp */,

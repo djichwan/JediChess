@@ -550,65 +550,65 @@ textureGroup createWhiteRookTexture()
     
     //TODO: implement
     //Head
-    whiteRookTexture.head.faceFile[0] = "Blank.tga";
-    whiteRookTexture.head.faceFile[1] = "Blank.tga";
+    whiteRookTexture.head.faceFile[0] = "C3POHeadFront.tga";
+    whiteRookTexture.head.faceFile[1] = "C3POHeadLeft.tga";
     whiteRookTexture.head.faceFile[2] = "Blank.tga";
-    whiteRookTexture.head.faceFile[3] = "Blank.tga";
-    whiteRookTexture.head.faceFile[4] = "Blank.tga";
-    whiteRookTexture.head.faceFile[5] = "Blank.tga";
+    whiteRookTexture.head.faceFile[3] = "C3POHeadTop.tga";
+    whiteRookTexture.head.faceFile[4] = "C3POHeadBack.tga";
+    whiteRookTexture.head.faceFile[5] = "C3POHeadRight.tga";
     
     
     //Torso
-    whiteRookTexture.torso.faceFile[0] = "Blank.tga";
-    whiteRookTexture.torso.faceFile[1] = "Blank.tga";
+    whiteRookTexture.torso.faceFile[0] = "C3POTorsoFront.tga";
+    whiteRookTexture.torso.faceFile[1] = "C3POTorsoLeft.tga";
     whiteRookTexture.torso.faceFile[2] = "Blank.tga";
-    whiteRookTexture.torso.faceFile[3] = "Blank.tga";
-    whiteRookTexture.torso.faceFile[4] = "Blank.tga";
-    whiteRookTexture.torso.faceFile[5] = "Blank.tga";
+    whiteRookTexture.torso.faceFile[3] = "C3POTorsoTop.tga";
+    whiteRookTexture.torso.faceFile[4] = "C3POTorsoBack.tga";
+    whiteRookTexture.torso.faceFile[5] = "C3POTorsoRight.tga";
     
     
     //Left Leg
-    whiteRookTexture.leftLeg.faceFile[0] = "Blank.tga";
-    whiteRookTexture.leftLeg.faceFile[1] = "Blank.tga";
+    whiteRookTexture.leftLeg.faceFile[0] = "C3POLeftLegFront.tga";
+    whiteRookTexture.leftLeg.faceFile[1] = "C3POLeftLegLeft.tga";
     whiteRookTexture.leftLeg.faceFile[2] = "Blank.tga";
     whiteRookTexture.leftLeg.faceFile[3] = "Blank.tga";
-    whiteRookTexture.leftLeg.faceFile[4] = "Blank.tga";
-    whiteRookTexture.leftLeg.faceFile[5] = "Blank.tga";
+    whiteRookTexture.leftLeg.faceFile[4] = "C3POLeftLegBack.tga";
+    whiteRookTexture.leftLeg.faceFile[5] = "C3POLeftLegRight.tga";
     
     
     //Right Leg
-    whiteRookTexture.rightLeg.faceFile[0] = "Blank.tga";
-    whiteRookTexture.rightLeg.faceFile[1] = "Blank.tga";
+    whiteRookTexture.rightLeg.faceFile[0] = "C3PORightLegFront.tga";
+    whiteRookTexture.rightLeg.faceFile[1] = "C3PORightLegLeft.tga";
     whiteRookTexture.rightLeg.faceFile[2] = "Blank.tga";
     whiteRookTexture.rightLeg.faceFile[3] = "Blank.tga";
-    whiteRookTexture.rightLeg.faceFile[4] = "Blank.tga";
-    whiteRookTexture.rightLeg.faceFile[5] = "Blank.tga";
+    whiteRookTexture.rightLeg.faceFile[4] = "C3PORightLegBack.tga";
+    whiteRookTexture.rightLeg.faceFile[5] = "C3PORightLegRight.tga";
     
     
     //Left Arm
-    whiteRookTexture.leftArm.faceFile[0] = "Blank.tga";
-    whiteRookTexture.leftArm.faceFile[1] = "Blank.tga";
+    whiteRookTexture.leftArm.faceFile[0] = "C3POLeftArmFront.tga";
+    whiteRookTexture.leftArm.faceFile[1] = "C3POLeftArmLeft.tga";
     whiteRookTexture.leftArm.faceFile[2] = "Blank.tga";
-    whiteRookTexture.leftArm.faceFile[3] = "Blank.tga";
-    whiteRookTexture.leftArm.faceFile[4] = "Blank.tga";
-    whiteRookTexture.leftArm.faceFile[5] = "Blank.tga";
+    whiteRookTexture.leftArm.faceFile[3] = "C3POLeftArmTop.tga";
+    whiteRookTexture.leftArm.faceFile[4] = "C3POLeftArmBack.tga";
+    whiteRookTexture.leftArm.faceFile[5] = "C3POLeftArmRight.tga";
     
     
     //Right Arm
-    whiteRookTexture.rightArm.faceFile[0] = "Blank.tga";
-    whiteRookTexture.rightArm.faceFile[1] = "Blank.tga";
+    whiteRookTexture.rightArm.faceFile[0] = "C3PORightArmFront.tga";
+    whiteRookTexture.rightArm.faceFile[1] = "C3PORightArmLeft.tga";
     whiteRookTexture.rightArm.faceFile[2] = "Blank.tga";
-    whiteRookTexture.rightArm.faceFile[3] = "Blank.tga";
-    whiteRookTexture.rightArm.faceFile[4] = "Blank.tga";
-    whiteRookTexture.rightArm.faceFile[5] = "Blank.tga";
+    whiteRookTexture.rightArm.faceFile[3] = "C3PORightArmTop.tga";
+    whiteRookTexture.rightArm.faceFile[4] = "C3PORightArmBack.tga";
+    whiteRookTexture.rightArm.faceFile[5] = "C3PORightArmRight.tga";
     
     //Weapon
-    whiteRookTexture.weapon.faceFile[0] = "Blank.tga";
-    whiteRookTexture.weapon.faceFile[1] = "Blank.tga";
-    whiteRookTexture.weapon.faceFile[2] = "Blank.tga";
-    whiteRookTexture.weapon.faceFile[3] = "Blank.tga";
-    whiteRookTexture.weapon.faceFile[4] = "Blank.tga";
-    whiteRookTexture.weapon.faceFile[5] = "Blank.tga";
+    whiteRookTexture.weapon.faceFile[0] = "BlackBlank.tga";
+    whiteRookTexture.weapon.faceFile[1] = "BlackBlank.tga";
+    whiteRookTexture.weapon.faceFile[2] = "BlackBlank.tga";
+    whiteRookTexture.weapon.faceFile[3] = "BlackBlank.tga";
+    whiteRookTexture.weapon.faceFile[4] = "BlackBlank.tga";
+    whiteRookTexture.weapon.faceFile[5] = "BlackBlank.tga";
     
     return whiteRookTexture;
 }// end createWhiteRookTexture()
@@ -755,70 +755,70 @@ textureGroup createWhiteKingTexture()
     
     //TODO: implement
     //Head
-    whiteKingTexture.head.faceFile[0] = "Blank.tga";
-    whiteKingTexture.head.faceFile[1] = "Blank.tga";
+    whiteKingTexture.head.faceFile[0] = "LukeHeadFront.tga";
+    whiteKingTexture.head.faceFile[1] = "LukeHeadLeft.tga";
     whiteKingTexture.head.faceFile[2] = "Blank.tga";
-    whiteKingTexture.head.faceFile[3] = "Blank.tga";
-    whiteKingTexture.head.faceFile[4] = "Blank.tga";
-    whiteKingTexture.head.faceFile[5] = "Blank.tga";
+    whiteKingTexture.head.faceFile[3] = "LukeHeadTop.tga";
+    whiteKingTexture.head.faceFile[4] = "LukeHeadBack.tga";
+    whiteKingTexture.head.faceFile[5] = "LukeHeadRight.tga";
     
     
     //Torso
-    whiteKingTexture.torso.faceFile[0] = "Blank.tga";
-    whiteKingTexture.torso.faceFile[1] = "Blank.tga";
+    whiteKingTexture.torso.faceFile[0] = "LukeTorsoFront.tga";
+    whiteKingTexture.torso.faceFile[1] = "LukeTorsoLeft.tga";
     whiteKingTexture.torso.faceFile[2] = "Blank.tga";
-    whiteKingTexture.torso.faceFile[3] = "Blank.tga";
-    whiteKingTexture.torso.faceFile[4] = "Blank.tga";
-    whiteKingTexture.torso.faceFile[5] = "Blank.tga";
+    whiteKingTexture.torso.faceFile[3] = "LukeTorsoTop.tga";
+    whiteKingTexture.torso.faceFile[4] = "LukeTorsoBack.tga";
+    whiteKingTexture.torso.faceFile[5] = "LukeTorsoRight.tga";
     
     
     //Left Leg
-    whiteKingTexture.leftLeg.faceFile[0] = "Blank.tga";
-    whiteKingTexture.leftLeg.faceFile[1] = "Blank.tga";
+    whiteKingTexture.leftLeg.faceFile[0] = "LukeLeftLegFront.tga";
+    whiteKingTexture.leftLeg.faceFile[1] = "LukeLeftLegLeft.tga";
     whiteKingTexture.leftLeg.faceFile[2] = "Blank.tga";
     whiteKingTexture.leftLeg.faceFile[3] = "Blank.tga";
-    whiteKingTexture.leftLeg.faceFile[4] = "Blank.tga";
-    whiteKingTexture.leftLeg.faceFile[5] = "Blank.tga";
+    whiteKingTexture.leftLeg.faceFile[4] = "LukeLeftLegBack.tga";
+    whiteKingTexture.leftLeg.faceFile[5] = "LukeLeftLegRight.tga";
     
     
     //Right Leg
-    whiteKingTexture.rightLeg.faceFile[0] = "Blank.tga";
-    whiteKingTexture.rightLeg.faceFile[1] = "Blank.tga";
+    whiteKingTexture.rightLeg.faceFile[0] = "LukeRightLegFront.tga";
+    whiteKingTexture.rightLeg.faceFile[1] = "LukeRightLegLeft.tga";
     whiteKingTexture.rightLeg.faceFile[2] = "Blank.tga";
     whiteKingTexture.rightLeg.faceFile[3] = "Blank.tga";
-    whiteKingTexture.rightLeg.faceFile[4] = "Blank.tga";
-    whiteKingTexture.rightLeg.faceFile[5] = "Blank.tga";
+    whiteKingTexture.rightLeg.faceFile[4] = "LukeRightLegBack.tga";
+    whiteKingTexture.rightLeg.faceFile[5] = "LukeRightLegRight.tga";
     
     
     //Left Arm
-    whiteKingTexture.leftArm.faceFile[0] = "Blank.tga";
-    whiteKingTexture.leftArm.faceFile[1] = "Blank.tga";
-    whiteKingTexture.leftArm.faceFile[2] = "Blank.tga";
-    whiteKingTexture.leftArm.faceFile[3] = "Blank.tga";
-    whiteKingTexture.leftArm.faceFile[4] = "Blank.tga";
-    whiteKingTexture.leftArm.faceFile[5] = "Blank.tga";
+    whiteKingTexture.leftArm.faceFile[0] = "LukeLeftArmFront.tga";
+    whiteKingTexture.leftArm.faceFile[1] = "LukeLeftArmLeft.tga";
+    whiteKingTexture.leftArm.faceFile[2] = "LukeLeftArmBottom.tga";
+    whiteKingTexture.leftArm.faceFile[3] = "LukeLeftArmTop.tga";
+    whiteKingTexture.leftArm.faceFile[4] = "LukeLeftArmBack.tga";
+    whiteKingTexture.leftArm.faceFile[5] = "LukeLeftArmRight.tga";
     
     
     //Right Arm
-    whiteKingTexture.rightArm.faceFile[0] = "Blank.tga";
-    whiteKingTexture.rightArm.faceFile[1] = "Blank.tga";
-    whiteKingTexture.rightArm.faceFile[2] = "Blank.tga";
-    whiteKingTexture.rightArm.faceFile[3] = "Blank.tga";
-    whiteKingTexture.rightArm.faceFile[4] = "Blank.tga";
-    whiteKingTexture.rightArm.faceFile[5] = "Blank.tga";
+    whiteKingTexture.rightArm.faceFile[0] = "LukeRightArmFront.tga";
+    whiteKingTexture.rightArm.faceFile[1] = "LukeRightArmLeft.tga";
+    whiteKingTexture.rightArm.faceFile[2] = "LukeRightArmBottom.tga";
+    whiteKingTexture.rightArm.faceFile[3] = "LukeRightArmTop.tga";
+    whiteKingTexture.rightArm.faceFile[4] = "LukeRightArmBack.tga";
+    whiteKingTexture.rightArm.faceFile[5] = "LukeRightArmRight.tga";
     
     //Weapon
-    whiteKingTexture.weapon.faceFile[0] = "Blank.tga";
-    whiteKingTexture.weapon.faceFile[1] = "Blank.tga";
+    whiteKingTexture.weapon.faceFile[0] = "LukeWeapon.tga";
+    whiteKingTexture.weapon.faceFile[1] = "LukeWeapon.tga";
     whiteKingTexture.weapon.faceFile[2] = "Blank.tga";
-    whiteKingTexture.weapon.faceFile[3] = "Blank.tga";
-    whiteKingTexture.weapon.faceFile[4] = "Blank.tga";
-    whiteKingTexture.weapon.faceFile[5] = "Blank.tga";
+    whiteKingTexture.weapon.faceFile[3] = "LukeWeaponTop.tga";
+    whiteKingTexture.weapon.faceFile[4] = "LukeWeapon.tga";
+    whiteKingTexture.weapon.faceFile[5] = "LukeWeapon.tga";
     
     return whiteKingTexture;
 }// end createWhiteKingTexture()
 
-
+//----------------------------------------------
 //----------------------------------------------
 textureGroup createWhiteQueenTexture()
 {
@@ -826,66 +826,65 @@ textureGroup createWhiteQueenTexture()
     
     //TODO: implement
     //Head
-    whiteQueenTexture.head.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.head.faceFile[1] = "Blank.tga";
+    whiteQueenTexture.head.faceFile[0] = "LeiaHeadFront.tga";
+    whiteQueenTexture.head.faceFile[1] = "LeiaHeadLeft.tga";
     whiteQueenTexture.head.faceFile[2] = "Blank.tga";
-    whiteQueenTexture.head.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.head.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.head.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.head.faceFile[3] = "LeiaHeadTop.tga";
+    whiteQueenTexture.head.faceFile[4] = "LeiaHeadBack.tga";
+    whiteQueenTexture.head.faceFile[5] = "LeiaHeadRight.tga";
     
     
     //Torso
-    whiteQueenTexture.torso.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.torso.faceFile[1] = "Blank.tga";
+    whiteQueenTexture.torso.faceFile[0] = "LeiaTorsoFront.tga";
+    whiteQueenTexture.torso.faceFile[1] = "LeiaTorsoLeft.tga";
     whiteQueenTexture.torso.faceFile[2] = "Blank.tga";
-    whiteQueenTexture.torso.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.torso.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.torso.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.torso.faceFile[3] = "Blank.tga";  //Leave top as white
+    whiteQueenTexture.torso.faceFile[4] = "LeiaTorsoBack.tga";
+    whiteQueenTexture.torso.faceFile[5] = "LeiaTorsoRight.tga";
     
     
     //Left Leg
-    whiteQueenTexture.leftLeg.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.leftLeg.faceFile[1] = "Blank.tga";
+    whiteQueenTexture.leftLeg.faceFile[0] = "LeiaLeftLegFront.tga";
+    whiteQueenTexture.leftLeg.faceFile[1] = "LeiaLeftLegLeft.tga";
     whiteQueenTexture.leftLeg.faceFile[2] = "Blank.tga";
     whiteQueenTexture.leftLeg.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.leftLeg.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.leftLeg.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.leftLeg.faceFile[4] = "LeiaLeftLegBack.tga";
+    whiteQueenTexture.leftLeg.faceFile[5] = "LeiaLeftLegRight.tga";
     
     
     //Right Leg
-    whiteQueenTexture.rightLeg.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.rightLeg.faceFile[1] = "Blank.tga";
+    whiteQueenTexture.rightLeg.faceFile[0] = "LeiaRightLegFront.tga";
+    whiteQueenTexture.rightLeg.faceFile[1] = "LeiaRightLegLeft.tga";
     whiteQueenTexture.rightLeg.faceFile[2] = "Blank.tga";
     whiteQueenTexture.rightLeg.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.rightLeg.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.rightLeg.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.rightLeg.faceFile[4] = "LeiaRightLegBack.tga";
+    whiteQueenTexture.rightLeg.faceFile[5] = "LeiaRightLegRight.tga";
     
     
     //Left Arm
-    whiteQueenTexture.leftArm.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.leftArm.faceFile[1] = "Blank.tga";
+    whiteQueenTexture.leftArm.faceFile[0] = "LeiaLeftArmFront.tga";
+    whiteQueenTexture.leftArm.faceFile[1] = "LeiaLeftArmSide.tga";
     whiteQueenTexture.leftArm.faceFile[2] = "Blank.tga";
-    whiteQueenTexture.leftArm.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.leftArm.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.leftArm.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.leftArm.faceFile[3] = "LeiaLeftArmTop.tga";
+    whiteQueenTexture.leftArm.faceFile[4] = "LeiaLeftArmBack.tga";
+    whiteQueenTexture.leftArm.faceFile[5] = "LeiaLeftArmSide.tga";
     
     
     //Right Arm
-    whiteQueenTexture.rightArm.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.rightArm.faceFile[1] = "Blank.tga";
+    whiteQueenTexture.rightArm.faceFile[0] = "LeiaRightArmFront.tga";
+    whiteQueenTexture.rightArm.faceFile[1] = "LeiaRightArmSide.tga";
     whiteQueenTexture.rightArm.faceFile[2] = "Blank.tga";
-    whiteQueenTexture.rightArm.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.rightArm.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.rightArm.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.rightArm.faceFile[3] = "LeiaRightArmTop.tga";
+    whiteQueenTexture.rightArm.faceFile[4] = "LeiaRightArmBack.tga";
+    whiteQueenTexture.rightArm.faceFile[5] = "LeiaRightArmSide.tga";
     
     //Weapon
-    whiteQueenTexture.weapon.faceFile[0] = "Blank.tga";
-    whiteQueenTexture.weapon.faceFile[1] = "Blank.tga";
-    whiteQueenTexture.weapon.faceFile[2] = "Blank.tga";
-    whiteQueenTexture.weapon.faceFile[3] = "Blank.tga";
-    whiteQueenTexture.weapon.faceFile[4] = "Blank.tga";
-    whiteQueenTexture.weapon.faceFile[5] = "Blank.tga";
+    whiteQueenTexture.weapon.faceFile[0] = "BlackBlank.tga";
+    whiteQueenTexture.weapon.faceFile[1] = "BlackBlank.tga";
+    whiteQueenTexture.weapon.faceFile[2] = "BlackBlank.tga";
+    whiteQueenTexture.weapon.faceFile[3] = "BlackBlank.tga";
+    whiteQueenTexture.weapon.faceFile[4] = "BlackBlank.tga";
+    whiteQueenTexture.weapon.faceFile[5] = "BlackBlank.tga";
     
     return whiteQueenTexture;
 }// end createWhiteQueenTexture()
-
