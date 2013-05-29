@@ -79,8 +79,8 @@ enum animationType { TypeAttacking, TypeDying };
 
 // Structure for texture binding
 struct TextureBind {
-    TgaImage* textureImageArray[1000];
-	std::map<std::string, GLuint>    textureVarMap;
+    TgaImage*                     textureImageArray[1000]; // Should be enough
+	std::map<std::string, GLuint> textureVarMap;
 } typedef TextureBind;
 
 //------------ General -----------------------------

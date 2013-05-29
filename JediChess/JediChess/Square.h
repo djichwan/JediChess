@@ -33,6 +33,8 @@ public:
     vec4*  getColors(); // Returns pointer to Colors array
     vec2*  getTex(); // Returns pointer to TexCoords array
     vec3*  getNormal(); // Returns pointer to Normals array
+    GLuint getShader();
+    void   setShader(GLuint shader);
     void   highlight(bool on, vec4 color);   // Light up the square if on, color if on - optional if off
     void   setColor(vec4 color); // Set color of square
     void   unselect(); // Unselects square
@@ -67,6 +69,7 @@ private:
     bool   m_highlighted; // Whether square is currently lighted up
     bool   m_selected; // Whether lighted square is currently selected
     void   m_initSquareStriped(); // Initializes square object
+    GLuint m_shader;
 };
 
 #endif

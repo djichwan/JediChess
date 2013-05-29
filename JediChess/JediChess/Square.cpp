@@ -91,6 +91,16 @@ vec3* Square::getNormal()
     return m_normals;
 }
 
+GLuint Square::getShader()
+{
+    return m_shader;
+}
+
+void Square::setShader( GLuint shader )
+{
+    m_shader = shader;
+}
+
 // Change color of square
 void Square::highlight( bool on, vec4 color )
 {

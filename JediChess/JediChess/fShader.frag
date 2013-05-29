@@ -56,10 +56,10 @@ void main()
         H = normalize( L + E );
         //vec3 R = normalize(reflect(L, N));
         
-        vec4 ambient = AmbientProduct;
+        vec4 ambient = AmbientProduct*color;
         
         float Kd = max(dot(L, N), 0.0);
-        vec4 diffuse = Kd * DiffuseProduct;
+        vec4 diffuse = Kd * DiffuseProduct*color;
         
         if (EnableTex == 1)
         {

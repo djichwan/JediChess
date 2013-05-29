@@ -272,6 +272,17 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     mat4 originalView = model_view;
     
+    // Make piece red if King is in check
+    if (!piece->getPicking())
+    {
+        if (piece->getType() == TypeKing && ((King*) piece)->isChecked())
+            glUniform4f( glGetUniformLocation(piece->getSquare()->getShader(), "color"),
+                        RED.x, RED.y, RED.z, RED.w );
+        else
+            glUniform4f( glGetUniformLocation(piece->getSquare()->getShader(), "color"),
+                        WHITE.x, WHITE.y, WHITE.z, WHITE.w );
+    }
+    
     float personThickness = 1.0f; //how thick each part of the person will be (scale coefficient for z-direction
     //--------------- Draw head as a cube -------------------------------------
     //model_view *= RotateY(30.0f);

@@ -198,21 +198,21 @@ void initScene()
     
     //------------------ White pieces ------------------------
     textureGroup whitePawnTexture = createWhitePawnTexture();
-    whitePawn1 = Pawn(7, 1, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn1 = Pawn(7, 1, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn1.generate(program);
-    whitePawn2 = Pawn(7, 2, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn2 = Pawn(7, 2, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn2.generate(program);
-    whitePawn3 = Pawn(7, 3, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn3 = Pawn(7, 3, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn3.generate(program);
-    whitePawn4 = Pawn(7, 4, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn4 = Pawn(7, 4, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn4.generate(program);
-    whitePawn5 = Pawn(7, 5, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn5 = Pawn(7, 5, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn5.generate(program);
-    whitePawn6 = Pawn(7, 6, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn6 = Pawn(7, 6, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn6.generate(program);
-    whitePawn7 = Pawn(7, 7, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn7 = Pawn(7, 7, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn7.generate(program);
-    whitePawn8 = Pawn(7, 8, WHITESIDE, whitePawnTexture, TypeSaber);
+    whitePawn8 = Pawn(7, 8, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn8.generate(program);
     
     textureGroup whiteRookTexture = createWhiteRookTexture();
@@ -222,9 +222,9 @@ void initScene()
     whiteRook2.generate(program);
     
     textureGroup whiteBishopTexture = createWhiteBishopTexture();
-    whiteBishop1 = Bishop(8, 3, WHITESIDE, whiteBishopTexture, TypeSaber);
+    whiteBishop1 = Bishop(8, 3, WHITESIDE, whiteBishopTexture, TypeGun);
     whiteBishop1.generate(program);
-    whiteBishop2 = Bishop(8, 6, WHITESIDE, whiteBishopTexture, TypeSaber);
+    whiteBishop2 = Bishop(8, 6, WHITESIDE, whiteBishopTexture, TypeGun);
     whiteBishop2.generate(program);
     
     textureGroup whiteKnightTexture = createWhiteKnightTexture();
@@ -299,6 +299,8 @@ void initScene()
     blackPawn8.m_textureBind   = &textureBind;
     blackRook1.m_textureBind   = &textureBind;
     blackRook2.m_textureBind   = &textureBind;
+    blackBishop1.m_textureBind = &textureBind;
+    blackBishop2.m_textureBind = &textureBind;
     blackKnight1.m_textureBind = &textureBind;
     blackKnight2.m_textureBind = &textureBind;
     blackQueen.m_textureBind   = &textureBind;

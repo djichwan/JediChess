@@ -52,6 +52,9 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
         square.m_SpecularCoefficient = m_SpecularCoefficient;
         square.m_Shininess = m_Shininess;
         
+        // Set universal shader
+        square.setShader(m_shader);
+        
         m_squares.push_back(square);
         m_pieces.push_back(NoType);
     }

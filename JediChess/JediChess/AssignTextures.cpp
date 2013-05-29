@@ -78,7 +78,6 @@ textureGroup createBlackPawnTexture()
     blackPawnTexture.head.faceFile[4] = "StormTrooperHeadBack.tga";
     blackPawnTexture.head.faceFile[5] = "StormTrooperHeadRightSide.tga";
     
-    
     //Torso
     blackPawnTexture.torso.faceFile[0] = "StormTrooperTorso.tga";
     blackPawnTexture.torso.faceFile[1] = "Blank.tga";
@@ -87,48 +86,45 @@ textureGroup createBlackPawnTexture()
     blackPawnTexture.torso.faceFile[4] = "StormTrooperTorsoBack.tga";
     blackPawnTexture.torso.faceFile[5] = "Blank.tga";
     
-    
     //Left Leg
     blackPawnTexture.leftLeg.faceFile[0] = "StormTrooperLeftLeg.tga";
-    blackPawnTexture.leftLeg.faceFile[1] = "StormTrooperLegSide.tga";
+    blackPawnTexture.leftLeg.faceFile[1] = "StormTrooperLeftLegSide.tga";
     blackPawnTexture.leftLeg.faceFile[2] = "Blank.tga";
     blackPawnTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackPawnTexture.leftLeg.faceFile[4] = "StormTrooperLegBack.tga";
+    blackPawnTexture.leftLeg.faceFile[4] = "StormTrooperLeftLegBack.tga";
     blackPawnTexture.leftLeg.faceFile[5] = "Blank.tga";
-    
     
     //Right Leg
     blackPawnTexture.rightLeg.faceFile[0] = "StormTrooperRightLeg.tga";
     blackPawnTexture.rightLeg.faceFile[1] = "Blank.tga";
     blackPawnTexture.rightLeg.faceFile[2] = "Blank.tga";
     blackPawnTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackPawnTexture.rightLeg.faceFile[4] = "StormTrooperLegBack.tga";
-    blackPawnTexture.rightLeg.faceFile[5] = "StormTrooperLegSide.tga";
+    blackPawnTexture.rightLeg.faceFile[4] = "StormTrooperRightLegBack.tga";
+    blackPawnTexture.rightLeg.faceFile[5] = "StormTrooperRightLegSide.tga";
     
     //Left Arm
     blackPawnTexture.leftArm.faceFile[0] = "StormTrooperLeftArm.tga";
-    blackPawnTexture.leftArm.faceFile[1] = "StormTrooperArmSide.tga";
-    blackPawnTexture.leftArm.faceFile[2] = "Blank.tga";
+    blackPawnTexture.leftArm.faceFile[1] = "StormTrooperLeftArmSide.tga";
+    blackPawnTexture.leftArm.faceFile[2] = "StormTrooperArmHand.tga";
     blackPawnTexture.leftArm.faceFile[3] = "Blank.tga"; // White
     blackPawnTexture.leftArm.faceFile[4] = "StormTrooperLeftArmBack.tga";
-    blackPawnTexture.leftArm.faceFile[5] = "Blank.tga";
-    
+    blackPawnTexture.leftArm.faceFile[5] = "StormTrooperRightArmSide.tga";
     
     //Right Arm
     blackPawnTexture.rightArm.faceFile[0] = "StormTrooperRightArm.tga";
-    blackPawnTexture.rightArm.faceFile[1] = "Blank.tga";
-    blackPawnTexture.rightArm.faceFile[2] = "Blank.tga";
+    blackPawnTexture.rightArm.faceFile[1] = "StormTrooperLeftArmSide.tga";
+    blackPawnTexture.rightArm.faceFile[2] = "StormTrooperArmHand.tga";
     blackPawnTexture.rightArm.faceFile[3] = "Blank.tga"; // White
     blackPawnTexture.rightArm.faceFile[4] = "StormTrooperRightArmBack.tga";
-    blackPawnTexture.rightArm.faceFile[5] = "StormTrooperArmSide.tga";
+    blackPawnTexture.rightArm.faceFile[5] = "StormTrooperRightArmSide.tga";
     
     //Weapon
-    blackPawnTexture.weapon.faceFile[0] = "BlankDark.tga";
-    blackPawnTexture.weapon.faceFile[1] = "BlankDark.tga";
-    blackPawnTexture.weapon.faceFile[2] = "BlankDark.tga";
-    blackPawnTexture.weapon.faceFile[3] = "BlankDark.tga";
-    blackPawnTexture.weapon.faceFile[4] = "BlankDark.tga";
-    blackPawnTexture.weapon.faceFile[5] = "BlankDark.tga";
+    blackPawnTexture.weapon.faceFile[0] = "StormTrooperWeaponFront.tga";
+    blackPawnTexture.weapon.faceFile[1] = "StormTrooperWeaponLeft.tga";
+    blackPawnTexture.weapon.faceFile[2] = "StormTrooperWeaponTop.tga"; // Bottom
+    blackPawnTexture.weapon.faceFile[3] = "StormTrooperWeaponTop.tga";
+    blackPawnTexture.weapon.faceFile[4] = "BlankDark.tga"; // Back
+    blackPawnTexture.weapon.faceFile[5] = "StormTrooperWeaponRight.tga";
     
     return blackPawnTexture;
 }// end createBlackPawnTexture
@@ -140,65 +136,60 @@ textureGroup createBlackRookTexture()
     
     //TODO: implement
     //Head
-    blackRookTexture.head.faceFile[0] = "DarthVaderWeaponBack.tga";
-    blackRookTexture.head.faceFile[1] = "Blank.tga";
+    blackRookTexture.head.faceFile[0] = "DarthMaulFace.tga";
+    blackRookTexture.head.faceFile[1] = "DarthMaulHeadLeft.tga";
     blackRookTexture.head.faceFile[2] = "Blank.tga";
-    blackRookTexture.head.faceFile[3] = "Blank.tga";
-    blackRookTexture.head.faceFile[4] = "Blank.tga";
-    blackRookTexture.head.faceFile[5] = "Blank.tga";
-    
+    blackRookTexture.head.faceFile[3] = "BlankDark.tga";
+    blackRookTexture.head.faceFile[4] = "DarthMaulHeadBack.tga";
+    blackRookTexture.head.faceFile[5] = "DarthMaulHeadRight.tga";
     
     //Torso
-    blackRookTexture.torso.faceFile[0] = "Blank.tga";
+    blackRookTexture.torso.faceFile[0] = "DarthMaulTorso.tga";
     blackRookTexture.torso.faceFile[1] = "Blank.tga";
     blackRookTexture.torso.faceFile[2] = "Blank.tga";
-    blackRookTexture.torso.faceFile[3] = "Blank.tga";
-    blackRookTexture.torso.faceFile[4] = "Blank.tga";
+    blackRookTexture.torso.faceFile[3] = "DarthVaderTorsoTop.tga";
+    blackRookTexture.torso.faceFile[4] = "DarthVaderTorsoBack.tga";
     blackRookTexture.torso.faceFile[5] = "Blank.tga";
     
-    
     //Left Leg
-    blackRookTexture.leftLeg.faceFile[0] = "Blank.tga";
-    blackRookTexture.leftLeg.faceFile[1] = "Blank.tga";
+    blackRookTexture.leftLeg.faceFile[0] = "DarthVaderLeftLeg.tga";
+    blackRookTexture.leftLeg.faceFile[1] = "DarthVaderLeftLegSide.tga";
     blackRookTexture.leftLeg.faceFile[2] = "Blank.tga";
     blackRookTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackRookTexture.leftLeg.faceFile[4] = "Blank.tga";
+    blackRookTexture.leftLeg.faceFile[4] = "DarthVaderLeftLegBack.tga";
     blackRookTexture.leftLeg.faceFile[5] = "Blank.tga";
     
-    
     //Right Leg
-    blackRookTexture.rightLeg.faceFile[0] = "Blank.tga";
+    blackRookTexture.rightLeg.faceFile[0] = "DarthVaderRightLeg.tga";
     blackRookTexture.rightLeg.faceFile[1] = "Blank.tga";
     blackRookTexture.rightLeg.faceFile[2] = "Blank.tga";
     blackRookTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackRookTexture.rightLeg.faceFile[4] = "Blank.tga";
-    blackRookTexture.rightLeg.faceFile[5] = "Blank.tga";
-    
+    blackRookTexture.rightLeg.faceFile[4] = "DarthVaderRightLegBack.tga";
+    blackRookTexture.rightLeg.faceFile[5] = "DarthVaderRightLegSide.tga";
     
     //Left Arm
-    blackRookTexture.leftArm.faceFile[0] = "Blank.tga";
-    blackRookTexture.leftArm.faceFile[1] = "Blank.tga";
-    blackRookTexture.leftArm.faceFile[2] = "Blank.tga";
+    blackRookTexture.leftArm.faceFile[0] = "DarthVaderLeftArmFront.tga";
+    blackRookTexture.leftArm.faceFile[1] = "DarthVaderLeftArmSide.tga";
+    blackRookTexture.leftArm.faceFile[2] = "DarthVaderRightArmTop.tga";
     blackRookTexture.leftArm.faceFile[3] = "Blank.tga";
-    blackRookTexture.leftArm.faceFile[4] = "Blank.tga";
+    blackRookTexture.leftArm.faceFile[4] = "DarthVaderLeftArmBack.tga";
     blackRookTexture.leftArm.faceFile[5] = "Blank.tga";
     
-    
     //Right Arm
-    blackRookTexture.rightArm.faceFile[0] = "Blank.tga";
-    blackRookTexture.rightArm.faceFile[1] = "Blank.tga";
-    blackRookTexture.rightArm.faceFile[2] = "Blank.tga";
+    blackRookTexture.rightArm.faceFile[0] = "DarthVaderRightArmFront.tga";
+    blackRookTexture.rightArm.faceFile[1] = "DarthVaderLeftArmSide.tga";
+    blackRookTexture.rightArm.faceFile[2] = "DarthVaderRightArmTop.tga";
     blackRookTexture.rightArm.faceFile[3] = "Blank.tga";
-    blackRookTexture.rightArm.faceFile[4] = "Blank.tga";
-    blackRookTexture.rightArm.faceFile[5] = "Blank.tga";
+    blackRookTexture.rightArm.faceFile[4] = "DarthVaderRightArmBack.tga";
+    blackRookTexture.rightArm.faceFile[5] = "DarthVaderRightArmSide.tga";
     
     //Weapon
-    blackRookTexture.weapon.faceFile[0] = "Blank.tga";
-    blackRookTexture.weapon.faceFile[1] = "Blank.tga";
+    blackRookTexture.weapon.faceFile[0] = "DarthVaderWeaponFront.tga";
+    blackRookTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
     blackRookTexture.weapon.faceFile[2] = "Blank.tga";
-    blackRookTexture.weapon.faceFile[3] = "Blank.tga";
+    blackRookTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
     blackRookTexture.weapon.faceFile[4] = "Blank.tga";
-    blackRookTexture.weapon.faceFile[5] = "Blank.tga";
+    blackRookTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
     
     return blackRookTexture;
 }// end createBlackRookTexture()
@@ -489,65 +480,65 @@ textureGroup createWhitePawnTexture()
     
     //TODO: implement
     //Head
-    whitePawnTexture.head.faceFile[0] = "Blank.tga";
-    whitePawnTexture.head.faceFile[1] = "Blank.tga";
+    whitePawnTexture.head.faceFile[0] = "RebelFace.tga";
+    whitePawnTexture.head.faceFile[1] = "RebelHeadLeft.tga";
     whitePawnTexture.head.faceFile[2] = "Blank.tga";
-    whitePawnTexture.head.faceFile[3] = "Blank.tga";
-    whitePawnTexture.head.faceFile[4] = "Blank.tga";
-    whitePawnTexture.head.faceFile[5] = "Blank.tga";
+    whitePawnTexture.head.faceFile[3] = "RebelHeadTop.tga";
+    whitePawnTexture.head.faceFile[4] = "RebelHeadBack.tga";
+    whitePawnTexture.head.faceFile[5] = "RebelHeadRight.tga";
     
     
     //Torso
-    whitePawnTexture.torso.faceFile[0] = "Blank.tga";
-    whitePawnTexture.torso.faceFile[1] = "Blank.tga";
+    whitePawnTexture.torso.faceFile[0] = "RebelTorso.tga";
+    whitePawnTexture.torso.faceFile[1] = "BlankDark.tga"; // Black vest
     whitePawnTexture.torso.faceFile[2] = "Blank.tga";
-    whitePawnTexture.torso.faceFile[3] = "Blank.tga";
-    whitePawnTexture.torso.faceFile[4] = "Blank.tga";
-    whitePawnTexture.torso.faceFile[5] = "Blank.tga";
+    whitePawnTexture.torso.faceFile[3] = "BlankDark.tga"; // Black vest
+    whitePawnTexture.torso.faceFile[4] = "RebelTorsoBack.tga";
+    whitePawnTexture.torso.faceFile[5] = "BlankDark.tga"; // Black vest
     
     
     //Left Leg
-    whitePawnTexture.leftLeg.faceFile[0] = "Blank.tga";
-    whitePawnTexture.leftLeg.faceFile[1] = "Blank.tga";
+    whitePawnTexture.leftLeg.faceFile[0] = "RebelLeftLeg.tga";
+    whitePawnTexture.leftLeg.faceFile[1] = "RebelLeftLegSide.tga";
     whitePawnTexture.leftLeg.faceFile[2] = "Blank.tga";
-    whitePawnTexture.leftLeg.faceFile[3] = "Blank.tga";
-    whitePawnTexture.leftLeg.faceFile[4] = "Blank.tga";
-    whitePawnTexture.leftLeg.faceFile[5] = "Blank.tga";
+    whitePawnTexture.leftLeg.faceFile[3] = "BlankDark.tga"; // Shoe black
+    whitePawnTexture.leftLeg.faceFile[4] = "RebelLeftLegBack.tga";
+    whitePawnTexture.leftLeg.faceFile[5] = "RebelRightLegSide.tga";
     
     
     //Right Leg
-    whitePawnTexture.rightLeg.faceFile[0] = "Blank.tga";
-    whitePawnTexture.rightLeg.faceFile[1] = "Blank.tga";
+    whitePawnTexture.rightLeg.faceFile[0] = "RebelRightLeg.tga";
+    whitePawnTexture.rightLeg.faceFile[1] = "RebelLeftLegSide.tga";
     whitePawnTexture.rightLeg.faceFile[2] = "Blank.tga";
-    whitePawnTexture.rightLeg.faceFile[3] = "Blank.tga";
-    whitePawnTexture.rightLeg.faceFile[4] = "Blank.tga";
-    whitePawnTexture.rightLeg.faceFile[5] = "Blank.tga";
+    whitePawnTexture.rightLeg.faceFile[3] = "BlankDark.tga"; // Shoe black
+    whitePawnTexture.rightLeg.faceFile[4] = "RebelRightLegBack.tga";
+    whitePawnTexture.rightLeg.faceFile[5] = "RebelRightLegSide.tga";
     
     
     //Left Arm
-    whitePawnTexture.leftArm.faceFile[0] = "Blank.tga";
-    whitePawnTexture.leftArm.faceFile[1] = "Blank.tga";
-    whitePawnTexture.leftArm.faceFile[2] = "Blank.tga";
-    whitePawnTexture.leftArm.faceFile[3] = "Blank.tga";
-    whitePawnTexture.leftArm.faceFile[4] = "Blank.tga";
-    whitePawnTexture.leftArm.faceFile[5] = "Blank.tga";
+    whitePawnTexture.leftArm.faceFile[0] = "RebelLeftArm.tga";
+    whitePawnTexture.leftArm.faceFile[1] = "RebelLeftArmSide.tga";
+    whitePawnTexture.leftArm.faceFile[2] = "RebelFist.tga";
+    whitePawnTexture.leftArm.faceFile[3] = "BlankDark.tga"; // Black vest
+    whitePawnTexture.leftArm.faceFile[4] = "RebelLeftArmBack.tga";
+    whitePawnTexture.leftArm.faceFile[5] = "RebelRightArmSide.tga";
     
     
     //Right Arm
-    whitePawnTexture.rightArm.faceFile[0] = "Blank.tga";
-    whitePawnTexture.rightArm.faceFile[1] = "Blank.tga";
-    whitePawnTexture.rightArm.faceFile[2] = "Blank.tga";
-    whitePawnTexture.rightArm.faceFile[3] = "Blank.tga";
-    whitePawnTexture.rightArm.faceFile[4] = "Blank.tga";
-    whitePawnTexture.rightArm.faceFile[5] = "Blank.tga";
+    whitePawnTexture.rightArm.faceFile[0] = "RebelRightArm.tga";
+    whitePawnTexture.rightArm.faceFile[1] = "RebelLeftArmSide.tga";
+    whitePawnTexture.rightArm.faceFile[2] = "RebelFist.tga";
+    whitePawnTexture.rightArm.faceFile[3] = "BlankDark.tga"; // Black vest
+    whitePawnTexture.rightArm.faceFile[4] = "RebelRightArmBack.tga";
+    whitePawnTexture.rightArm.faceFile[5] = "RebelRightArmSide.tga";
     
     //Weapon
-    whitePawnTexture.weapon.faceFile[0] = "Blank.tga";
-    whitePawnTexture.weapon.faceFile[1] = "Blank.tga";
-    whitePawnTexture.weapon.faceFile[2] = "Blank.tga";
-    whitePawnTexture.weapon.faceFile[3] = "Blank.tga";
-    whitePawnTexture.weapon.faceFile[4] = "Blank.tga";
-    whitePawnTexture.weapon.faceFile[5] = "Blank.tga";
+    whitePawnTexture.weapon.faceFile[0] = "RebelWeaponFront.tga";
+    whitePawnTexture.weapon.faceFile[1] = "RebelWeaponLeft.tga";
+    whitePawnTexture.weapon.faceFile[2] = "RebelWeaponTop.tga"; // Bottom same as top
+    whitePawnTexture.weapon.faceFile[3] = "RebelWeaponTop.tga";
+    whitePawnTexture.weapon.faceFile[4] = "BlankDark.tga"; // Back black
+    whitePawnTexture.weapon.faceFile[5] = "RebelWeaponRight.tga";
     
     return whitePawnTexture;
 }// end createwhitePawnTexture
@@ -629,123 +620,59 @@ textureGroup createWhiteBishopTexture()
     
     //TODO: implement
     //Head
-    
     whiteBishopTexture.head.faceFile[0] = "ChewbaccaHeadFront.tga";
-    
     whiteBishopTexture.head.faceFile[1] = "ChewbaccaHeadLeft.tga";
-    
     whiteBishopTexture.head.faceFile[2] = "Blank.tga";
-    
     whiteBishopTexture.head.faceFile[3] = "ChewbaccaHeadTop.tga";
-    
     whiteBishopTexture.head.faceFile[4] = "ChewbaccaHeadBack.tga";
-    
     whiteBishopTexture.head.faceFile[5] = "ChewbaccaHeadRight.tga";
     
-    
-    
-    
-    
     //Torso
-    
     whiteBishopTexture.torso.faceFile[0] = "ChewbaccaTorsoFront.tga";
-    
     whiteBishopTexture.torso.faceFile[1] = "ChewbaccaTorsoLeft.tga";
-    
     whiteBishopTexture.torso.faceFile[2] = "Blank.tga";
-    
     whiteBishopTexture.torso.faceFile[3] = "ChewbaccaTorsoTop.tga";
-    
     whiteBishopTexture.torso.faceFile[4] = "ChewbaccaTorsoBack.tga";
-    
     whiteBishopTexture.torso.faceFile[5] = "ChewbaccaTorsoRight.tga";
-    
-    
-    
-    
-    
+
     //Left Leg
-    
     whiteBishopTexture.leftLeg.faceFile[0] = "ChewbaccaLeftLegFront.tga";
-    
     whiteBishopTexture.leftLeg.faceFile[1] = "ChewbaccaLeftLegLeft.tga";
-    
     whiteBishopTexture.leftLeg.faceFile[2] = "Blank.tga";
-    
     whiteBishopTexture.leftLeg.faceFile[3] = "ChewbaccaLeftLegTop.tga";
-    
     whiteBishopTexture.leftLeg.faceFile[4] = "ChewbaccaLeftLegBack.tga";
-    
     whiteBishopTexture.leftLeg.faceFile[5] = "ChewbaccaLeftLegRight.tga";
     
-    
-    
-    
-    
     //Right Leg
-    
     whiteBishopTexture.rightLeg.faceFile[0] = "ChewbaccaRightLegFront.tga";
-    
     whiteBishopTexture.rightLeg.faceFile[1] = "ChewbaccaRightLegLeft.tga";
-    
     whiteBishopTexture.rightLeg.faceFile[2] = "Blank.tga";
-    
     whiteBishopTexture.rightLeg.faceFile[3] = "ChewbaccaRightLegTop.tga";
-    
     whiteBishopTexture.rightLeg.faceFile[4] = "ChewbaccaRightLegBack.tga";
-    
     whiteBishopTexture.rightLeg.faceFile[5] = "ChewbaccaRightLegRight.tga";
-    
-    
-    
-    
-    
+
     //Left Arm
-    
     whiteBishopTexture.leftArm.faceFile[0] = "ChewbaccaLeftArmFront.tga";
-    
     whiteBishopTexture.leftArm.faceFile[1] = "ChewbaccaLeftArmLeft.tga";
-    
     whiteBishopTexture.leftArm.faceFile[2] = "ChewbaccaLeftArmTop.tga";
-    
     whiteBishopTexture.leftArm.faceFile[3] = "ChewbaccaLeftArmTop.tga";
-    
     whiteBishopTexture.leftArm.faceFile[4] = "ChewbaccaLeftArmBack.tga";
-    
     whiteBishopTexture.leftArm.faceFile[5] = "ChewbaccaLeftArmRight.tga";
     
-    
-    
-    
-    
     //Right Arm
-    
     whiteBishopTexture.rightArm.faceFile[0] = "ChewbaccaRightArmFront.tga";
-    
     whiteBishopTexture.rightArm.faceFile[1] = "ChewbaccaRightArmLeft.tga";
-    
     whiteBishopTexture.rightArm.faceFile[2] = "ChewbaccaRightArmTop.tga";
-    
     whiteBishopTexture.rightArm.faceFile[3] = "ChewbaccaRightArmTop.tga";
-    
     whiteBishopTexture.rightArm.faceFile[4] = "ChewbaccaRightArmBack.tga";
-    
     whiteBishopTexture.rightArm.faceFile[5] = "ChewbaccaRightArmRight.tga";
     
-    
-    
     //Weapon
-    
     whiteBishopTexture.weapon.faceFile[0] = "ChewbaccaGunFront.tga";
-    
     whiteBishopTexture.weapon.faceFile[1] = "ChewbaccaGunLeft.tga";
-    
     whiteBishopTexture.weapon.faceFile[2] = "ChewbaccaGunBottom.tga";
-    
     whiteBishopTexture.weapon.faceFile[3] = "ChewbaccaGunTop.tga";
-    
     whiteBishopTexture.weapon.faceFile[4] = "ChewbaccaGunBack.tga";
-    
     whiteBishopTexture.weapon.faceFile[5] = "ChewbaccaGunRight.tga";
     
     return whiteBishopTexture;
