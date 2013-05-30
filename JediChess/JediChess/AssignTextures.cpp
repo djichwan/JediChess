@@ -186,7 +186,7 @@ textureGroup createBlackRookTexture()
     //Weapon
     blackRookTexture.weapon.faceFile[0] = "DarthVaderWeaponFront.tga";
     blackRookTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
-    blackRookTexture.weapon.faceFile[2] = "Blank.tga";
+    blackRookTexture.weapon.faceFile[2] = "DarthVaderWeapon.tga";
     blackRookTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
     blackRookTexture.weapon.faceFile[4] = "Blank.tga";
     blackRookTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
@@ -461,7 +461,7 @@ textureGroup createBlackQueenTexture()
     //Weapon
     blackQueenTexture.weapon.faceFile[0] = "DarthVaderWeaponFront.tga";
     blackQueenTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
-    blackQueenTexture.weapon.faceFile[2] = "Blank.tga";
+    blackQueenTexture.weapon.faceFile[2] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[4] = "Blank.tga";
     blackQueenTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";

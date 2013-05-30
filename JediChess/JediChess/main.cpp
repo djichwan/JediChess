@@ -41,7 +41,7 @@
 //Global Variables
 int     Window_Width  = 1200;
 int     Window_Height = 900;
-float   Zoom          = 0.7; // 1.0
+float   Zoom          = 0.65; // 1.0
 GLfloat theta         = 0.0;
 GLfloat oldTheta	  = -180.0;
 GLfloat azimuth       = 30.0; // 0.0
@@ -85,6 +85,12 @@ int		turnRotation;
 
 // Board object
 Board board;
+
+// To fix board rotation bug
+double boardOffset   = 1.5;
+double boardBlack    = -0.5;
+double boardWhite    = 1.0;
+int    rotationCount = 140;
 
 // Texture bind object
 TextureBind textureBind;
@@ -538,7 +544,7 @@ void keyboardCallback(unsigned char key, int x, int y)
             board.add(board.convertPos(blackPawn1.getRow(), blackPawn1.getCol()), &blackPawn1);
             break;
         case SPACE_KEY: //Reset camera position
-            Zoom = 0.8; // 1.0
+            Zoom = 0.65; // 1.0
             theta = 0;
 			oldTheta = -180;
             azimuth = 30; // 0
@@ -578,7 +584,23 @@ void idleCallback()
 			azimuth -= DTIME * TURN_ROTATION_SPEED/3.0;
 		else
 			azimuth += DTIME * TURN_ROTATION_SPEED/3.0;
-
+        
+        // Aligns board rotation
+        if (turnRotation == WHITESIDE)
+        {
+            if (horizontalPos < boardWhite)
+                horizontalPos += boardOffset / rotationCount;
+            else
+                horizontalPos = boardWhite;
+        }
+        else
+        {
+            if (horizontalPos > boardBlack)
+                horizontalPos -= boardOffset / rotationCount;
+            else
+                horizontalPos = boardBlack;
+        }
+        
 		glutPostRedisplay();
 	}
 }// end idleCallback()
