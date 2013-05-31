@@ -305,8 +305,13 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     
     //---------------------- Draw left arm as cube ---------------------------
-    model_view *= Translate(1.25f, -2.05f, 0.0f);
-    //model_view *= RotateY(270.0f);
+    if (!GameManager::getInstance().getBoard()->getGameSet())
+        model_view *= Translate(1.25f, -2.05f, 0.0f);
+    else
+    {
+        model_view *= Translate(1.25f, 0.0f, 0.0f);
+        model_view *= RotateX(180.f);
+    }
     model_view *= Scale(0.7f, 3.0f, personThickness);
     
     bindCubeFaceTextures(piece, piece->m_texture.leftArm, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.leftArm);
@@ -315,7 +320,13 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     
     //---------------------- Draw right arm as cube ---------------------------
-    model_view *= Translate(-1.25f, -2.05f, 0.0f);
+    if (!GameManager::getInstance().getBoard()->getGameSet())
+        model_view *= Translate(-1.25f, -2.05f, 0.0f);
+    else
+    {
+        model_view *= Translate(-1.25f, 0.0f, 0.0f);
+        model_view *= RotateX(180.f);
+    }
     model_view *= Scale(0.7f, 3.0f, personThickness);
     
     bindCubeFaceTextures(piece, piece->m_texture.rightArm, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);

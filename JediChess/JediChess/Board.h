@@ -45,6 +45,8 @@ public:
     vec2    id2Coord(int id); // Converts square id to coordinate between (1,1) and (8,8)
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index); // Returns square given index
+    void    setGameSet(bool set);
+    bool    getGameSet();
     virtual void UpdateAll(double dt){};
     ~Board() {};  // Empty destructor
 
@@ -79,6 +81,7 @@ private:
     void                   m_computePosition(); // Computes center positions for each square
     void                   m_initTexture(TgaImage* image, GLuint* texture, std::string filename); // Initializes texture for board
     void                   m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
+    bool                   m_gameSet;
 };
 
 #endif /* defined(__JediChess__Board__) */

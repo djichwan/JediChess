@@ -53,6 +53,11 @@ void GameManager::setBoard(Board *board)
     m_board = board;
 }
 
+Board* GameManager::getBoard()
+{
+    return m_board;
+}
+
 void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 {
 	MoveList possibleMoves;

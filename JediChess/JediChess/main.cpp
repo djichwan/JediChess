@@ -48,8 +48,8 @@ GLfloat azimuth       = 30.0; // 0.0
 GLfloat horizontalPos = 0.5;
 GLfloat verticalPos   = 0.0;
 
-const int ESC_KEY               = 27;
-const int SPACE_KEY             = 32;
+const int ESC_KEY     = 27;
+const int SPACE_KEY   = 32;
 
 // The eye point and look-at point.
 // Currently unused. Use to control a camera with LookAt().
@@ -80,6 +80,7 @@ GLint        uBoard, uPicking;
 int     prevId; // Square selected on mouse down
 Square* prevSelected; // Square selected on mouse down, used to unhighlight square
 Piece*  prevPieceSelected; // Piece selected on mouse down
+Piece*  prevOpponentPieceSelected;
 Piece*	pieceToMove;
 int		turnRotation;
 
@@ -374,7 +375,6 @@ void initScene()
     
 }// end initScene()
 
-
 //-------------------------------------------------------------
 // Draw scene (i.e. board + pieces)
 void drawScene()
@@ -407,6 +407,13 @@ void drawScene()
     //---------------------------------------------------------
     
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
+    
+    if (!blackKing.getSquare() || !whiteKing.getSquare())
+        board.setGameSet(true);
+    
+    // White side wins
+    if (!blackKing.getSquare())
+        goto whitewin;
     
     //TODO: -------- draw pieces -----------------------
     // Back Pieces
@@ -442,6 +449,11 @@ void drawScene()
         blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
     if (blackKing.getSquare())
         blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
+
+whitewin:
+    // Black side wins
+    if (!whiteKing.getSquare())
+        return;
     
     // White Pieces
     if (whitePawn1.getSquare())
@@ -731,6 +743,42 @@ void callbackMouse(int button, int state, int x, int y)
 				}
 				pieceToMove = selectedPiece;
             }
+            else if (prevOpponentPieceSelected == selectedPiece)
+            {
+                bool notMove = false; // So no move takes place when square is not lit
+                
+                if (selectedPiece->getSquare()->isHighlight() && prevId == selectedPiece->getSquare()->getId())
+                {
+                    board.unhightlightAll(); // Unhighlight all squares
+                    pieceToMove->setOnTheMove(NOT_ON_MOVE);
+                }
+                else
+                {
+                    if (prevSelected && prevSelected->isHighlight())
+                        prevSelected->unselect(); // Turn off select light
+                    else // No square lit
+                        notMove = true;
+                }
+                
+                if (!notMove && pieceToMove != NULL && prevSelected == selectedPiece->getSquare()
+                    && pieceToMove->move(selectedPiece->getSquare()))
+                {
+                    PieceType ptmType = pieceToMove->getType();
+                    
+                    if (ptmType == TypePawn)
+                        ((Pawn *) pieceToMove)->setMoved();
+                    else if (ptmType == TypeRook)
+                        ((Rook *) pieceToMove)->setMoved();
+                    else if (ptmType == TypeKing)
+                        ((King *) pieceToMove)->setMoved();
+                    
+                    pieceToMove = NULL;
+                    turnRotation = GameManager::getInstance().incTurns() % 2;
+                    
+                    oldTheta = theta;
+                    TIME_LAST = TM.GetElapsedTime();
+                }
+            }
             else
             {
                 if (prevSelected)
@@ -762,6 +810,20 @@ void callbackMouse(int button, int state, int x, int y)
 				board.unhightlightAll();
                 selectedPiece->setOnTheMove(NOT_ON_MOVE);
 			}
+            else // Opponent piece selected
+            {
+                if (selectedPiece->getSquare()->isHighlight())
+                {
+                    if (selectedPiece->getSquare()->isHighlight())
+                        selectedPiece->getSquare()->setColor(SELECT);
+                        
+                    prevId = selectedPiece->getSquare()->getId();
+                    prevSelected = selectedPiece->getSquare();
+                    prevOpponentPieceSelected = selectedPiece;
+                }
+                else
+                    prevOpponentPieceSelected = NULL;
+            }
         }
     }
     
