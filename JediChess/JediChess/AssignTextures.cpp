@@ -28,14 +28,15 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
     {
         for (int i = 0; i < NUM_CUBE_FACES; i++)
         {
-            if (textureBind->textureVarMap.find(textureParts[j].faceFile[i]) != textureBind->textureVarMap.end())
+			std::string filename = textureParts[j].faceFile[i];
+            if (textureBind->textureVarMap.find(filename) != textureBind->textureVarMap.end())
                 continue; // Skip if already in map
             
             // Initialize and bind textures
             textureBind->textureImageArray[texIndex] = new TgaImage();
-			if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(textureParts[j].faceFile[i])).c_str()))
+			if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(filename)).c_str()))
             {
-                printf("Error loading image file: %s\n", textureParts[j].faceFile[i].c_str());
+                printf("Error loading image file: %s\n", filename.c_str());
                 exit(1);
             }
             
@@ -49,12 +50,12 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
                          GL_UNSIGNED_BYTE, textureBind->textureImageArray[texIndex]->data );
             
             glGenerateMipmap(GL_TEXTURE_2D);
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             
-            textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(textureParts[j].faceFile[i], tex));
+            textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(filename, tex));
             
             texIndex++;
         }
@@ -201,57 +202,57 @@ textureGroup createBlackBishopTexture()
     
     //TODO: implement
     //Head
-    blackBishopTexture.head.faceFile[0] = "Blank.tga";
-    blackBishopTexture.head.faceFile[1] = "Blank.tga";
+    blackBishopTexture.head.faceFile[0] = "AdmiralHeadFront.tga";
+    blackBishopTexture.head.faceFile[1] = "AdmiralHeadLeft.tga";
     blackBishopTexture.head.faceFile[2] = "Blank.tga";
     blackBishopTexture.head.faceFile[3] = "Blank.tga";
-    blackBishopTexture.head.faceFile[4] = "Blank.tga";
-    blackBishopTexture.head.faceFile[5] = "Blank.tga";
+    blackBishopTexture.head.faceFile[4] = "AdmiralHeadBack.tga";
+    blackBishopTexture.head.faceFile[5] = "AdmiralHeadRight.tga";
     
     
     //Torso
-    blackBishopTexture.torso.faceFile[0] = "Blank.tga";
+    blackBishopTexture.torso.faceFile[0] = "AdmiralTorsoFront.tga";
     blackBishopTexture.torso.faceFile[1] = "Blank.tga";
     blackBishopTexture.torso.faceFile[2] = "Blank.tga";
     blackBishopTexture.torso.faceFile[3] = "Blank.tga";
-    blackBishopTexture.torso.faceFile[4] = "Blank.tga";
+    blackBishopTexture.torso.faceFile[4] = "AdmiralTorsoBack.tga";
     blackBishopTexture.torso.faceFile[5] = "Blank.tga";
     
     
     //Left Leg
-    blackBishopTexture.leftLeg.faceFile[0] = "Blank.tga";
-    blackBishopTexture.leftLeg.faceFile[1] = "Blank.tga";
+    blackBishopTexture.leftLeg.faceFile[0] = "AdmiralLeftLegFront.tga";
+    blackBishopTexture.leftLeg.faceFile[1] = "AdmiralLeftLegSide.tga";
     blackBishopTexture.leftLeg.faceFile[2] = "Blank.tga";
     blackBishopTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackBishopTexture.leftLeg.faceFile[4] = "Blank.tga";
+    blackBishopTexture.leftLeg.faceFile[4] = "AdmiralLeftLegBack.tga";
     blackBishopTexture.leftLeg.faceFile[5] = "Blank.tga";
     
     
     //Right Leg
-    blackBishopTexture.rightLeg.faceFile[0] = "Blank.tga";
+    blackBishopTexture.rightLeg.faceFile[0] = "AdmiralRightLegFront.tga";
     blackBishopTexture.rightLeg.faceFile[1] = "Blank.tga";
     blackBishopTexture.rightLeg.faceFile[2] = "Blank.tga";
     blackBishopTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackBishopTexture.rightLeg.faceFile[4] = "Blank.tga";
-    blackBishopTexture.rightLeg.faceFile[5] = "Blank.tga";
+    blackBishopTexture.rightLeg.faceFile[4] = "AdmiralRightLegBack.tga";
+    blackBishopTexture.rightLeg.faceFile[5] = "AdmiralRightLegSide.tga";
     
     
     //Left Arm
-    blackBishopTexture.leftArm.faceFile[0] = "Blank.tga";
-    blackBishopTexture.leftArm.faceFile[1] = "Blank.tga";
+    blackBishopTexture.leftArm.faceFile[0] = "AdmiralLeftArmFront.tga";
+    blackBishopTexture.leftArm.faceFile[1] = "AdmiralLeftArmSide.tga";
     blackBishopTexture.leftArm.faceFile[2] = "Blank.tga";
     blackBishopTexture.leftArm.faceFile[3] = "Blank.tga";
-    blackBishopTexture.leftArm.faceFile[4] = "Blank.tga";
+    blackBishopTexture.leftArm.faceFile[4] = "AdmiralLeftArmBack.tga";
     blackBishopTexture.leftArm.faceFile[5] = "Blank.tga";
     
     
     //Right Arm
-    blackBishopTexture.rightArm.faceFile[0] = "Blank.tga";
+    blackBishopTexture.rightArm.faceFile[0] = "AdmiralRightArmFront.tga";
     blackBishopTexture.rightArm.faceFile[1] = "Blank.tga";
     blackBishopTexture.rightArm.faceFile[2] = "Blank.tga";
     blackBishopTexture.rightArm.faceFile[3] = "Blank.tga";
-    blackBishopTexture.rightArm.faceFile[4] = "Blank.tga";
-    blackBishopTexture.rightArm.faceFile[5] = "Blank.tga";
+    blackBishopTexture.rightArm.faceFile[4] = "AdmiralRightArmBack.tga";
+    blackBishopTexture.rightArm.faceFile[5] = "AdmiralRightArmSide.tga";
     
     //Weapon
     blackBishopTexture.weapon.faceFile[0] = "Blank.tga";
@@ -271,57 +272,57 @@ textureGroup createBlackKnightTexture()
     
     //TODO: implement
     //Head
-    blackKnightTexture.head.faceFile[0] = "Blank.tga";
-    blackKnightTexture.head.faceFile[1] = "Blank.tga";
-    blackKnightTexture.head.faceFile[2] = "Blank.tga";
-    blackKnightTexture.head.faceFile[3] = "Blank.tga";
-    blackKnightTexture.head.faceFile[4] = "Blank.tga";
-    blackKnightTexture.head.faceFile[5] = "Blank.tga";
+    blackKnightTexture.head.faceFile[0] = "BobaHeadFront.tga";
+    blackKnightTexture.head.faceFile[1] = "BobaHeadLeft.tga";
+    blackKnightTexture.head.faceFile[2] = "BlankDark.tga";
+    blackKnightTexture.head.faceFile[3] = "BlankDark.tga";
+    blackKnightTexture.head.faceFile[4] = "BobaHeadBack.tga";
+    blackKnightTexture.head.faceFile[5] = "BobaHeadRight.tga";
     
     
     //Torso
-    blackKnightTexture.torso.faceFile[0] = "Blank.tga";
+    blackKnightTexture.torso.faceFile[0] = "BobaFettTorso.tga";
     blackKnightTexture.torso.faceFile[1] = "Blank.tga";
     blackKnightTexture.torso.faceFile[2] = "Blank.tga";
     blackKnightTexture.torso.faceFile[3] = "Blank.tga";
-    blackKnightTexture.torso.faceFile[4] = "Blank.tga";
+    blackKnightTexture.torso.faceFile[4] = "BobaFettTorsoBack.tga";
     blackKnightTexture.torso.faceFile[5] = "Blank.tga";
     
     
     //Left Leg
-    blackKnightTexture.leftLeg.faceFile[0] = "Blank.tga";
-    blackKnightTexture.leftLeg.faceFile[1] = "Blank.tga";
+    blackKnightTexture.leftLeg.faceFile[0] = "BobaLeftLegFront.tga";
+    blackKnightTexture.leftLeg.faceFile[1] = "BobaLeftLegSide.tga";
     blackKnightTexture.leftLeg.faceFile[2] = "Blank.tga";
     blackKnightTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackKnightTexture.leftLeg.faceFile[4] = "Blank.tga";
+    blackKnightTexture.leftLeg.faceFile[4] = "BobaLeftLegBack.tga";
     blackKnightTexture.leftLeg.faceFile[5] = "Blank.tga";
     
     
     //Right Leg
-    blackKnightTexture.rightLeg.faceFile[0] = "Blank.tga";
+    blackKnightTexture.rightLeg.faceFile[0] = "BobaRightLegFront.tga";
     blackKnightTexture.rightLeg.faceFile[1] = "Blank.tga";
     blackKnightTexture.rightLeg.faceFile[2] = "Blank.tga";
     blackKnightTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackKnightTexture.rightLeg.faceFile[4] = "Blank.tga";
-    blackKnightTexture.rightLeg.faceFile[5] = "Blank.tga";
+    blackKnightTexture.rightLeg.faceFile[4] = "BobaRightLegBack.tga";
+    blackKnightTexture.rightLeg.faceFile[5] = "BobaRightLegSide.tga";
     
     
     //Left Arm
-    blackKnightTexture.leftArm.faceFile[0] = "Blank.tga";
-    blackKnightTexture.leftArm.faceFile[1] = "Blank.tga";
+    blackKnightTexture.leftArm.faceFile[0] = "BobaLeftArmFront.tga";
+    blackKnightTexture.leftArm.faceFile[1] = "BobaLeftArmSide.tga";
     blackKnightTexture.leftArm.faceFile[2] = "Blank.tga";
     blackKnightTexture.leftArm.faceFile[3] = "Blank.tga";
-    blackKnightTexture.leftArm.faceFile[4] = "Blank.tga";
+    blackKnightTexture.leftArm.faceFile[4] = "BobaLeftArmBack.tga";
     blackKnightTexture.leftArm.faceFile[5] = "Blank.tga";
     
     
     //Right Arm
-    blackKnightTexture.rightArm.faceFile[0] = "Blank.tga";
+    blackKnightTexture.rightArm.faceFile[0] = "BobaRightArmFront.tga";
     blackKnightTexture.rightArm.faceFile[1] = "Blank.tga";
     blackKnightTexture.rightArm.faceFile[2] = "Blank.tga";
     blackKnightTexture.rightArm.faceFile[3] = "Blank.tga";
-    blackKnightTexture.rightArm.faceFile[4] = "Blank.tga";
-    blackKnightTexture.rightArm.faceFile[5] = "Blank.tga";
+    blackKnightTexture.rightArm.faceFile[4] = "BobaRightArmBack.tga";
+    blackKnightTexture.rightArm.faceFile[5] = "BobaRightArmSide.tga";
     
     //Weapon
     blackKnightTexture.weapon.faceFile[0] = "Blank.tga";
@@ -341,65 +342,65 @@ textureGroup createBlackKingTexture()
     
     //TODO: implement
     //Head
-    blackKingTexture.head.faceFile[0] = "Blank.tga";
-    blackKingTexture.head.faceFile[1] = "Blank.tga";
-    blackKingTexture.head.faceFile[2] = "Blank.tga";
-    blackKingTexture.head.faceFile[3] = "Blank.tga";
-    blackKingTexture.head.faceFile[4] = "Blank.tga";
-    blackKingTexture.head.faceFile[5] = "Blank.tga";
+    blackKingTexture.head.faceFile[0] = "EmperorHeadFront.tga";
+    blackKingTexture.head.faceFile[1] = "EmperorHeadLeft.tga";
+    blackKingTexture.head.faceFile[2] = "BlackBlank.tga";
+    blackKingTexture.head.faceFile[3] = "BlackBlank.tga";
+    blackKingTexture.head.faceFile[4] = "EmperorHeadBack.tga";
+    blackKingTexture.head.faceFile[5] = "EmperorHeadRight.tga";
     
     
     //Torso
-    blackKingTexture.torso.faceFile[0] = "Blank.tga";
-    blackKingTexture.torso.faceFile[1] = "Blank.tga";
-    blackKingTexture.torso.faceFile[2] = "Blank.tga";
-    blackKingTexture.torso.faceFile[3] = "Blank.tga";
-    blackKingTexture.torso.faceFile[4] = "Blank.tga";
-    blackKingTexture.torso.faceFile[5] = "Blank.tga";
+    blackKingTexture.torso.faceFile[0] = "EmperorTorsoFront.tga";
+    blackKingTexture.torso.faceFile[1] = "BlackBlank.tga";
+    blackKingTexture.torso.faceFile[2] = "BlackBlank.tga";
+    blackKingTexture.torso.faceFile[3] = "BlackBlank.tga";
+    blackKingTexture.torso.faceFile[4] = "EmperorTorsoBack.tga";
+    blackKingTexture.torso.faceFile[5] = "BlackBlank.tga";
     
     
     //Left Leg
-    blackKingTexture.leftLeg.faceFile[0] = "Blank.tga";
-    blackKingTexture.leftLeg.faceFile[1] = "Blank.tga";
-    blackKingTexture.leftLeg.faceFile[2] = "Blank.tga";
-    blackKingTexture.leftLeg.faceFile[3] = "Blank.tga";
-    blackKingTexture.leftLeg.faceFile[4] = "Blank.tga";
-    blackKingTexture.leftLeg.faceFile[5] = "Blank.tga";
+    blackKingTexture.leftLeg.faceFile[0] = "EmperorLeftLegFront.tga";
+    blackKingTexture.leftLeg.faceFile[1] = "EmperorLeftLegBack.tga";
+    blackKingTexture.leftLeg.faceFile[2] = "BlackBlank.tga";
+    blackKingTexture.leftLeg.faceFile[3] = "BlackBlank.tga";
+    blackKingTexture.leftLeg.faceFile[4] = "EmperorLeftLegBack.tga";
+    blackKingTexture.leftLeg.faceFile[5] = "BlackBlank.tga";
     
     
     //Right Leg
-    blackKingTexture.rightLeg.faceFile[0] = "Blank.tga";
-    blackKingTexture.rightLeg.faceFile[1] = "Blank.tga";
-    blackKingTexture.rightLeg.faceFile[2] = "Blank.tga";
-    blackKingTexture.rightLeg.faceFile[3] = "Blank.tga";
-    blackKingTexture.rightLeg.faceFile[4] = "Blank.tga";
-    blackKingTexture.rightLeg.faceFile[5] = "Blank.tga";
+    blackKingTexture.rightLeg.faceFile[0] = "EmperorRightLegFront.tga";
+    blackKingTexture.rightLeg.faceFile[1] = "BlackBlank.tga";
+    blackKingTexture.rightLeg.faceFile[2] = "BlackBlank.tga";
+    blackKingTexture.rightLeg.faceFile[3] = "BlackBlank.tga";
+    blackKingTexture.rightLeg.faceFile[4] = "EmperorRightLegBack.tga";
+    blackKingTexture.rightLeg.faceFile[5] = "EmperorRightLegBack.tga";
     
     
     //Left Arm
-    blackKingTexture.leftArm.faceFile[0] = "Blank.tga";
-    blackKingTexture.leftArm.faceFile[1] = "Blank.tga";
-    blackKingTexture.leftArm.faceFile[2] = "Blank.tga";
-    blackKingTexture.leftArm.faceFile[3] = "Blank.tga";
-    blackKingTexture.leftArm.faceFile[4] = "Blank.tga";
-    blackKingTexture.leftArm.faceFile[5] = "Blank.tga";
+    blackKingTexture.leftArm.faceFile[0] = "EmperorLeftArmFront.tga";
+    blackKingTexture.leftArm.faceFile[1] = "EmperorLeftArmBack.tga";
+    blackKingTexture.leftArm.faceFile[2] = "BlackBlank.tga";
+    blackKingTexture.leftArm.faceFile[3] = "BlackBlank.tga";
+    blackKingTexture.leftArm.faceFile[4] = "EmperorLeftArmBack.tga";
+    blackKingTexture.leftArm.faceFile[5] = "BlackBlank.tga";
     
     
     //Right Arm
-    blackKingTexture.rightArm.faceFile[0] = "Blank.tga";
-    blackKingTexture.rightArm.faceFile[1] = "Blank.tga";
-    blackKingTexture.rightArm.faceFile[2] = "Blank.tga";
-    blackKingTexture.rightArm.faceFile[3] = "Blank.tga";
-    blackKingTexture.rightArm.faceFile[4] = "Blank.tga";
-    blackKingTexture.rightArm.faceFile[5] = "Blank.tga";
+    blackKingTexture.rightArm.faceFile[0] = "EmperorRightArmFront.tga";
+    blackKingTexture.rightArm.faceFile[1] = "BlackBlank.tga";
+    blackKingTexture.rightArm.faceFile[2] = "BlackBlank.tga";
+    blackKingTexture.rightArm.faceFile[3] = "BlackBlank.tga";
+    blackKingTexture.rightArm.faceFile[4] = "EmperorRightArmBack.tga";
+    blackKingTexture.rightArm.faceFile[5] = "EmperorRightArmBack.tga";
     
     //Weapon
-    blackKingTexture.weapon.faceFile[0] = "Blank.tga";
-    blackKingTexture.weapon.faceFile[1] = "Blank.tga";
-    blackKingTexture.weapon.faceFile[2] = "Blank.tga";
-    blackKingTexture.weapon.faceFile[3] = "Blank.tga";
+    blackKingTexture.weapon.faceFile[0] = "DarthVaderWeaponFront.tga";
+    blackKingTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
+    blackKingTexture.weapon.faceFile[2] = "DarthVaderWeapon.tga";
+    blackKingTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
     blackKingTexture.weapon.faceFile[4] = "Blank.tga";
-    blackKingTexture.weapon.faceFile[5] = "Blank.tga";
+    blackKingTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
     
     return blackKingTexture;
 }// end createBlackKingTexture()
@@ -685,57 +686,57 @@ textureGroup createWhiteKnightTexture()
     
     //TODO: implement
     //Head
-    whiteKnightTexture.head.faceFile[0] = "Blank.tga";
-    whiteKnightTexture.head.faceFile[1] = "Blank.tga";
+    whiteKnightTexture.head.faceFile[0] = "SoloHeadFront.tga";
+    whiteKnightTexture.head.faceFile[1] = "SoloHeadLeft.tga";
     whiteKnightTexture.head.faceFile[2] = "Blank.tga";
-    whiteKnightTexture.head.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.head.faceFile[4] = "Blank.tga";
-    whiteKnightTexture.head.faceFile[5] = "Blank.tga";
+    whiteKnightTexture.head.faceFile[3] = "SoloHeadBack.tga";
+    whiteKnightTexture.head.faceFile[4] = "SoloHeadBack.tga";
+    whiteKnightTexture.head.faceFile[5] = "SoloHeadRight.tga";
     
     
     //Torso
-    whiteKnightTexture.torso.faceFile[0] = "Blank.tga";
+    whiteKnightTexture.torso.faceFile[0] = "SoloTorsoFront.tga";
     whiteKnightTexture.torso.faceFile[1] = "Blank.tga";
     whiteKnightTexture.torso.faceFile[2] = "Blank.tga";
-    whiteKnightTexture.torso.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.torso.faceFile[4] = "Blank.tga";
+    whiteKnightTexture.torso.faceFile[3] = "BlackBlank.tga";
+    whiteKnightTexture.torso.faceFile[4] = "SoloTorsoBack.tga";
     whiteKnightTexture.torso.faceFile[5] = "Blank.tga";
     
     
     //Left Leg
-    whiteKnightTexture.leftLeg.faceFile[0] = "Blank.tga";
-    whiteKnightTexture.leftLeg.faceFile[1] = "Blank.tga";
+    whiteKnightTexture.leftLeg.faceFile[0] = "SoloLeftLegFront.tga";
+    whiteKnightTexture.leftLeg.faceFile[1] = "SoloLeftLegSide.tga";
     whiteKnightTexture.leftLeg.faceFile[2] = "Blank.tga";
     whiteKnightTexture.leftLeg.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.leftLeg.faceFile[4] = "Blank.tga";
+    whiteKnightTexture.leftLeg.faceFile[4] = "SoloLeftLegBack.tga";
     whiteKnightTexture.leftLeg.faceFile[5] = "Blank.tga";
     
     
     //Right Leg
-    whiteKnightTexture.rightLeg.faceFile[0] = "Blank.tga";
+    whiteKnightTexture.rightLeg.faceFile[0] = "SoloRightLegFront.tga";
     whiteKnightTexture.rightLeg.faceFile[1] = "Blank.tga";
     whiteKnightTexture.rightLeg.faceFile[2] = "Blank.tga";
     whiteKnightTexture.rightLeg.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.rightLeg.faceFile[4] = "Blank.tga";
-    whiteKnightTexture.rightLeg.faceFile[5] = "Blank.tga";
+    whiteKnightTexture.rightLeg.faceFile[4] = "SoloRightLegBack.tga";
+    whiteKnightTexture.rightLeg.faceFile[5] = "SoloLeftLegFront.tga";
     
     
     //Left Arm
-    whiteKnightTexture.leftArm.faceFile[0] = "Blank.tga";
-    whiteKnightTexture.leftArm.faceFile[1] = "Blank.tga";
-    whiteKnightTexture.leftArm.faceFile[2] = "Blank.tga";
-    whiteKnightTexture.leftArm.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.leftArm.faceFile[4] = "Blank.tga";
+    whiteKnightTexture.leftArm.faceFile[0] = "SoloLeftArmFront.tga";
+    whiteKnightTexture.leftArm.faceFile[1] = "SoloLeftArmSide.tga";
+    whiteKnightTexture.leftArm.faceFile[2] = "BlackBlank.tga";
+    whiteKnightTexture.leftArm.faceFile[3] = "SoloLeftArmTop.tga";
+    whiteKnightTexture.leftArm.faceFile[4] = "SoloRightArmFront.tga";
     whiteKnightTexture.leftArm.faceFile[5] = "Blank.tga";
     
     
     //Right Arm
-    whiteKnightTexture.rightArm.faceFile[0] = "Blank.tga";
+    whiteKnightTexture.rightArm.faceFile[0] = "SoloRightArmFront.tga";
     whiteKnightTexture.rightArm.faceFile[1] = "Blank.tga";
-    whiteKnightTexture.rightArm.faceFile[2] = "Blank.tga";
-    whiteKnightTexture.rightArm.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.rightArm.faceFile[4] = "Blank.tga";
-    whiteKnightTexture.rightArm.faceFile[5] = "Blank.tga";
+    whiteKnightTexture.rightArm.faceFile[2] = "BlackBlank.tga";
+    whiteKnightTexture.rightArm.faceFile[3] = "SoloLeftArmTop.tga";
+    whiteKnightTexture.rightArm.faceFile[4] = "SoloLeftArmFront.tga";
+    whiteKnightTexture.rightArm.faceFile[5] = "SoloRightArmSide.tga";
     
     //Weapon
     whiteKnightTexture.weapon.faceFile[0] = "Blank.tga";
