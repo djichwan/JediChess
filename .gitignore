@@ -219,3 +219,5 @@ pip-log.txt
 .mr.developer.cfg
 
 JediChess/.DS_Store
+
+JediChess/JediChess.xcodeproj/project.xcworkspace/xcuserdata/yuta.xcuserdatad/UserInterfaceState.xcuserstate
