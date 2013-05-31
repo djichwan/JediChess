@@ -20,12 +20,15 @@ Board::Board()
 
     m_imageBoard   = new TgaImage();
     m_imageBorder  = new TgaImage();
+    
+    m_gameSet = false;
 }
 
 Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared to avoid compiler error
 {
     m_shader     = program;
     m_dim        = dim;
+    m_gameSet    = false;
 
 	// default values
     m_AmbientCoefficient  = 0.2f;
@@ -434,6 +437,16 @@ Square* Board::getSquare(int index)
 		return NULL;
 
     return &m_squares.at(index);
+}
+
+void Board::setGameSet( bool set )
+{
+    m_gameSet = set;
+}
+
+bool Board::getGameSet()
+{
+    return m_gameSet;
 }
 
 /*
