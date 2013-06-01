@@ -7,7 +7,9 @@
 
 int texIndex = 0;
 
-// Initializes unique texture images 
+
+//-------------------------------------------------------------------
+// Initializes unique texture images
 void initTextures( textureGroup texture, TextureBind* textureBind )
 {
     // Skip if running without texture
@@ -28,10 +30,12 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
     {
         for (int i = 0; i < NUM_CUBE_FACES; i++)
         {
+            initTexturesPerCube(textureBind, textureParts[j]);
+            /*
             if (textureBind->textureVarMap.find(textureParts[j].faceFile[i]) != textureBind->textureVarMap.end())
                 continue; // Skip if already in map
             
-            // Initialize and bind textures
+            // Initialize and bind textures - load from "images/" directory
             textureBind->textureImageArray[texIndex] = new TgaImage();
 			if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(textureParts[j].faceFile[i])).c_str()))
             {
@@ -57,9 +61,54 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
             textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(textureParts[j].faceFile[i], tex));
             
             texIndex++;
+            */
+        }// end inner for
+    }// end outer for
+}// end initTextures()
+
+
+
+void initTexturesPerCube(TextureBind* textureBind, cubeFaceTextures faceTextures)
+{
+    //TODO: implement to do inner for loop of initTextures()
+    //Made separate mainly for bullet textures
+    
+    for (int i = 0; i < NUM_CUBE_FACES; i++)
+    {
+        if (textureBind->textureVarMap.find(faceTextures.faceFile[i]) != textureBind->textureVarMap.end())
+            continue; // Skip if already in map
+        
+        // Initialize and bind textures - load from "images/" directory
+        textureBind->textureImageArray[texIndex] = new TgaImage();
+        if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(faceTextures.faceFile[i])).c_str()))
+        {
+            printf("Error loading image file: %s\n", faceTextures.faceFile[i].c_str());
+            exit(1);
         }
-    }
-}
+        
+        GLuint tex;
+        glGenTextures( 1, &tex );
+        glBindTexture( GL_TEXTURE_2D, tex );
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, textureBind->textureImageArray[texIndex]->byteCount, textureBind->textureImageArray[texIndex]->width,
+                     textureBind->textureImageArray[texIndex]->height, 0,
+                     (textureBind->textureImageArray[texIndex]->byteCount == 3) ? GL_BGR : GL_BGRA,
+                     GL_UNSIGNED_BYTE, textureBind->textureImageArray[texIndex]->data );
+        
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        
+        textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(faceTextures.faceFile[i], tex));
+        
+        texIndex++;
+    }// end inner for
+    
+}// end initTexturesPerCube()
+
+
 
 
 //============================ Black ====================================
@@ -201,7 +250,7 @@ textureGroup createBlackBishopTexture()
     
     //TODO: implement
     //Head
-    blackBishopTexture.head.faceFile[0] = "Blank.tga";
+    blackBishopTexture.head.faceFile[0] = "bobaFettHeadFront.tga";
     blackBishopTexture.head.faceFile[1] = "Blank.tga";
     blackBishopTexture.head.faceFile[2] = "Blank.tga";
     blackBishopTexture.head.faceFile[3] = "Blank.tga";
@@ -819,7 +868,6 @@ textureGroup createWhiteKingTexture()
 }// end createWhiteKingTexture()
 
 //----------------------------------------------
-//----------------------------------------------
 textureGroup createWhiteQueenTexture()
 {
     textureGroup whiteQueenTexture;
@@ -888,3 +936,22 @@ textureGroup createWhiteQueenTexture()
     
     return whiteQueenTexture;
 }// end createWhiteQueenTexture()
+
+
+
+//----------------------------------------------
+cubeFaceTextures createBulletTexture()
+{
+    cubeFaceTextures bulletTexture;
+    
+    bulletTexture.faceFile[0] = "Blank.tga";
+    bulletTexture.faceFile[1] = "RedBlank.tga";
+    bulletTexture.faceFile[2] = "RedBlank.tga";
+    bulletTexture.faceFile[3] = "RedBlank.tga";
+    bulletTexture.faceFile[4] = "RedBlank.tga";
+    bulletTexture.faceFile[5] = "RedBlank.tga";
+    
+    return bulletTexture;
+}// end createBulletTexture()
+
+

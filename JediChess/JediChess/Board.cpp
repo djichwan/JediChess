@@ -1,15 +1,13 @@
-//
+//*****************************************
 //  Board.cpp
-//  JediChess
-//
-//  Created by Yuta Kai on 5/16/13.
-//  Copyright (c) 2013 CS174A-Team3. All rights reserved.
-//
+//*****************************************
 
 #include "Board.h"
 
 double boardMin, boardMax, increment;
 
+
+//---------------------------------------------------------------------
 Board::Board()
 {
 	// default values
@@ -20,9 +18,12 @@ Board::Board()
 
     m_imageBoard   = new TgaImage();
     m_imageBorder  = new TgaImage();
-}
+}// end Board::Board()
 
-Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared to avoid compiler error
+
+
+//---------------------------------------------------------------------
+Board::Board( GLuint program, double dim ) // Explicitly declared to avoid compiler error
 {
     m_shader     = program;
     m_dim        = dim;
@@ -57,7 +58,7 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
         
         m_squares.push_back(square);
         m_pieces.push_back(NoType);
-    }
+    }// end for
     
     // Initialize texture coordinates
     //  - Divides texture mapping into 64 pieces and assigns to each square accordingly
@@ -72,8 +73,8 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
             m_squares.at(index).getTex()[2] = vec2( j - distance, i + distance );
             m_squares.at(index).getTex()[3] = vec2( j + distance, i + distance );
             index++;
-        }
-    }
+        }// end inner for
+    }// end outer for
     
     //load and compile shaders on GPU, use current shader program
     glUseProgram(m_shader);
@@ -83,8 +84,10 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
     m_imageBorder  = new TgaImage();
     m_initTexture( m_imageBoard, &m_textureBoard, "battleground.tga" ); // Normal mapping
     m_initTexture( m_imageBorder,&m_textureBorder, "border.tga" ); // Normal mapping
-}
+}// end Board::Board(program, dim)
 
+
+//---------------------------------------------------------------------
 void Board::draw(GLint uModelView, mat4 modelView)
 {
     m_uModelView = uModelView;
@@ -170,7 +173,7 @@ void Board::draw(GLint uModelView, mat4 modelView)
                         normalsSize, m_squares.at(i).getNormal() );
         
         glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
-    }
+    }// end for
     
     //------------------ Draw border 2D and 3D -------------------------------------------------
     
@@ -226,8 +229,10 @@ void Board::draw(GLint uModelView, mat4 modelView)
     };
     glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
     glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
-}
+}// end Board::draw()
 
+
+//---------------------------------------------------------------------
 // Determines whether a Square object is clicked and returns
 // corresponding Square object if clicked
 // coord is the coordinate of the mouse click
@@ -269,8 +274,11 @@ Square* Board::picking( vec2 coord )
     }
     
     return NULL; // Return NULL if nothing found
-}
+}// end Board::picking()
 
+
+
+//---------------------------------------------------------------------
 // Determines whether piece object is selected
 Piece* Board::pickingPiece( vec2 coord )
 {
@@ -312,11 +320,12 @@ Piece* Board::pickingPiece( vec2 coord )
                 return m_squares.at(i).getPiece();
             }
         }
-    }
+    }// end for
     
     return NULL; // Return NULL if nothing found
-}
+}// end Board::PickingPiece()
 
+//---------------------------------------------------------------------
 void Board::select( vec3 pos, bool on )
 {
     vec4 color = HIGHLIGHT;
@@ -325,13 +334,18 @@ void Board::select( vec3 pos, bool on )
             color = KILL;
     
     select( pos, on, color );
-}
+}// end Board::select(pos, on)
 
+
+//---------------------------------------------------------------------
 void Board::select( vec3 pos, bool on, vec4 color )
 {
     m_squares.at(pos2id(pos)).highlight(on, color);
     m_squares.at(pos2id(pos)).m_DiffuseCoefficient = on ? LIGHT_DIFFUSE : m_DiffuseCoefficient;
-}
+}//end Board::select(pos, on, color)
+
+
+//---------------------------------------------------------------------
 
 void Board::unhightlightAll()
 {
@@ -343,8 +357,10 @@ void Board::unhightlightAll()
             m_squares.at(i).m_DiffuseCoefficient = m_DiffuseCoefficient;
         }
     }
-}
+}// end Board::unhighlightAll()
 
+
+//---------------------------------------------------------------------
 bool Board::isHighlightMode()
 {
     for (int i = 0; i < m_squares.size(); i++)
@@ -354,8 +370,10 @@ bool Board::isHighlightMode()
     }
     
     return false;
-}
+}// end Board::isHighlightMode()
 
+
+//---------------------------------------------------------------------
 // WARNING: Bug in code, don't use for now
 void Board::unSelect()
 {

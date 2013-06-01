@@ -16,6 +16,7 @@ class Square;
 #include <map>
 #include <vector>
 
+
 /*
  * Initializes each square with dimension of board
  * Deals with drawing square in correct location

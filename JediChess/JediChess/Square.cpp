@@ -61,6 +61,11 @@ int Square::getSide()
     return m_color;
 }
 
+double Square::getDim()
+{
+    return m_dim;
+}
+
 void Square::setPiece(Piece* piece)
 {
     m_piece = piece;

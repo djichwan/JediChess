@@ -4,7 +4,6 @@
 //  main.cpp
 //*********************************************
 
-//TODO: add more includes
 #ifdef _WIN32
 #include <Windows.h>
 #include <GL/glew.h>
@@ -25,8 +24,6 @@
 #include <GLUT/glut.h>
 #endif
 
-#include "tga.h"
-
 #ifdef __APPLE__
 #define glutInitContextVersion(a,b)
 #define glutInitContextProfile(a)
@@ -37,14 +34,15 @@
 #include "Timer.h"
 #include "AssignTextures.h"
 #include "Board.h"
+#include "tga.h"
 
 //Global Variables
 int     Window_Width  = 1200;
 int     Window_Height = 900;
-float   Zoom          = 0.7; // 1.0
+float   Zoom          = 0.7;
 GLfloat theta         = 0.0;
 GLfloat oldTheta	  = -180.0;
-GLfloat azimuth       = 30.0; // 0.0
+GLfloat azimuth       = 30.0;
 GLfloat horizontalPos = 0.5;
 GLfloat verticalPos   = 0.0;
 
@@ -64,10 +62,12 @@ double TIME_LAST;
 double DTIME;
 double FRAME_TIME  = 0;
 int    FRAME_COUNT = 0;
+double aTime = 0;
 
 //------------ Global Variables -----------
 double rotation = 0;
 bool   smooth   = true;
+bool   triggerRotate = false;    //if board should rotate
 
 mat4         model_view;
 mat4         texture_view;
@@ -77,8 +77,8 @@ GLint        uTex, uEnableTex, uTexture;
 GLint        uBoard, uPicking;
 
 // Variables for mouse click
-int     prevId; // Square selected on mouse down
-Square* prevSelected; // Square selected on mouse down, used to unhighlight square
+int     prevId;            // Square selected on mouse down
+Square* prevSelected;      // Square selected on mouse down, used to unhighlight square
 Piece*  prevPieceSelected; // Piece selected on mouse down
 Piece*	pieceToMove;
 int		turnRotation;
@@ -90,33 +90,33 @@ Board board;
 TextureBind textureBind;
 
 //------------ Piece instantiation ------------------------
-Pawn blackPawn1; // starts at (2,1)
-Pawn blackPawn2; // starts at (2,2)
-Pawn blackPawn3; // starts at (2,3)
-Pawn blackPawn4; // starts at (2,4)
-Pawn blackPawn5; // starts at (2,5)
-Pawn blackPawn6; // starts at (2,6)
-Pawn blackPawn7; // starts at (2,7)
-Pawn blackPawn8; // starts at (2,8)
-Rook blackRook1; // starts at (1,1)
-Rook blackRook2; // starts at (1,8)
-Bishop blackBishop1; // starts at (1,3)
-Bishop blackBishop2; // starts at (1,6)
+Pawn blackPawn1;      // starts at (2,1)
+Pawn blackPawn2;      // starts at (2,2)
+Pawn blackPawn3;      // starts at (2,3)
+Pawn blackPawn4;      // starts at (2,4)
+Pawn blackPawn5;      // starts at (2,5)
+Pawn blackPawn6;      // starts at (2,6)
+Pawn blackPawn7;      // starts at (2,7)
+Pawn blackPawn8;      // starts at (2,8)
+Rook blackRook1;      // starts at (1,1)
+Rook blackRook2;      // starts at (1,8)
+Bishop blackBishop1;  // starts at (1,3)
+Bishop blackBishop2;  // starts at (1,6)
 Knight blackKnight1;  // starts at (1,2)
 Knight blackKnight2;  // starts at (1,7)
-Queen blackQueen;   // starts at (1,4)
-King blackKing;     // starts at (1,5)
+Queen blackQueen;     // starts at (1,4)
+King blackKing;       // starts at (1,5)
 
-Pawn whitePawn1; // starts at (7,1)
-Pawn whitePawn2; // starts at (7,2)
-Pawn whitePawn3; // starts at (7,3)
-Pawn whitePawn4; // starts at (7,4)
-Pawn whitePawn5; // starts at (7,5)
-Pawn whitePawn6; // starts at (7,6)
-Pawn whitePawn7; // starts at (7,7)
-Pawn whitePawn8; // starts at (7,8)
-Rook whiteRook1; // starts at (8,1)
-Rook whiteRook2; // starts at (8,8)
+Pawn whitePawn1;      // starts at (7,1)
+Pawn whitePawn2;      // starts at (7,2)
+Pawn whitePawn3;      // starts at (7,3)
+Pawn whitePawn4;      // starts at (7,4)
+Pawn whitePawn5;      // starts at (7,5)
+Pawn whitePawn6;      // starts at (7,6)
+Pawn whitePawn7;      // starts at (7,7)
+Pawn whitePawn8;      // starts at (7,8)
+Rook whiteRook1;      // starts at (8,1)
+Rook whiteRook2;      // starts at (8,8)
 Bishop whiteBishop1;  // starts at (8,3)
 Bishop whiteBishop2;  // starts at (8,6)
 Knight whiteKnight1;  // starts at (8,2)
@@ -124,7 +124,10 @@ Knight whiteKnight2;  // starts at (8,7)
 Queen whiteQueen;     // starts at (8,4)
 King whiteKing;       // starts at (8,5)
 
-//=========================================
+Bullet bullet;        // for gun animations
+
+
+//===============================================================
 //----------------------------------------------------------------
 void set_color(float r, float g, float b)
 {
@@ -136,17 +139,22 @@ void set_color(float r, float g, float b)
     glUniform4f(uSpecular, specular*r, specular*g, specular*b, 1.0f);
 }//end set_color()
 
-//------------------------------------------
+
+
+//-----------------------------------------------------------
 // Initialize scene (camera, light, drawer, time and camera position)
+// Initialize geometries and bind textures for pieces
 void initScene()
 {
     // Load shaders and use the resulting shader program
     GLuint program = InitShader( "vShader.vert", "fShader.frag" );
     glUseProgram(program);
     
+    //Initialize timing
 	TIME_LAST = TM.GetElapsedTime();
 	DTIME = 0.0;
 
+    
     //--------- Assign texture files and generate pieces ------------
     //---------------- Black pieces --------------------------
     textureGroup blackPawnTexture = createBlackPawnTexture();
@@ -174,7 +182,6 @@ void initScene()
     blackRook2.generate(program);
     
     textureGroup blackBishopTexture = createBlackBishopTexture();
-    
     blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeSaber);
     blackBishop1.generate(program);
     blackBishop2 = Bishop(1, 6, BLACKSIDE, blackBishopTexture, TypeSaber);
@@ -216,9 +223,9 @@ void initScene()
     whitePawn8.generate(program);
     
     textureGroup whiteRookTexture = createWhiteRookTexture();
-    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeSaber);
+    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeGun);
     whiteRook1.generate(program);
-    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeSaber);
+    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeGun);
     whiteRook2.generate(program);
     
     textureGroup whiteBishopTexture = createWhiteBishopTexture();
@@ -234,15 +241,19 @@ void initScene()
     whiteKnight2.generate(program);
     
     textureGroup whiteQueenTexture = createWhiteQueenTexture();
-    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeSaber);
+    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeGun);
     whiteQueen.generate(program);
     
     textureGroup whiteKingTexture = createWhiteKingTexture();
     whiteKing = King(8, 5, WHITESIDE, whiteKingTexture, TypeSaber);
     whiteKing.generate(program);
     
-    //------------------------------------------------------
     
+    //--------------------- Bullet -------------------------
+    cubeFaceTextures bulletTexture = createBulletTexture();
+    bullet.generate(program);
+    
+    //------------------------------------------------------
     //link with vertex shader variables
     uModelView  = glGetUniformLocation( program, "ModelView"  );
     uProjection = glGetUniformLocation( program, "Projection" );
@@ -274,6 +285,7 @@ void initScene()
     board = Board(program, BOARD_DIM);
     GameManager::getInstance().setBoard(&board); // Set board to GameManager
     
+    
     // ----------------- Initialize texture images for each piece type --------------------
     initTextures(blackPawnTexture, &textureBind);
     initTextures(blackRookTexture, &textureBind);
@@ -281,12 +293,15 @@ void initScene()
     initTextures(blackKnightTexture, &textureBind);
     initTextures(blackQueenTexture, &textureBind);
     initTextures(blackKingTexture, &textureBind);
+    
     initTextures(whitePawnTexture, &textureBind);
     initTextures(whiteRookTexture, &textureBind);
     initTextures(whiteBishopTexture, &textureBind);
     initTextures(whiteKnightTexture, &textureBind);
     initTextures(whiteQueenTexture, &textureBind);
     initTextures(whiteKingTexture, &textureBind);
+    
+    initTexturesPerCube(&textureBind,  bulletTexture);
     
     // ----------------- Bind texture to pieces --------------------
     blackPawn1.m_textureBind   = &textureBind;
@@ -305,6 +320,7 @@ void initScene()
     blackKnight2.m_textureBind = &textureBind;
     blackQueen.m_textureBind   = &textureBind;
     blackKing.m_textureBind    = &textureBind;
+    
     whitePawn1.m_textureBind   = &textureBind;
     whitePawn2.m_textureBind   = &textureBind;
     whitePawn3.m_textureBind   = &textureBind;
@@ -321,6 +337,8 @@ void initScene()
     whiteKnight2.m_textureBind = &textureBind;
     whiteQueen.m_textureBind   = &textureBind;
     whiteKing.m_textureBind    = &textureBind;
+    
+    bullet.m_textureBind       = &textureBind;
     
     // ----------------- Add pieces to board --------------------
     // Black
@@ -362,10 +380,13 @@ void initScene()
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
     // (set in glActiveTexture(GL_TEXTURE0))
+    
+    passBullet(&bullet);
+    
     glUniform1i( uTex, 0);
     
     glEnable(GL_DEPTH_TEST);
-    
+
 }// end initScene()
 
 
@@ -374,16 +395,18 @@ void initScene()
 void drawScene()
 {
     model_view = mat4(1.0f);
-    model_view *= Translate(0.0f, 0.0f, -15.0f);
+    
+    model_view *= Translate(horizontalPos, verticalPos, -15.0);
     
     glUniformMatrix4fv( uView, 1, GL_TRUE, model_view );
     glUniformMatrix4fv( uTexture, 1, GL_TRUE, texture_view);
     
-    model_view *= Translate(horizontalPos, verticalPos, 0.0f);
+    // Set up base view of scene
     model_view *= Scale(Zoom);
     model_view *= Scale(0.7f, 0.7f, 0.7f);
     model_view *= RotateY(theta);
     model_view *= RotateX(azimuth);
+    
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
     mat4 originalView = model_view;
@@ -394,82 +417,291 @@ void drawScene()
     glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
     board.draw(uModelView, model_view);
     
+    
     // Revert variables back to normal
     model_view = originalView;
     glUniform1f( uBoard, 0.0 );
     glUniform1f( uPicking, 0.0 );
     //---------------------------------------------------------
     
+    // Scale pieces
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
     
-    //TODO: -------- draw pieces -----------------------
-    // Back Pieces
+    updateAnimationTime(aTime); // tells Piece class what time it is
+    
+    //-------- draw pieces -----------------------
+    // Form: if (piece has Non-NULL square) aka not captured
+    //        {
+    //                if( not in animation)
+    //                {
+    //                    piece.draw();
+    //                }
+    //                piece.animate(); //continue animation if necessary
+    //        }
+    // Black Pieces
     if (blackPawn1.getSquare())
-        blackPawn1.draw(uTex, uEnableTex, uModelView, model_view, blackPawn1.getSquare()->getPos());
+    {
+        if(!blackPawn1.isAnimating())
+        {
+            blackPawn1.draw(uTex, uEnableTex, uModelView, model_view, blackPawn1.getSquare()->getPos());
+        }
+        blackPawn1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn2.getSquare())
-        blackPawn2.draw(uTex, uEnableTex, uModelView, model_view, blackPawn2.getSquare()->getPos());
+    {
+        if(!blackPawn2.isAnimating())
+        {
+            blackPawn2.draw(uTex, uEnableTex, uModelView, model_view, blackPawn2.getSquare()->getPos());
+        }
+        blackPawn2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn3.getSquare())
-        blackPawn3.draw(uTex, uEnableTex, uModelView, model_view, blackPawn3.getSquare()->getPos());
+    {
+        if(!blackPawn3.isAnimating())
+        {
+            blackPawn3.draw(uTex, uEnableTex, uModelView, model_view, blackPawn3.getSquare()->getPos());
+        }
+        blackPawn3.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn4.getSquare())
-        blackPawn4.draw(uTex, uEnableTex, uModelView, model_view, blackPawn4.getSquare()->getPos());
+    {
+        if(!blackPawn4.isAnimating())
+        {
+            blackPawn4.draw(uTex, uEnableTex, uModelView, model_view, blackPawn4.getSquare()->getPos());
+        }
+        blackPawn4.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn5.getSquare())
-        blackPawn5.draw(uTex, uEnableTex, uModelView, model_view, blackPawn5.getSquare()->getPos());
+    {
+        if(!blackPawn5.isAnimating())
+        {
+            blackPawn5.draw(uTex, uEnableTex, uModelView, model_view, blackPawn5.getSquare()->getPos());
+        }
+        blackPawn5.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn6.getSquare())
-        blackPawn6.draw(uTex, uEnableTex, uModelView, model_view, blackPawn6.getSquare()->getPos());
+    {
+        if(!blackPawn6.isAnimating())
+        {
+            blackPawn6.draw(uTex, uEnableTex, uModelView, model_view, blackPawn6.getSquare()->getPos());
+        }
+        blackPawn6.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn7.getSquare())
-        blackPawn7.draw(uTex, uEnableTex, uModelView, model_view, blackPawn7.getSquare()->getPos());
+    {
+        if(!blackPawn7.isAnimating())
+        {
+            blackPawn7.draw(uTex, uEnableTex, uModelView, model_view, blackPawn7.getSquare()->getPos());
+        }
+        blackPawn7.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackPawn8.getSquare())
-        blackPawn8.draw(uTex, uEnableTex, uModelView, model_view, blackPawn8.getSquare()->getPos());
+    {
+        if(!blackPawn8.isAnimating())
+        {
+            blackPawn8.draw(uTex, uEnableTex, uModelView, model_view, blackPawn8.getSquare()->getPos());
+        }
+        blackPawn8.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackRook1.getSquare())
-        blackRook1.draw(uTex, uEnableTex, uModelView, model_view, blackRook1.getSquare()->getPos());
+    {
+        if(!blackRook1.isAnimating())
+        {
+            blackRook1.draw(uTex, uEnableTex, uModelView, model_view, blackRook1.getSquare()->getPos());
+        }
+        blackRook1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackRook2.getSquare())
-        blackRook2.draw(uTex, uEnableTex, uModelView, model_view, blackRook2.getSquare()->getPos());
+    {
+        if(!blackRook2.isAnimating())
+        {
+            blackRook2.draw(uTex, uEnableTex, uModelView, model_view, blackRook2.getSquare()->getPos());
+        }
+        blackRook2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackBishop1.getSquare())
-        blackBishop1.draw(uTex, uEnableTex, uModelView, model_view, blackBishop1.getSquare()->getPos());
+    {
+        if(!blackBishop1.isAnimating())
+        {
+            blackBishop1.draw(uTex, uEnableTex, uModelView, model_view, blackBishop1.getSquare()->getPos());
+        }
+        blackBishop1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackBishop2.getSquare())
-        blackBishop2.draw(uTex, uEnableTex, uModelView, model_view, blackBishop2.getSquare()->getPos());
+    {
+        if(!blackBishop2.isAnimating())
+        {
+            blackBishop2.draw(uTex, uEnableTex, uModelView, model_view, blackBishop2.getSquare()->getPos());
+        }
+        blackBishop2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackKnight1.getSquare())
-        blackKnight1.draw(uTex, uEnableTex, uModelView, model_view, blackKnight1.getSquare()->getPos());
+    {
+        if(!blackKnight1.isAnimating())
+        {
+            blackKnight1.draw(uTex, uEnableTex, uModelView, model_view, blackKnight1.getSquare()->getPos());
+        }
+        blackKnight1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackKnight2.getSquare())
-        blackKnight2.draw(uTex, uEnableTex, uModelView, model_view, blackKnight2.getSquare()->getPos());
+    {
+        if(!blackKnight2.isAnimating())
+        {
+            blackKnight2.draw(uTex, uEnableTex, uModelView, model_view, blackKnight2.getSquare()->getPos());
+        }
+        blackKnight2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackQueen.getSquare())
-        blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
+    {
+        if(!blackQueen.isAnimating())
+        {
+            blackQueen.draw(uTex, uEnableTex, uModelView, model_view, blackQueen.getSquare()->getPos());
+        }
+        blackQueen.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (blackKing.getSquare())
-        blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
+    {
+        if(!blackKing.isAnimating())
+        {
+            blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
+        }
+        blackKing.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     
     // White Pieces
     if (whitePawn1.getSquare())
-        whitePawn1.draw(uTex, uEnableTex, uModelView, model_view, whitePawn1.getSquare()->getPos());
+    {
+        if(!whitePawn1.isAnimating())
+        {
+            whitePawn1.draw(uTex, uEnableTex, uModelView, model_view, whitePawn1.getSquare()->getPos());
+        }
+        whitePawn1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn2.getSquare())
-        whitePawn2.draw(uTex, uEnableTex, uModelView, model_view, whitePawn2.getSquare()->getPos());
+    {
+        if(!whitePawn2.isAnimating())
+        {
+            whitePawn2.draw(uTex, uEnableTex, uModelView, model_view, whitePawn2.getSquare()->getPos());
+        }
+        whitePawn2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn3.getSquare())
-        whitePawn3.draw(uTex, uEnableTex, uModelView, model_view, whitePawn3.getSquare()->getPos());
+    {
+        if(!whitePawn3.isAnimating())
+        {
+            whitePawn3.draw(uTex, uEnableTex, uModelView, model_view, whitePawn3.getSquare()->getPos());
+        }
+        whitePawn3.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn4.getSquare())
-        whitePawn4.draw(uTex, uEnableTex, uModelView, model_view, whitePawn4.getSquare()->getPos());
+    {
+        if(!whitePawn4.isAnimating())
+        {
+            whitePawn4.draw(uTex, uEnableTex, uModelView, model_view, whitePawn4.getSquare()->getPos());
+        }
+        whitePawn4.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn5.getSquare())
-        whitePawn5.draw(uTex, uEnableTex, uModelView, model_view, whitePawn5.getSquare()->getPos());
+    {
+        if(!whitePawn5.isAnimating())
+        {
+            whitePawn5.draw(uTex, uEnableTex, uModelView, model_view, whitePawn5.getSquare()->getPos());
+        }
+        whitePawn5.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn6.getSquare())
-        whitePawn6.draw(uTex, uEnableTex, uModelView, model_view, whitePawn6.getSquare()->getPos());
+    {
+        if(!whitePawn6.isAnimating())
+        {
+            whitePawn6.draw(uTex, uEnableTex, uModelView, model_view, whitePawn6.getSquare()->getPos());
+        }
+        whitePawn6.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn7.getSquare())
-        whitePawn7.draw(uTex, uEnableTex, uModelView, model_view, whitePawn7.getSquare()->getPos());
+    {
+        if(!whitePawn7.isAnimating())
+        {
+            whitePawn7.draw(uTex, uEnableTex, uModelView, model_view, whitePawn7.getSquare()->getPos());
+        }
+        whitePawn7.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whitePawn8.getSquare())
-        whitePawn8.draw(uTex, uEnableTex, uModelView, model_view, whitePawn8.getSquare()->getPos());
+    {
+        if(!whitePawn8.isAnimating())
+        {
+            whitePawn8.draw(uTex, uEnableTex, uModelView, model_view, whitePawn8.getSquare()->getPos());
+        }
+        whitePawn8.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteRook1.getSquare())
-        whiteRook1.draw(uTex, uEnableTex, uModelView, model_view, whiteRook1.getSquare()->getPos());
+    {
+        if(!whiteRook1.isAnimating())
+        {
+            whiteRook1.draw(uTex, uEnableTex, uModelView, model_view, whiteRook1.getSquare()->getPos());
+        }
+        whiteRook1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteRook2.getSquare())
-        whiteRook2.draw(uTex, uEnableTex, uModelView, model_view, whiteRook2.getSquare()->getPos());
+    {
+        if(!whiteRook2.isAnimating())
+        {
+            whiteRook2.draw(uTex, uEnableTex, uModelView, model_view, whiteRook2.getSquare()->getPos());
+        }
+        whiteRook2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteBishop1.getSquare())
-        whiteBishop1.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop1.getSquare()->getPos());
+    {
+        if(!whiteBishop1.isAnimating())
+        {
+            whiteBishop1.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop1.getSquare()->getPos());
+        }
+        whiteBishop1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteBishop2.getSquare())
-        whiteBishop2.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop2.getSquare()->getPos());
+    {
+        if(!whiteBishop2.isAnimating())
+        {
+            whiteBishop2.draw(uTex, uEnableTex, uModelView, model_view, whiteBishop2.getSquare()->getPos());
+        }
+        whiteBishop2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteKnight1.getSquare())
-        whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight1.getSquare()->getPos());
+    {
+        if(!whiteKnight1.isAnimating())
+        {
+            whiteKnight1.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight1.getSquare()->getPos());
+        }
+        whiteKnight1.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteKnight2.getSquare())
-        whiteKnight2.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight2.getSquare()->getPos());
+    {
+        if(!whiteKnight2.isAnimating())
+        {
+            whiteKnight2.draw(uTex, uEnableTex, uModelView, model_view, whiteKnight2.getSquare()->getPos());
+        }
+        whiteKnight2.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteQueen.getSquare())
-        whiteQueen.draw(uTex, uEnableTex, uModelView, model_view, whiteQueen.getSquare()->getPos());
+    {
+        if(!whiteQueen.isAnimating())
+        {
+            whiteQueen.draw(uTex, uEnableTex, uModelView, model_view, whiteQueen.getSquare()->getPos());
+        }
+        whiteQueen.animate(uTex, uEnableTex, uModelView, model_view);
+    }
     if (whiteKing.getSquare())
-        whiteKing.draw(uTex, uEnableTex, uModelView, model_view, whiteKing.getSquare()->getPos());
+    {
+        if(!whiteKing.isAnimating())
+        {
+            whiteKing.draw(uTex, uEnableTex, uModelView, model_view, whiteKing.getSquare()->getPos());
+        }
+        whiteKing.animate(uTex, uEnableTex, uModelView, model_view);
+    }
+    
+    if(bullet.isAnimating())
+    {
+        bullet.draw(uTex, uEnableTex, uModelView, model_view);
+    }
     
 }// end drawScene()
 
@@ -508,34 +740,9 @@ void keyboardCallback(unsigned char key, int x, int y)
         case 'd':       // Move camera right
         case 'D':
             horizontalPos -= .5;
-            break;    
-        case 'h':
-            board.select(vec3(0.0, 0.0, 0.0), true);
             break;
-        case 'H':
-            board.select(vec3(0.0, 0.0, 0.0), false);
-            break;
-        case 'j':
-            board.select(vec3(2 * BOARD_DIM / 8, -(BOARD_DIM / 8), 0.0), true);
-            break;
-        case 'J':
-            board.select(vec3(2 * BOARD_DIM / 8, -(BOARD_DIM / 8), 0.0), false);
-            break;
-        case 'u':
-            board.unhightlightAll(); break;
-        // Test for moving piece
-        case 'm':
-            board.move(24, &blackPawn1);
-            break;
-        case 'M':
-            board.move(44, &whitePawn5);
-            break;
-        // Test for add and remove piece
-        case 'r':
-            board.remove(&blackPawn1);
-            break;
-        case 'R':
-            board.add(board.convertPos(blackPawn1.getRow(), blackPawn1.getCol()), &blackPawn1);
+        case 'u':       // Unhighlight squares on board
+            board.unhightlightAll();
             break;
         case SPACE_KEY: //Reset camera position
             Zoom = 0.8; // 1.0
@@ -557,30 +764,46 @@ void keyboardCallback(unsigned char key, int x, int y)
 void displayCallback()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     drawScene();
+    
     glutSwapBuffers();
     
 }// end displayCallback()
+
 
 //---------------------------------------------------------------
 // Callback for idle
 void idleCallback()
 {
-	if ((theta - oldTheta) < 180)
+    TIME = TM.GetElapsedTime() ;
+	DTIME = TIME - TIME_LAST;
+	TIME_LAST = TIME;
+    
+    aTime += 0.05*DTIME;      // for animation
+    
+    if( triggerRotate && pieceToMove != NULL && !pieceToMove->isAnimating())
+    {
+        triggerRotate = false;
+        turnRotation = GameManager::getInstance().incTurns() % 2;
+        
+        pieceToMove = NULL;
+        
+        oldTheta = theta;
+        TIME_LAST = TM.GetElapsedTime();
+    }
+    
+	if ((theta - oldTheta) < 180)   // for rotation
 	{
-		TIME = TM.GetElapsedTime();
-
-		DTIME = TIME - TIME_LAST;
-		TIME_LAST = TIME;
-
 		theta += DTIME * TURN_ROTATION_SPEED;
 		if (turnRotation)
 			azimuth -= DTIME * TURN_ROTATION_SPEED/3.0;
 		else
 			azimuth += DTIME * TURN_ROTATION_SPEED/3.0;
-
-		glutPostRedisplay();
-	}
+	}// end if 
+    
+    
+    glutPostRedisplay();
 }// end idleCallback()
 
 
@@ -623,8 +846,10 @@ void specialKeys(int key, int x, int y)
     glutPostRedisplay();
 }// end processSpecialKeys()
 
+
+//----------------------------------------------------------------
 // Called when a mouse button is pressed or released
-void callbackMouse(int button, int state, int x, int y)
+void mouseCallback(int button, int state, int x, int y)
 {
     // Ignore any actions without left button
     if (button != GLUT_LEFT_BUTTON)
@@ -675,7 +900,7 @@ void callbackMouse(int button, int state, int x, int y)
                     notMove = true;
             }
             
-			if (!notMove && pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected))
+			if (!notMove && pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected, uTex, uEnableTex, uModelView, model_view))
 			{
 				PieceType ptmType = pieceToMove->getType();
 
@@ -686,15 +911,11 @@ void callbackMouse(int button, int state, int x, int y)
 				else if (ptmType == TypeKing)
 					((King *) pieceToMove)->setMoved();
 
-				pieceToMove = NULL;
-				turnRotation = GameManager::getInstance().incTurns() % 2;
-
-				oldTheta = theta;
-				TIME_LAST = TM.GetElapsedTime();
+                triggerRotate = true;
 			}
 
             printf("Selected: %i\n", selected->getId());
-        }
+        }// end Board case
         else // CASE Piece
         {
             if (prevPieceSelected == selectedPiece)
@@ -720,8 +941,8 @@ void callbackMouse(int button, int state, int x, int y)
             
             // 0 = NULL, 1 = Pawn, 2 = Rook, 3 = Bishop, 4 = Knight, 5 = Queen, 6 = King
             printf("Selected piece: %i\n", selectedPiece->getType());
-        }
-    }
+        }// end Piece case
+    }// end if mouse up 
     else if (state == GLUT_DOWN) // Mouse down
     {
         if (selectedPiece == NULL) // CASE Board Square
@@ -741,10 +962,10 @@ void callbackMouse(int button, int state, int x, int y)
                 selectedPiece->setOnTheMove(NOT_ON_MOVE);
 			}
         }
-    }
+    }// end if mouse down
     
     glutPostRedisplay(); // Display normal scene immediately after clicked object is found
-}
+}// end mouseCallback()
 
 //-----------------------------------------------------------------
 //Assign callback functions
@@ -755,7 +976,7 @@ void assign_callback()
     glutKeyboardFunc( keyboardCallback );
     glutDisplayFunc( displayCallback );
     glutSpecialFunc( specialKeys );
-    glutMouseFunc( callbackMouse );
+    glutMouseFunc( mouseCallback );
 }// end assign_callback()
 
 

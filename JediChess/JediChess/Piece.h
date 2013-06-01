@@ -21,6 +21,10 @@ class GameManager;
 #include "Shapes.h"
 #include "Object.h"
 #include "GameManager.h"
+//#include <algorithm>
+
+
+
 
 //----------------------- Structs -------------------------
 // Holds and organizes textures for separate body parts of the piece
@@ -50,14 +54,77 @@ struct pieceShapeData
 };// end pieceShapeData
 
 
+// Holds the angles and translations that each part should be displaced
+struct animateData
+{
+    GLfloat translateAllX;
+    GLfloat translateAllY;
+    GLfloat translateAllZ;
+    GLfloat rotateAllX;
+    GLfloat rotateAllY;
+    GLfloat rotateAllZ;
+    GLfloat torsoAngleX;
+    GLfloat torsoAngleY;
+    GLfloat rightArmAngleX;
+    GLfloat leftArmAngleX;
+    GLfloat rightLegAngleX;
+    GLfloat leftLegAngleX;
+    
+    vec3    headTranslate;
+    vec3    torsoTranslate;
+    vec3    rightArmTranslate;
+    vec3    leftArmTranslate;
+    vec3    rightLegTranslate;
+    vec3    leftLegTranslate;
+    
+    animateData()
+    {
+        translateAllX = 0;
+        translateAllY = 0;
+        translateAllZ = 0;
+        torsoAngleX = 0;
+        torsoAngleY = 0;
+        rightArmAngleX = 0;
+        leftArmAngleX = 0;
+        rightLegAngleX = 0;
+        leftLegAngleX = 0;
+        
+        headTranslate = 0;
+        torsoTranslate = 0;
+        rightArmTranslate = 0;
+        leftArmTranslate = 0;
+        rightLegTranslate = 0;
+        leftLegTranslate = 0;
+    }//end constructor
+};// end animateData
+
+
+struct animateBulletData
+{
+    vec3 translate;
+    GLfloat rotationX;
+    GLfloat rotationY;
+    GLfloat rotationZ;
+    
+    animateBulletData()
+    {
+        translate = 0;
+        
+        rotationX = 0;
+        rotationY = 0;
+        rotationZ = 0;
+    }//end constructor
+};// end animateBulletData
+
+
+
 struct textureImage
 {
     int width;
     int height;
     unsigned char byteCount;
     unsigned char* data;
-};
-
+};// end textureImage
 
 
 //---------------------------- Classes --------------------------------------
@@ -65,7 +132,7 @@ struct textureImage
 class Piece : public Object
 {
 public:
-    bool move(Square* destSquare);        // move piece to destSquare, need to check if valid move
+    bool move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);        // move piece to destSquare, need to check if valid move
     void select();                      // respond to being selected by mouse click
     void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
     void captured();                    // call if captured
@@ -86,14 +153,17 @@ public:
     textureGroup getTexture();          // accessor function for m_texture
     pieceShapeData getShapeData();      // accessor function for m_shapeData
     WeaponType getWeapon();             // accessor function for m_weapon
+    bool isAnimating();                 // whether piece is currently in animation
+    //bool isAnimatingTotal();            // whether piece is currently in animation OR its capturee is still in animation
+    GLfloat rotatePiece(Piece* piece, GLfloat finalTranslateAllX, GLfloat finalTranslateAllY);
     
-    void bindTextures(GLint uTex);      // initializes textures for pieces parts                  //TODO: implement for non-humanoid pieces
-    virtual void generate(GLint program) = 0;   // generates the geometry for piece's parts
-    virtual void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate)= 0 ;  	   //draws the Piece (pure virtual function)
-    virtual void animate(animationType aType) = 0;          //animates piece
+    void generate(GLint program);   // generates the geometry for piece's parts
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate) ;  	   //draws the Piece
+    void initiateAnimation(animationType aType, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 posStart, vec3 posDest); //wrapper function that sets up and calls animate()
+    void animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);          //animates piece
     
-    textureGroup m_texture;     // textures for piece               //TODO: implement for non-humanoid pieces
-    pieceShapeData m_shapeData; // struct for all shapes in piece   //TODO: implement for non-humanoid pieces
+    textureGroup m_texture;     // textures for piece
+    pieceShapeData m_shapeData; // struct for all shapes in piece
     
     void setModelView(GLint uModelView, mat4 modelView, vec3 translate);
     
@@ -121,6 +191,19 @@ protected:
     mat4  m_modelView;
     vec3  m_translate;
     
+    // Use for animation
+    animationType m_animationType;
+    double m_animationTime = 0;
+    double m_animationStartTime = 0;
+    bool m_animationFinish = true;
+    bool m_animationUpStroke = false; //whether finish upstroke in attack animation
+    vec3 m_posStart;
+    vec3 m_posDest;
+    double m_squareDim;
+    Square* m_squareToBe;           //which square should move to after finish capturing
+    Piece*  m_capturee;             //which piece currently capturing
+    bool m_finishShooting = true;
+    
 }; //end class Piece
 
 
@@ -136,9 +219,6 @@ public:
     bool canEnPassant();
     void setMoved();        //if Pawn has moved, call
 	bool getMoved();
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Pawn
-    void animate(animationType aType);         //animate Pawn
 private:
     bool m_enPassant;     //true if just advanced two squares from starting position, else false
     bool m_moved;         //true if moved; if not moved can move two positions forward
@@ -154,9 +234,6 @@ public:
     Rook(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void setMoved();        //if Rook has moved from initial position, call
 	bool getMoved();
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Rook
-    void animate(animationType aType);         //animate Rook
 private:
     bool m_moved;        //if m_moved is false -> possible castling
 }; //end class Rook
@@ -169,9 +246,6 @@ class Queen: public Piece
 public:
     Queen() {}
     Queen(int row, int col, int team, textureGroup texture, WeaponType weapon);
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Queen
-    void animate(animationType aType);                                                //animate Queen
 }; //end class Queen
 
 
@@ -182,9 +256,6 @@ class Bishop: public Piece
 public:
     Bishop() {}
     Bishop(int row, int col, int team, textureGroup texture, WeaponType weapon);
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Bishop
-    void animate(animationType aType);                                                //animate Bishop
 }; //end class Bishop
 
 
@@ -195,9 +266,6 @@ class Knight: public Piece
 public:
     Knight() {}
     Knight(int row, int col, int team, textureGroup texture, WeaponType weapon);
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Knight
-    void animate(animationType aType);                                                //animate Knight
 }; //end class Knight
 
 
@@ -212,13 +280,51 @@ public:
     void setChecked(bool a_checked);                                //set m_checked
     void setMoved();                                                //if Rook has moved from initial position, call
 	bool getMoved();
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for King
-    void animate(animationType aType);                                               //animate King
 private:
     bool m_moved;        //if King has not moved yet -> possible castling
     bool m_checked;       //if King is in check or not
 }; //end class King
+
+
+//=============================================================================
+// For TypeGun animation
+class Bullet : public Object
+{
+    public:
+        Bullet();
+        bool isAnimating();
+    
+        void generate(GLint program);       // generates the geometry for bullet
+        void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);  	   //draws the bullet
+    
+        cubeFaceTextures m_texture;     // textures for bullet
+        ShapeData m_shapeData;          // struct for all shapes in bullet
+        TextureBind* m_textureBind;
+
+    
+    //private:    
+        //for animation
+        animateBulletData m_animation;
+        bool m_animationFinish = true;
+        bool m_animationStart = false;
+        vec3 m_translate = vec3(0,0,0);
+
+};// end class Bullet
+
+//----------------- Utility Functions for Piece class ---------------------------------
+void bindCubeFaceTextures(Piece* piece, cubeFaceTextures cubeTextures, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, ShapeData& shapeData);
+// binds textures to all faces of cube
+
+void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4& model_view, animateData animation, vec3 translate);
+// draws a humanoid piece
+
+void generatePersonPiece(Piece* piece, GLint program);
+// generate geometry from humnoid piece
+
+void updateAnimationTime(double animationTime);
+// tells piece class what time it is
+
+void passBullet(Bullet* aBullet);
 
 
 #endif
