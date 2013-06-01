@@ -24,13 +24,14 @@ class GameManager
 public:
 	static GameManager& getInstance();
 	void buildMoveList(Piece *piece); // calculates the list of valid moves for the piece
-	void updateMoveList(Piece *piece); // goes through square list and sees if anything has changed, e.g. a piece moved in its way
 	bool isCheck(King *king); // return true whether the king is in check
-	bool isCheckmate(King *king); // return true whether king is in check/game is over
-	void fight(Square *square); // animate the fight if a black and white piece share the same square
+	bool isCheckMate(King *king);
     void setBoard(Board *board); // Set board for game manager
+	void promote(Piece *pawn, Piece *tobe);
     Board* getBoard();
 	int	 incTurns();
+	void endGame(int side);
+
 private:
 	GameManager();
 

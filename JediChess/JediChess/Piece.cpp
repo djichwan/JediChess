@@ -48,11 +48,19 @@ bool Piece::move(Square* destSquare)
 	m_row = (squareId / 8) + 1;
 	m_col = (squareId % 8) + 1;
 
-
 //    buildMoveList(this);    //build new possible moves list for new square position
     return true;
 }// end Piece::move()
 
+void Piece::undo(Square *original)
+{
+	m_square->setPiece(NULL);
+	original->setPiece(this);
+	m_square = original;
+	int squareId = m_square->getId();
+	m_row = (squareId / 8) + 1;
+	m_col = (squareId % 8) + 1;
+}
 
 //-------------------------------------------------------------
 // Respond to being selected by mouse click
@@ -567,7 +575,20 @@ void Rook::animate(animationType aType)
 }// end Rook::animate()
 
 
-
+bool Rook::castle(Square *dest)
+{
+	if (m_moved)
+		return false;
+	
+	m_square->setPiece(NULL);
+    dest->setPiece(this);
+    m_square = dest;
+	int squareId = m_square->getId();
+	m_row = (squareId / 8) + 1;
+	m_col = (squareId % 8) + 1;
+	m_moved = true;
+	return true;
+}
 
 
 
@@ -761,7 +782,7 @@ King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
     m_type = TypeKing;           // King piece
     m_texture = texture;
     m_moved = false;
-    m_checked = false;
+    m_checked = NULL;
     m_weapon = weapon;
 	m_picking = false;
     m_textureBind = NULL;
@@ -771,7 +792,7 @@ King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
 
 //--------------------------------------------------------------
 // Accessor function for m_checked
-bool King::isChecked()
+Piece* King::isChecked()
 {
     return m_checked;
 }// end King::isChecked()
@@ -781,7 +802,7 @@ bool King::isChecked()
 // Set m_checked
 // true if King is in check by another piece
 // false otherwise
-void King::setChecked(bool a_checked)
+void King::setChecked(Piece* a_checked)
 {
     m_checked = a_checked;
 }//end King::setChecked()

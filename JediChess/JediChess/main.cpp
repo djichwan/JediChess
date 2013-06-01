@@ -82,7 +82,8 @@ Square* prevSelected; // Square selected on mouse down, used to unhighlight squa
 Piece*  prevPieceSelected; // Piece selected on mouse down
 Piece*  prevOpponentPieceSelected;
 Piece*	pieceToMove;
-int		turnRotation;
+int		whoseTurn;
+bool	turnRotation = false;
 
 // Board object
 Board board;
@@ -584,7 +585,7 @@ void displayCallback()
 // Callback for idle
 void idleCallback()
 {
-	if ((theta - oldTheta) < 180)
+	if (((theta - oldTheta) < 180) && turnRotation)
 	{
 		TIME = TM.GetElapsedTime();
 
@@ -592,13 +593,13 @@ void idleCallback()
 		TIME_LAST = TIME;
 
 		theta += DTIME * TURN_ROTATION_SPEED;
-		if (turnRotation)
+		if (whoseTurn)
 			azimuth -= DTIME * TURN_ROTATION_SPEED/3.0;
 		else
 			azimuth += DTIME * TURN_ROTATION_SPEED/3.0;
         
         // Aligns board rotation
-        if (turnRotation == WHITESIDE)
+        if (whoseTurn == WHITESIDE)
         {
             if (horizontalPos < boardWhite)
                 horizontalPos += boardOffset / rotationCount;
@@ -612,6 +613,17 @@ void idleCallback()
             else
                 horizontalPos = boardBlack;
         }
+
+		if (theta - oldTheta >= 180)
+		{
+			turnRotation = false;
+			if (fmod(theta, 180.0))
+				theta = (((int) theta) / 180) * 180;
+			if (whoseTurn)
+				azimuth = -30;
+			else
+				azimuth = 30;
+		}
         
 		glutPostRedisplay();
 	}
@@ -695,6 +707,13 @@ void callbackMouse(int button, int state, int x, int y)
         if (selectedPiece == NULL) // CASE Board Square
         {
             bool notMove = false; // So no move takes place when square is not lit
+			Square *undo = NULL;
+			int oldCol;
+			if (pieceToMove)
+			{
+				undo = pieceToMove->getSquare();
+				oldCol = pieceToMove->getCol();
+			}
             
             if (selected->isHighlight() && prevId == selected->getId())
             {
@@ -711,20 +730,57 @@ void callbackMouse(int button, int state, int x, int y)
             
 			if (!notMove && pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected))
 			{
-				PieceType ptmType = pieceToMove->getType();
+				King *king = whoseTurn ? &blackKing : &whiteKing;
+				if (!GameManager::getInstance().isCheck(king))
+				{
+					PieceType ptmType = pieceToMove->getType();
+					if (ptmType == TypePawn)
+					{
+						((Pawn *) pieceToMove)->setMoved();
+						if (pieceToMove->getRow() == 1)
+							GameManager::getInstance().promote(pieceToMove, &whiteQueen);
+						else if (pieceToMove->getRow() == 8)
+							GameManager::getInstance().promote(pieceToMove, &blackQueen);
+					}
+					else if (ptmType == TypeRook)
+						((Rook *) pieceToMove)->setMoved();
+					else if (ptmType == TypeKing)
+					{
+						((King *) pieceToMove)->setMoved();
+						// Queenside castling
+						if (oldCol - pieceToMove->getCol() == 2)
+						{
+							if (whoseTurn == BLACKSIDE)
+								blackRook1.castle(board.getSquare(4, 1));
+							else
+								whiteRook1.castle(board.getSquare(4, 8));
+						}
+						// Kingside
+						else if (oldCol - pieceToMove->getCol() == -2)
+						{
+							if (whoseTurn == BLACKSIDE)
+								blackRook2.castle(board.getSquare(6, 1));
+							else
+								whiteRook2.castle(board.getSquare(6, 8));
+						}
+					}
+					GameManager::getInstance().buildMoveList(pieceToMove);
+					King* otherKing = whoseTurn ? &whiteKing : &blackKing;
+					if (otherKing->isChecked() && GameManager::getInstance().isCheckMate(otherKing))
+						GameManager::getInstance().endGame(whoseTurn);
 
-				if (ptmType == TypePawn)
-					((Pawn *) pieceToMove)->setMoved();
-				else if (ptmType == TypeRook)
-					((Rook *) pieceToMove)->setMoved();
-				else if (ptmType == TypeKing)
-					((King *) pieceToMove)->setMoved();
+					whoseTurn = GameManager::getInstance().incTurns() % 2;
 
+					turnRotation = true;
+
+					oldTheta = theta;
+					TIME_LAST = TM.GetElapsedTime();
+				}
+				else	// Your king in check
+				{
+					pieceToMove->undo(undo);
+				}
 				pieceToMove = NULL;
-				turnRotation = GameManager::getInstance().incTurns() % 2;
-
-				oldTheta = theta;
-				TIME_LAST = TM.GetElapsedTime();
 			}
 
             printf("Selected: %i\n", selected->getId());
@@ -746,7 +802,11 @@ void callbackMouse(int button, int state, int x, int y)
             else if (prevOpponentPieceSelected == selectedPiece)
             {
                 bool notMove = false; // So no move takes place when square is not lit
-                
+				Square *undo = NULL;
+				
+				if (pieceToMove)
+					undo = pieceToMove->getSquare();
+					
                 if (selectedPiece->getSquare()->isHighlight() && prevId == selectedPiece->getSquare()->getId())
                 {
                     board.unhightlightAll(); // Unhighlight all squares
@@ -763,20 +823,42 @@ void callbackMouse(int button, int state, int x, int y)
                 if (!notMove && pieceToMove != NULL && prevSelected == selectedPiece->getSquare()
                     && pieceToMove->move(selectedPiece->getSquare()))
                 {
-                    PieceType ptmType = pieceToMove->getType();
+					King *king = whoseTurn ? &blackKing : &whiteKing;
+					if (!GameManager::getInstance().isCheck(king))
+					{
+						PieceType ptmType = pieceToMove->getType();
+						if (ptmType == TypePawn)
+						{
+							((Pawn *) pieceToMove)->setMoved();
+							if (pieceToMove->getRow() == 1)
+								GameManager::getInstance().promote(pieceToMove, &whiteQueen);
+							else if (pieceToMove->getRow() == 8)
+								GameManager::getInstance().promote(pieceToMove, &blackQueen);
+						}
+						else if (ptmType == TypeRook)
+							((Rook *) pieceToMove)->setMoved();
+						else if (ptmType == TypeKing)
+							((King *) pieceToMove)->setMoved();
                     
-                    if (ptmType == TypePawn)
-                        ((Pawn *) pieceToMove)->setMoved();
-                    else if (ptmType == TypeRook)
-                        ((Rook *) pieceToMove)->setMoved();
-                    else if (ptmType == TypeKing)
-                        ((King *) pieceToMove)->setMoved();
-                    
-                    pieceToMove = NULL;
-                    turnRotation = GameManager::getInstance().incTurns() % 2;
-                    
-                    oldTheta = theta;
-                    TIME_LAST = TM.GetElapsedTime();
+						GameManager::getInstance().buildMoveList(pieceToMove);
+						pieceToMove = NULL;
+
+						King* otherKing = whoseTurn ? &whiteKing : &blackKing;
+						if (otherKing->isChecked() && GameManager::getInstance().isCheckMate(otherKing))
+							GameManager::getInstance().endGame(whoseTurn);
+
+						whoseTurn = GameManager::getInstance().incTurns() % 2;
+
+						turnRotation = true;
+						
+						oldTheta = theta;
+						TIME_LAST = TM.GetElapsedTime();
+					}
+					else	// Your king in check
+					{
+						pieceToMove->undo(undo);
+						pieceToMove = NULL;
+					}
                 }
             }
             else
@@ -804,7 +886,7 @@ void callbackMouse(int button, int state, int x, int y)
         }
         else // CASE Piece
         {
-			if (selectedPiece->isOnTeam(turnRotation))
+			if (selectedPiece->isOnTeam(whoseTurn))
             {
 				prevPieceSelected = selectedPiece;
 				board.unhightlightAll();

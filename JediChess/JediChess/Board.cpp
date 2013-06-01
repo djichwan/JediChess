@@ -424,6 +424,8 @@ void Board::add( vec3 pos, Piece* piece )
     m_pieces.at(pos2id(pos)) = piece->getType();
     m_squares.at(pos2id(pos)).setPiece(piece);
     piece->setSquare(&m_squares.at(pos2id(pos)));
+
+	m_pieceList.insert(m_pieceList.end(), piece);
 }
 
 Square* Board::getSquare(int x, int y)
@@ -449,6 +451,10 @@ bool Board::getGameSet()
     return m_gameSet;
 }
 
+std::vector<Piece*> Board::getPieceList()
+{
+	return m_pieceList;
+}
 /*
  * Converts relative position to real position
  *  - rel2real - if true, relative position to real position
@@ -708,4 +714,8 @@ void Board::m_getBorderCoord( int borderType, vec4 points[NumSquareVertices], ve
         points[i].y += pos.y;
         points[i].z += pos.z;
     }
+}
+
+void Board::generateEndScreen( int side)
+{
 }
