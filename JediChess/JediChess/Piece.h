@@ -132,7 +132,12 @@ struct textureImage
 class Piece : public Object
 {
 public:
+<<<<<<< HEAD
     bool move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);        // move piece to destSquare, need to check if valid move
+=======
+    bool move(Square* destSquare);        // move piece to destSquare, need to check if valid move
+	void undo(Square* original);
+>>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
     void select();                      // respond to being selected by mouse click
     void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
     void captured();                    // call if captured
@@ -234,6 +239,13 @@ public:
     Rook(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void setMoved();        //if Rook has moved from initial position, call
 	bool getMoved();
+<<<<<<< HEAD
+=======
+    void generate(GLint program);
+    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Rook
+    void animate(animationType aType);         //animate Rook
+	bool castle(Square *dest);
+>>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
 private:
     bool m_moved;        //if m_moved is false -> possible castling
 }; //end class Rook
@@ -276,13 +288,13 @@ class King: public Piece
 public:
     King() {}
     King(int row, int col, int team, textureGroup texture, WeaponType weapon);
-    bool isChecked();                                               //accessor function for m_checked
-    void setChecked(bool a_checked);                                //set m_checked
+    Piece* isChecked();                                               //accessor function for m_checked
+    void setChecked(Piece* a_checked);                                //set m_checked
     void setMoved();                                                //if Rook has moved from initial position, call
 	bool getMoved();
 private:
     bool m_moved;        //if King has not moved yet -> possible castling
-    bool m_checked;       //if King is in check or not
+    Piece *m_checked;       //if King is in check or not
 }; //end class King
 
 

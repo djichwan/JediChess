@@ -16,6 +16,84 @@ int GameManager::incTurns()
 	return ++m_turns;
 }
 
+bool GameManager::isCheck(King *king)
+{
+	king->setChecked(NULL);
+	int side = king->isOnTeam(WHITESIDE) ? WHITESIDE : BLACKSIDE;
+	std::vector<Piece*> pieceList = m_board->getPieceList();
+	for (std::vector<Piece*>::size_type i = 0; i != pieceList.size(); i++)
+	{
+		Piece *piece = pieceList[i];
+		if (!piece->isOnTeam(side))
+			buildMoveList(piece);
+	}
+	if (king->isChecked())
+		return true;
+	
+	return false;
+}
+
+bool GameManager::isCheckMate(King *king)
+{
+	Piece *threat = king->isChecked();
+	if (threat == NULL)
+		return false;
+
+	int side = king->isOnTeam(WHITESIDE) ? WHITESIDE : BLACKSIDE;
+	
+	// Check if any piece on king's side can block check
+	MoveList* threatMoveList = threat->getMoveList();
+	std::vector<Piece*> pieceList = m_board->getPieceList();
+	for (MoveList::size_type i = 0; i != threatMoveList->size(); i++)
+	{
+		for (std::vector<Piece*>::size_type j = 0; j != pieceList.size(); j++)
+		{
+			if (pieceList.at(j)->isOnTeam(side) && pieceList.at(j)->getType() != TypeKing)
+			{
+				MoveList* protectorMoveList = pieceList.at(j)->getMoveList();
+				for (MoveList::size_type k = 0; k != protectorMoveList->size(); k++)
+				{
+					if (protectorMoveList[k] == threatMoveList[i])
+						return false;
+				}
+			}
+		}
+	}
+
+	// No one can block check; can the king move anywhere without placing himself in check?
+	buildMoveList(king);
+	MoveList* kingMoveList = king->getMoveList();
+	for (std::vector<Piece*>::size_type j = 0; j != pieceList.size(); j++)
+	{
+		if (!pieceList.at(j)->isOnTeam(side))
+		{
+			MoveList* enemyMoveList = pieceList.at(j)->getMoveList();
+			for (MoveList::iterator k = enemyMoveList->begin(); k != enemyMoveList->end(); ++k)
+			{
+				for (MoveList::iterator i  = kingMoveList->begin(); i != kingMoveList->end();)
+				{
+					if (*k == *i)
+						i = kingMoveList->erase(i);
+					else
+						++i;
+				}
+			}
+		}
+		if (kingMoveList->size() == 0) // checkmate
+			return true;
+	}
+	return false;
+}
+
+void GameManager::endGame(int side)
+{
+	m_board->generateEndScreen(side);
+	glutIdleFunc( NULL );
+	glutReshapeFunc ( NULL );
+    glutSpecialFunc( NULL );
+    glutMouseFunc( NULL );
+}
+
 void GameManager::buildMoveList(Piece *piece)
 {
 	Square *currentSquare = piece->getSquare();
@@ -53,6 +131,17 @@ void GameManager::setBoard(Board *board)
     m_board = board;
 }
 
+Board* GameManager::getBoard()
+{
+    return m_board;
+}
+
+void GameManager::promote(Piece *pawn, Piece *tobe)
+{
+	pawn->setType(tobe->getType());
+	pawn->m_texture = tobe->getTexture();
+}
+
 void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 {
 	MoveList possibleMoves;
@@ -84,7 +173,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 		{
 			possibleMoves.insert(possibleMoves.end(), square);
 			if (piece->getType() == TypeKing)
-				((King *) piece)->setChecked(true);
+				((King *) piece)->setChecked(pawn);
 		}
 	}
 	
@@ -95,7 +184,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 		{
 			possibleMoves.insert(possibleMoves.end(), square);
 			if (piece->getType() == TypeKing)
-				((King *) piece)->setChecked(true);
+				((King *) piece)->setChecked(pawn);
 		}
 	}
 	pawn->setMoveList(possibleMoves);

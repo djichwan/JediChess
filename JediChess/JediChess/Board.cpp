@@ -18,15 +18,22 @@ Board::Board()
 
     m_imageBoard   = new TgaImage();
     m_imageBorder  = new TgaImage();
+<<<<<<< HEAD
 }// end Board::Board()
 
 
+=======
+    
+    m_gameSet = false;
+}
+>>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
 
 //---------------------------------------------------------------------
 Board::Board( GLuint program, double dim ) // Explicitly declared to avoid compiler error
 {
     m_shader     = program;
     m_dim        = dim;
+    m_gameSet    = false;
 
 	// default values
     m_AmbientCoefficient  = 0.2f;
@@ -439,6 +446,8 @@ void Board::add( vec3 pos, Piece* piece )
     m_pieces.at(pos2id(pos)) = piece->getType();
     m_squares.at(pos2id(pos)).setPiece(piece);
     piece->setSquare(&m_squares.at(pos2id(pos)));
+
+	m_pieceList.insert(m_pieceList.end(), piece);
 }
 
 Square* Board::getSquare(int x, int y)
@@ -454,6 +463,20 @@ Square* Board::getSquare(int index)
     return &m_squares.at(index);
 }
 
+void Board::setGameSet( bool set )
+{
+    m_gameSet = set;
+}
+
+bool Board::getGameSet()
+{
+    return m_gameSet;
+}
+
+std::vector<Piece*> Board::getPieceList()
+{
+	return m_pieceList;
+}
 /*
  * Converts relative position to real position
  *  - rel2real - if true, relative position to real position
@@ -713,4 +736,112 @@ void Board::m_getBorderCoord( int borderType, vec4 points[NumSquareVertices], ve
         points[i].y += pos.y;
         points[i].z += pos.z;
     }
+}
+
+void Board::generateEndScreen( int side )
+{
+    m_gameSet = true;
+    if (side != -1)
+        m_side = side;
+    
+    glUseProgram(m_shader);
+    
+    mat4 model_view, texture_view;
+    GLfloat azimuth = 90.0f, horizontalPos = 0.0f;
+    
+    model_view = mat4(1.0f);
+    model_view *= Translate(0.0f, 0.0f, -15.0f);
+    
+    glUniformMatrix4fv( glGetUniformLocation(m_shader, "View"), 1, GL_TRUE, model_view );
+    glUniformMatrix4fv( glGetUniformLocation(m_shader, "Texture"), 1, GL_TRUE, texture_view);
+    
+    model_view *= Translate(horizontalPos, 0.0, 0.0f);
+    model_view *= Scale(0.65);
+    model_view *= Scale(0.7f, 0.7f, 0.7f);
+    model_view *= RotateY(0.0);
+    model_view *= RotateX(azimuth);
+    model_view *= Translate(0.0f, 0.0f, 1.0f);
+    
+    glUniform1f( glGetUniformLocation(m_shader, "Board"), 1.0 );
+    model_view *= RotateX(BOARD_ROTATION);
+    glUniformMatrix4fv(glGetUniformLocation(m_shader, "ModelView"), 1, GL_TRUE, model_view );
+    
+    GLuint vao[1], buffer[1];
+    
+    // Create a vertex array object
+#ifdef __APPLE__
+    glGenVertexArraysAPPLE( 1, vao );
+    glBindVertexArrayAPPLE( vao[0] );
+#else
+	glGenVertexArrays( 1, vao );
+    glBindVertexArray( vao[0] );
+#endif
+    
+    // Create and initialize a buffer object
+    glGenBuffers( 1, buffer );
+    glBindBuffer( GL_ARRAY_BUFFER, buffer[0] );
+    glBufferData( GL_ARRAY_BUFFER, pointsSize + texSize + normalsSize,
+                 NULL, GL_STATIC_DRAW );
+    
+    // Set up vector positions
+    GLuint vPosition = glGetAttribLocation( m_shader, "vPosition" );
+    glEnableVertexAttribArray( vPosition );
+    glVertexAttribPointer( vPosition, 4, GL_FLOAT, GL_FALSE, 0,
+                          BUFFER_OFFSET(0) );
+    
+    GLuint vTexCoord = glGetAttribLocation( m_shader, "vTexCoords" );
+    glEnableVertexAttribArray( vTexCoord );
+    glVertexAttribPointer( vTexCoord, 2, GL_FLOAT, GL_FALSE, 0,
+                          BUFFER_OFFSET(pointsSize) );
+    
+    GLuint vNormal = glGetAttribLocation( m_shader, "vNormal" );
+    glEnableVertexAttribArray( vNormal );
+    glVertexAttribPointer( vNormal, 3, GL_FLOAT, GL_FALSE, 0,
+                          BUFFER_OFFSET(pointsSize + texSize) );
+    
+    glBufferSubData( GL_ARRAY_BUFFER, pointsSize,
+                    texSize, m_squares.at(0).getTex() );
+    glBufferSubData( GL_ARRAY_BUFFER, pointsSize + texSize,
+                    normalsSize, m_squares.at(0).getNormal() );
+    
+    // Set the value of the fragment shader texture sampler variable
+    //   ("texture") to the the appropriate texture unit. In this case,
+    //   zero, for GL_TEXTURE0 which was previously set by calling
+    //   glActiveTexture().
+    glUniform1i( glGetUniformLocation(m_shader, "Tex"), 0 );
+    
+    // Turn picking off
+    glUniform1f( glGetUniformLocation( m_shader, "Picking" ), NO_PICKING );
+    
+    // Use whole texture for each border square
+    vec2 endTexture[NumSquareVertices] = {
+        vec2( 0.0, 1.0),
+        vec2( 1.0, 1.0),
+        vec2( 0.0, 0.0),
+        vec2( 1.0, 0.0)
+    };
+    glBufferSubData( GL_ARRAY_BUFFER, pointsSize, texSize, endTexture );
+    
+    // Border color
+    glUniform4f( glGetUniformLocation(m_shader, "color"), WHITE.x, WHITE.y, WHITE.z, WHITE.w );
+    
+    // Set to default diffuse
+    glUniform4f(glGetUniformLocation( m_shader, "DiffuseProduct" ),
+                m_DiffuseCoefficient, m_DiffuseCoefficient, m_DiffuseCoefficient, 1.0f);
+    
+    TgaImage* image = new TgaImage();
+    GLuint    texture;
+    m_initTexture( image, &texture, (m_side == WHITESIDE) ? "allianceVictory.tga" : "imperialVictory.tga" );
+    
+    // Bind border texture
+    glBindTexture( GL_TEXTURE_2D, texture );
+    
+    vec4 points[NumSquareVertices] = {
+        vec4( -15, 15, 5, 1.0),
+        vec4(  15, 15, 5, 1.0),
+        vec4( -15, -15, 5, 1.0),
+        vec4(  15, -15, 5, 1.0)
+    };
+    glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
 }

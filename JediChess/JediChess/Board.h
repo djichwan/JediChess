@@ -46,6 +46,10 @@ public:
     vec2    id2Coord(int id); // Converts square id to coordinate between (1,1) and (8,8)
 	Square*	getSquare(int x, int y); // Returns square with these coordinates
     Square* getSquare(int index); // Returns square given index
+    void    setGameSet(bool set);
+    bool    getGameSet();
+	void	generateEndScreen(int side);
+	std::vector<Piece*>	getPieceList();
     virtual void UpdateAll(double dt){};
     ~Board() {};  // Empty destructor
 
@@ -68,6 +72,7 @@ private:
     vec3                   m_pos[NumSquares]; // Array of positions
     std::vector<PieceType> m_pieces; // Vector of type of piece object on each square
     std::vector<Square>    m_squares; // Vector of square objects
+	std::vector<Piece*>	   m_pieceList;
     vec3                   m_borderPos[Num2DPoints]; // Array of border positions
     vec3                   m_3DborderPos[Num3DPoints]; // Array of 3D border positions
     GLuint                 m_textureBoard;
@@ -80,6 +85,8 @@ private:
     void                   m_computePosition(); // Computes center positions for each square
     void                   m_initTexture(TgaImage* image, GLuint* texture, std::string filename); // Initializes texture for board
     void                   m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
+    bool                   m_gameSet;
+    bool                   m_side;
 };
 
 #endif /* defined(__JediChess__Board__) */
