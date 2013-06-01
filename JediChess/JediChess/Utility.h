@@ -32,6 +32,9 @@ class TgaImage; // To create texture map
 #define BORDER_2D       0
 #define BORDER_3D_FRONT 1
 #define BORDER_3D_SIDE  2
+#define GAME_ON         0
+#define GAME_OVER_W     1
+#define GAME_OVER_B     2
 const int NumSquares  = 64; // 8 x 8 board
 const int Num2DPoints = NumSquares + 4;
 const int Num3DPoints = NumSquares + 2 * 4;

@@ -380,6 +380,12 @@ void initScene()
 // Draw scene (i.e. board + pieces)
 void drawScene()
 {
+    if (board.getGameSet())
+    {
+        GameManager::getInstance().getBoard()->generateEndScreen(-1);
+        return;
+    }
+    
     model_view = mat4(1.0f);
     model_view *= Translate(0.0f, 0.0f, -15.0f);
     

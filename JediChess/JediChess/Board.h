@@ -85,6 +85,7 @@ private:
     void                   m_initTexture(TgaImage* image, GLuint* texture, std::string filename); // Initializes texture for board
     void                   m_getBorderCoord(int borderType, vec4 points[4], vec3 pos); // Compute border position
     bool                   m_gameSet;
+    bool                   m_side;
 };
 
 #endif /* defined(__JediChess__Board__) */
