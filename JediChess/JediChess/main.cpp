@@ -805,13 +805,27 @@ void displayCallback()
 // Callback for idle
 void idleCallback()
 {
+	bool animating = false;
+	if (turnRotation)
+	{
+		std::vector<Piece*> pieceList = board.getPieceList();
+		for (std::vector<Piece*>::iterator i = pieceList.begin(); i != pieceList.end(); ++i)
+		{
+			if ((*i)->isAnimating())
+			{
+				animating = true;
+				break;
+			}
+		}
+	}
+
     TIME = TM.GetElapsedTime() ;
 	DTIME = TIME - TIME_LAST;
 	TIME_LAST = TIME;
     
     aTime += 0.05*DTIME;      // for animation
 
-    if (((theta - oldTheta) < 180) && turnRotation)
+    if (((theta - oldTheta) < 180) && turnRotation && !animating)
 	{
         
 		theta += DTIME * TURN_ROTATION_SPEED;
@@ -1004,6 +1018,7 @@ void mouseCallback(int button, int state, int x, int y)
 				else	// Your king in check
 				{
 					pieceToMove->undo(undo);
+					king->setChecked(NULL);
 				}
 				pieceToMove = NULL;
 			}
@@ -1083,6 +1098,7 @@ void mouseCallback(int button, int state, int x, int y)
 					{
 						pieceToMove->undo(undo);
 						pieceToMove = NULL;
+						king->setChecked(NULL);
 					}
                 }
             }

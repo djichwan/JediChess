@@ -127,6 +127,7 @@ struct textureImage
 class Piece : public Object
 {
 public:
+	Piece();
     bool move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);        // move piece to destSquare, need to check if valid move
     void undo(Square* original);
     void select();                      // respond to being selected by mouse click
@@ -188,16 +189,16 @@ protected:
     
     // Use for animation
     animationType m_animationType;
-    double m_animationTime = 0;
-    double m_animationStartTime = 0;
-    bool m_animationFinish = true;
-    bool m_animationUpStroke = false; //whether finish upstroke in attack animation
+    double m_animationTime;
+    double m_animationStartTime;
+    bool m_animationFinish;
+    bool m_animationUpStroke; //whether finish upstroke in attack animation
     vec3 m_posStart;
     vec3 m_posDest;
     double m_squareDim;
     Square* m_squareToBe;           //which square should move to after finish capturing
     Piece*  m_capturee;             //which piece currently capturing
-    bool m_finishShooting = true;
+    bool m_finishShooting;
     
 }; //end class Piece
 
@@ -301,9 +302,9 @@ class Bullet : public Object
     //private:    
         //for animation
         animateBulletData m_animation;
-        bool m_animationFinish = true;
-        bool m_animationStart = false;
-        vec3 m_translate = vec3(0,0,0);
+        bool m_animationFinish;
+        bool m_animationStart;
+        vec3 m_translate;
 
 };// end class Bullet
 
