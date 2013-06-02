@@ -157,7 +157,7 @@ void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)
 	{
 		offset = 2 * dir;
 		Square *square = m_board->getSquare(x, y + offset);
-		if (!square->getPiece())
+		if (square && !square->getPiece())
 			possibleMoves.insert(possibleMoves.end(), square);
 	}
 	
