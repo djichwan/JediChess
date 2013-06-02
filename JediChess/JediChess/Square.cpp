@@ -61,11 +61,6 @@ int Square::getSide()
     return m_color;
 }
 
-double Square::getDim()
-{
-    return m_dim;
-}
-
 void Square::setPiece(Piece* piece)
 {
     m_piece = piece;
@@ -94,6 +89,11 @@ vec2* Square::getTex()
 vec3* Square::getNormal()
 {
     return m_normals;
+}
+
+double Square::getDim()
+{
+    return m_dim;
 }
 
 GLuint Square::getShader()
@@ -134,7 +134,7 @@ void Square::unselect()
     if (this->getPiece())
         if (!this->getPiece()->getOnTheMove())
             color = KILL;
-        
+    
     for (int i = 0; i < NumSquareVertices; i++)
         m_colors[i] = color;
     
@@ -153,9 +153,9 @@ bool Square::isSelected()
 
 /*
  * Detects which square object is clicked via mouse
- *  - Using color buffer picking method, which assigns 
+ *  - Using color buffer picking method, which assigns
  *    unique color to each object
- *  - Objects are drawn but not actually shown on screen 
+ *  - Objects are drawn but not actually shown on screen
  *    because no call of glutSwapBuffers() is made
  */
 void Square::picking( GLuint program )
@@ -251,7 +251,7 @@ void Square::m_initSquareStriped()
                        U.y*V.z - U.z*V.y,
                        U.z*V.x - U.x*V.z,
                        U.x*V.y - U.y*V.x
-    );
+                       );
     
     if (HORIZONTAL)
         normal *= -1;

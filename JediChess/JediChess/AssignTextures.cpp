@@ -30,54 +30,16 @@ void initTextures( textureGroup texture, TextureBind* textureBind )
     {
         for (int i = 0; i < NUM_CUBE_FACES; i++)
         {
-<<<<<<< HEAD
             initTexturesPerCube(textureBind, textureParts[j]);
-            /*
-            if (textureBind->textureVarMap.find(textureParts[j].faceFile[i]) != textureBind->textureVarMap.end())
-=======
-			std::string filename = textureParts[j].faceFile[i];
-            if (textureBind->textureVarMap.find(filename) != textureBind->textureVarMap.end())
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
-                continue; // Skip if already in map
-            
-            // Initialize and bind textures - load from "images/" directory
-            textureBind->textureImageArray[texIndex] = new TgaImage();
-			if (!textureBind->textureImageArray[texIndex]->loadTGA((std::string("images/").append(filename)).c_str()))
-            {
-                printf("Error loading image file: %s\n", filename.c_str());
-                exit(1);
-            }
-            
-            GLuint tex;
-            glGenTextures( 1, &tex );
-            glBindTexture( GL_TEXTURE_2D, tex );
-            
-            glTexImage2D(GL_TEXTURE_2D, 0, textureBind->textureImageArray[texIndex]->byteCount, textureBind->textureImageArray[texIndex]->width,
-                         textureBind->textureImageArray[texIndex]->height, 0,
-                         (textureBind->textureImageArray[texIndex]->byteCount == 3) ? GL_BGR : GL_BGRA,
-                         GL_UNSIGNED_BYTE, textureBind->textureImageArray[texIndex]->data );
-            
-            glGenerateMipmap(GL_TEXTURE_2D);
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); //use tri-linear filtering
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            
-            textureBind->textureVarMap.insert(std::pair<std::string, GLuint>(filename, tex));
-            
-            texIndex++;
-            */
         }// end inner for
     }// end outer for
 }// end initTextures()
 
-
+//------------------------------------------------------------------
 
 void initTexturesPerCube(TextureBind* textureBind, cubeFaceTextures faceTextures)
 {
-    //TODO: implement to do inner for loop of initTextures()
     //Made separate mainly for bullet textures
-    
     for (int i = 0; i < NUM_CUBE_FACES; i++)
     {
         if (textureBind->textureVarMap.find(faceTextures.faceFile[i]) != textureBind->textureVarMap.end())
@@ -240,7 +202,7 @@ textureGroup createBlackRookTexture()
     //Weapon
     blackRookTexture.weapon.faceFile[0] = "DarthVaderWeaponFront.tga";
     blackRookTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
-    blackRookTexture.weapon.faceFile[2] = "DarthVaderWeapon.tga";
+    blackRookTexture.weapon.faceFile[2] = "Blank.tga";
     blackRookTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
     blackRookTexture.weapon.faceFile[4] = "Blank.tga";
     blackRookTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
@@ -253,15 +215,9 @@ textureGroup createBlackBishopTexture()
 {
     textureGroup blackBishopTexture;
     
-    //TODO: implement
     //Head
-<<<<<<< HEAD
-    blackBishopTexture.head.faceFile[0] = "bobaFettHeadFront.tga";
-    blackBishopTexture.head.faceFile[1] = "Blank.tga";
-=======
     blackBishopTexture.head.faceFile[0] = "AdmiralHeadFront.tga";
     blackBishopTexture.head.faceFile[1] = "AdmiralHeadLeft.tga";
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
     blackBishopTexture.head.faceFile[2] = "Blank.tga";
     blackBishopTexture.head.faceFile[3] = "Blank.tga";
     blackBishopTexture.head.faceFile[4] = "AdmiralHeadBack.tga";
@@ -327,8 +283,6 @@ textureGroup createBlackBishopTexture()
 textureGroup createBlackKnightTexture()
 {
     textureGroup blackKnightTexture;
-    
-    //TODO: implement
     //Head
     blackKnightTexture.head.faceFile[0] = "BobaHeadFront.tga";
     blackKnightTexture.head.faceFile[1] = "BobaHeadLeft.tga";
@@ -383,12 +337,12 @@ textureGroup createBlackKnightTexture()
     blackKnightTexture.rightArm.faceFile[5] = "BobaRightArmSide.tga";
     
     //Weapon
-    blackKnightTexture.weapon.faceFile[0] = "Blank.tga";
-    blackKnightTexture.weapon.faceFile[1] = "Blank.tga";
-    blackKnightTexture.weapon.faceFile[2] = "Blank.tga";
-    blackKnightTexture.weapon.faceFile[3] = "Blank.tga";
-    blackKnightTexture.weapon.faceFile[4] = "Blank.tga";
-    blackKnightTexture.weapon.faceFile[5] = "Blank.tga";
+    blackKnightTexture.weapon.faceFile[0] = "BlackBlank.tga";
+    blackKnightTexture.weapon.faceFile[1] = "BlackBlank.tga";
+    blackKnightTexture.weapon.faceFile[2] = "BlackBlank.tga";
+    blackKnightTexture.weapon.faceFile[3] = "BlackBlank.tga";
+    blackKnightTexture.weapon.faceFile[4] = "BlackBlank.tga";
+    blackKnightTexture.weapon.faceFile[5] = "BlackBlank.tga";
     
     return blackKnightTexture;
 }// end createBlackKnightTexture()
@@ -398,7 +352,6 @@ textureGroup createBlackKingTexture()
 {
     textureGroup blackKingTexture;
     
-    //TODO: implement
     //Head
     blackKingTexture.head.faceFile[0] = "EmperorHeadFront.tga";
     blackKingTexture.head.faceFile[1] = "EmperorHeadLeft.tga";
@@ -742,7 +695,6 @@ textureGroup createWhiteKnightTexture()
 {
     textureGroup whiteKnightTexture;
     
-    //TODO: implement
     //Head
     whiteKnightTexture.head.faceFile[0] = "SoloHeadFront.tga";
     whiteKnightTexture.head.faceFile[1] = "SoloHeadLeft.tga";

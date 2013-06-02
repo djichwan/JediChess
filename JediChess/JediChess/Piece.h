@@ -21,7 +21,6 @@ class GameManager;
 #include "Shapes.h"
 #include "Object.h"
 #include "GameManager.h"
-//#include <algorithm>
 
 
 
@@ -63,8 +62,6 @@ struct animateData
     GLfloat rotateAllX;
     GLfloat rotateAllY;
     GLfloat rotateAllZ;
-    GLfloat torsoAngleX;
-    GLfloat torsoAngleY;
     GLfloat rightArmAngleX;
     GLfloat leftArmAngleX;
     GLfloat rightLegAngleX;
@@ -82,8 +79,6 @@ struct animateData
         translateAllX = 0;
         translateAllY = 0;
         translateAllZ = 0;
-        torsoAngleX = 0;
-        torsoAngleY = 0;
         rightArmAngleX = 0;
         leftArmAngleX = 0;
         rightLegAngleX = 0;
@@ -132,12 +127,8 @@ struct textureImage
 class Piece : public Object
 {
 public:
-<<<<<<< HEAD
     bool move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);        // move piece to destSquare, need to check if valid move
-=======
-    bool move(Square* destSquare);        // move piece to destSquare, need to check if valid move
-	void undo(Square* original);
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+    void undo(Square* original);
     void select();                      // respond to being selected by mouse click
     void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
     void captured();                    // call if captured
@@ -159,7 +150,6 @@ public:
     pieceShapeData getShapeData();      // accessor function for m_shapeData
     WeaponType getWeapon();             // accessor function for m_weapon
     bool isAnimating();                 // whether piece is currently in animation
-    //bool isAnimatingTotal();            // whether piece is currently in animation OR its capturee is still in animation
     GLfloat rotatePiece(Piece* piece, GLfloat finalTranslateAllX, GLfloat finalTranslateAllY);
     
     void generate(GLint program);   // generates the geometry for piece's parts
@@ -239,13 +229,7 @@ public:
     Rook(int row, int col, int team, textureGroup texture, WeaponType weapon);
     void setMoved();        //if Rook has moved from initial position, call
 	bool getMoved();
-<<<<<<< HEAD
-=======
-    void generate(GLint program);
-    void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate); //implement specifically for Rook
-    void animate(animationType aType);         //animate Rook
-	bool castle(Square *dest);
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+    bool castle(Square *dest);
 private:
     bool m_moved;        //if m_moved is false -> possible castling
 }; //end class Rook
@@ -288,8 +272,8 @@ class King: public Piece
 public:
     King() {}
     King(int row, int col, int team, textureGroup texture, WeaponType weapon);
-    Piece* isChecked();                                               //accessor function for m_checked
-    void setChecked(Piece* a_checked);                                //set m_checked
+    Piece* isChecked();                                            //accessor function for m_checked
+    void setChecked(Piece* a_checked);                              //set m_checked
     void setMoved();                                                //if Rook has moved from initial position, call
 	bool getMoved();
 private:

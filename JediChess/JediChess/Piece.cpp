@@ -42,14 +42,11 @@ bool Piece::move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModel
         std::cout << "(" << posStart.x << ", " << posStart.y << ", " << posStart.z << " " << std::endl; //TODO: delete
         std::cout << "(" << posDest.x << ", " << posDest.y << ", " << posDest.z << " " << std::endl;
         
-        //Store destination square info for after the attack
+       // store destination square info for the attacker to move after animation is finished (otherwise will move to destination square then animate)
         m_squareToBe = destSquare;
         m_capturee = occupant;
-        // store destination square info for the attacker to move after animation is finished (otherwise will move to destination square then animate)
-        
         
         initiateAnimation(TypeAttacking, uTex, uEnableTex, uModelView, model_view, posStart, posDest);
-        //occupant->initiateAnimation(TypeDying, uTex, uEnableTex, uModelView, model_view, posDest, posDest);
         //piece computationally captured in the dying animation
     }
     else        //if no capture,
@@ -62,23 +59,10 @@ bool Piece::move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModel
         m_row = (squareId / 8) + 1;
         m_col = (squareId % 8) + 1;
     }
-<<<<<<< HEAD
-=======
-    
-    //move piece to destination square
-	m_square->setPiece(NULL);
-    destSquare->setPiece(this);
-    m_square = destSquare;
-    //TODO: add row, col update when Square/Board implement
-	int squareId = m_square->getId();
-	m_row = (squareId / 8) + 1;
-	m_col = (squareId % 8) + 1;
-
-//    buildMoveList(this);    //build new possible moves list for new square position
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
     return true;
 }// end Piece::move()
 
+//-------------------------------------------------------------
 void Piece::undo(Square *original)
 {
 	m_square->setPiece(NULL);
@@ -87,7 +71,8 @@ void Piece::undo(Square *original)
 	int squareId = m_square->getId();
 	m_row = (squareId / 8) + 1;
 	m_col = (squareId % 8) + 1;
-}
+}// end Piece::undo()
+
 
 //-------------------------------------------------------------
 // Respond to being selected by mouse click
@@ -908,8 +893,6 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     
     //---------------- Draw torso as a cube ----------------------------------
-    model_view *= RotateX(animation.torsoAngleX);
-    model_view *= RotateY(animation.torsoAngleY);
     model_view *= Translate(0.0f + animation.torsoTranslate.x, -2.05f + animation.torsoTranslate.y, 0.0f + animation.torsoTranslate.z);
     model_view *= Scale(2.0f, 3.0f, personThickness);
     
@@ -919,18 +902,12 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     
     //---------------------- Draw left arm as cube ---------------------------
-<<<<<<< HEAD
     model_view *= RotateX(animation.leftArmAngleX);
     model_view *= Translate(1.25f + animation.leftArmTranslate.x, -2.05f + animation.leftArmTranslate.y, 0.0f + animation.leftArmTranslate.z);
-=======
-    if (!GameManager::getInstance().getBoard()->getGameSet())
-        model_view *= Translate(1.25f, -2.05f, 0.0f);
-    else
+    if (GameManager::getInstance().getBoard()->getGameSet())
     {
-        model_view *= Translate(1.25f, 0.0f, 0.0f);
         model_view *= RotateX(180.f);
     }
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
     model_view *= Scale(0.7f, 3.0f, personThickness);
     
     bindCubeFaceTextures(piece, piece->m_texture.leftArm, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.leftArm);
@@ -939,18 +916,13 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     
     //---------------------- Draw right arm as cube ---------------------------
-<<<<<<< HEAD
     model_view *= RotateX(animation.rightArmAngleX);
     model_view *= Translate(-1.25f + animation.rightArmTranslate.x, -2.05f+ animation.rightArmTranslate.y, 0.0f + animation.rightArmTranslate.z);
-=======
-    if (!GameManager::getInstance().getBoard()->getGameSet())
-        model_view *= Translate(-1.25f, -2.05f, 0.0f);
-    else
+    if (GameManager::getInstance().getBoard()->getGameSet())
     {
-        model_view *= Translate(-1.25f, 0.0f, 0.0f);
         model_view *= RotateX(180.f);
     }
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+    
     model_view *= Scale(0.7f, 3.0f, personThickness);
     
     bindCubeFaceTextures(piece, piece->m_texture.rightArm, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
@@ -1041,10 +1013,6 @@ void passBullet(Bullet* aBullet)
 //--------------------------------------------------------------
 Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
-    // TODO: change according to actual interface of MoveChecker as necesary
-//    setFirstMove(this);
-    //Square* m_square;           // square where piece is located
-    //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
     m_col = col;                  // row where piece locationed (1-8)
     m_team = team;
@@ -1106,10 +1074,6 @@ bool Pawn::getMoved()
 //--------------------------------------------------------------
 Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
-    // TODO: change according to actual interface of MoveChecker as necesary
-//    setFirstMove(this);
-    //Square* m_square;           // square where piece is located
-    //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1140,8 +1104,7 @@ bool Rook::getMoved()
 }// end Rook::getMoved()
 
 
-
-
+//--------------------------------------------------------------
 bool Rook::castle(Square *dest)
 {
 	if (m_moved)
@@ -1155,7 +1118,13 @@ bool Rook::castle(Square *dest)
 	m_col = (squareId % 8) + 1;
 	m_moved = true;
 	return true;
-}
+}// end Rook::castle()
+
+
+
+
+
+
 
 
 
@@ -1164,10 +1133,6 @@ bool Rook::castle(Square *dest)
 //--------------------------------------------------------------
 Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
-    // TODO: change according to actual interface of MoveChecker as necesary
-//    setFirstMove(this);
-    //Square* m_square;           // square where piece is located
-    //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1192,10 +1157,6 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weap
 //--------------------------------------------------------------
 Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
-    // TODO: change according to actual interface of MoveChecker as necesary
-//    setFirstMove(this);
-    //Square* m_square;           // square where piece is located
-    //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1219,10 +1180,6 @@ Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weap
 //--------------------------------------------------------------
 Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
-    // TODO: change according to actual interface of MoveChecker as necesary
-//    setFirstMove(this);
-    //Square* m_square;           // square where piece is located
-    //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1245,10 +1202,6 @@ Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon
 //--------------------------------------------------------------
 King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
-    // TODO: change according to actual interface of MoveChecker as necesary
-//    setFirstMove(this);
-    //Square* m_square;           // square where piece is located
-    //Square* m_possibleMoves[];  // array of squares a pieces can move to
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1280,6 +1233,7 @@ void King::setChecked(Piece* a_checked)
 {
     m_checked = a_checked;
 }//end King::setChecked()
+
 
 
 //--------------------------------------------------------------

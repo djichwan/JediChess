@@ -16,7 +16,6 @@ class Square;
 #include <map>
 #include <vector>
 
-
 /*
  * Initializes each square with dimension of board
  * Deals with drawing square in correct location
@@ -52,7 +51,7 @@ public:
 	std::vector<Piece*>	getPieceList();
     virtual void UpdateAll(double dt){};
     ~Board() {};  // Empty destructor
-
+    
 public:
     vec3 m_Center; //For generating translation Angel::matrix
     vec3 m_Size; //For generating scaling Angel::matrix

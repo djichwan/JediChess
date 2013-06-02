@@ -16,7 +16,6 @@ const int colorsSize        = NumSquareVertices * sizeof(vec4);
 const int texSize           = NumSquareVertices * sizeof(vec2);
 const int normalsSize       = NumSquareVertices * sizeof(vec3);
 
-
 class Square : public Object
 {
 public:
@@ -28,13 +27,13 @@ public:
     vec3   getPos(); // Returns position of square on board
     int    getId(); // Returns unique id of square
     int    getSide(); // Returns the color of square - black or white
-    double getDim();    //Returns dimension of square
     void   setPiece(Piece* piece); // Sets corresponding piece to square
     Piece* getPiece(); // Returns the current piece corresponding to square
     vec4*  getPoints(); // Returns pointer to Points array
     vec4*  getColors(); // Returns pointer to Colors array
     vec2*  getTex(); // Returns pointer to TexCoords array
     vec3*  getNormal(); // Returns pointer to Normals array
+    double getDim();    // Returns m_dim
     GLuint getShader();
     void   setShader(GLuint shader);
     void   highlight(bool on, vec4 color);   // Light up the square if on, color if on - optional if off
@@ -62,7 +61,7 @@ private:
     Piece* m_piece; // Pointer to piece on square, NULL if none
     int    m_id; // Unique id of square object (0-63) because 64 squares
     int    m_color; // 0 = black, 1 = white
-    vec3   m_pos; // Center position of square
+    vec3   m_pos; // Center position of sqaure
     vec4   m_points[NumSquareVertices]; // Points
     vec4   m_colors[NumSquareVertices]; // Colors
     vec3   m_normals[NumSquareVertices]; // Normals

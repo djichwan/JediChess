@@ -38,7 +38,7 @@ bool GameManager::isCheckMate(King *king)
 	Piece *threat = king->isChecked();
 	if (threat == NULL)
 		return false;
-
+    
 	int side = king->isOnTeam(WHITESIDE) ? WHITESIDE : BLACKSIDE;
 	
 	// Check if any piece on king's side can block check
@@ -59,7 +59,7 @@ bool GameManager::isCheckMate(King *king)
 			}
 		}
 	}
-
+    
 	// No one can block check; can the king move anywhere without placing himself in check?
 	buildMoveList(king);
 	MoveList* kingMoveList = king->getMoveList();
@@ -388,7 +388,7 @@ bool GameManager::moveBuilderHelper(Square *square, int side, MoveList* pm)
 	}
 	else
 		return false;
-
+    
 	return true;
 }
 

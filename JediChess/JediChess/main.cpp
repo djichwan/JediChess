@@ -39,11 +39,7 @@
 //Global Variables
 int     Window_Width  = 1200;
 int     Window_Height = 900;
-<<<<<<< HEAD
-float   Zoom          = 0.7;
-=======
-float   Zoom          = 0.65; // 1.0
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+float   Zoom          = 0.65;
 GLfloat theta         = 0.0;
 GLfloat oldTheta	  = -180.0;
 GLfloat azimuth       = 30.0;
@@ -168,6 +164,7 @@ void initScene()
 
     
     //--------- Assign texture files and generate pieces ------------
+    //--------- Assign texture files and generate pieces ------------
     //---------------- Black pieces --------------------------
     textureGroup blackPawnTexture = createBlackPawnTexture();
     blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeGun);
@@ -194,6 +191,7 @@ void initScene()
     blackRook2.generate(program);
     
     textureGroup blackBishopTexture = createBlackBishopTexture();
+    
     blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeSaber);
     blackBishop1.generate(program);
     blackBishop2 = Bishop(1, 6, BLACKSIDE, blackBishopTexture, TypeSaber);
@@ -235,9 +233,9 @@ void initScene()
     whitePawn8.generate(program);
     
     textureGroup whiteRookTexture = createWhiteRookTexture();
-    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeGun);
+    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeSaber);
     whiteRook1.generate(program);
-    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeGun);
+    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeSaber);
     whiteRook2.generate(program);
     
     textureGroup whiteBishopTexture = createWhiteBishopTexture();
@@ -253,7 +251,7 @@ void initScene()
     whiteKnight2.generate(program);
     
     textureGroup whiteQueenTexture = createWhiteQueenTexture();
-    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeGun);
+    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeSaber);
     whiteQueen.generate(program);
     
     textureGroup whiteKingTexture = createWhiteKingTexture();
@@ -401,6 +399,7 @@ void initScene()
 
 }// end initScene()
 
+
 //-------------------------------------------------------------
 // Draw scene (i.e. board + pieces)
 void drawScene()
@@ -444,8 +443,14 @@ void drawScene()
     // Scale pieces
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
     
-<<<<<<< HEAD
     updateAnimationTime(aTime); // tells Piece class what time it is
+    
+    if (!blackKing.getSquare() || !whiteKing.getSquare())
+        board.setGameSet(true);
+    
+    // White side wins
+    if (!blackKing.getSquare())
+        goto whitewin;
     
     //-------- draw pieces -----------------------
     // Form: if (piece has Non-NULL square) aka not captured
@@ -457,17 +462,6 @@ void drawScene()
     //                piece.animate(); //continue animation if necessary
     //        }
     // Black Pieces
-=======
-    if (!blackKing.getSquare() || !whiteKing.getSquare())
-        board.setGameSet(true);
-    
-    // White side wins
-    if (!blackKing.getSquare())
-        goto whitewin;
-    
-    //TODO: -------- draw pieces -----------------------
-    // Back Pieces
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
     if (blackPawn1.getSquare())
     {
         if(!blackPawn1.isAnimating())
@@ -589,7 +583,6 @@ void drawScene()
         blackQueen.animate(uTex, uEnableTex, uModelView, model_view);
     }
     if (blackKing.getSquare())
-<<<<<<< HEAD
     {
         if(!blackKing.isAnimating())
         {
@@ -597,14 +590,12 @@ void drawScene()
         }
         blackKing.animate(uTex, uEnableTex, uModelView, model_view);
     }
-=======
-        blackKing.draw(uTex, uEnableTex, uModelView, model_view, blackKing.getSquare()->getPos());
-
-whitewin:
+    
+    whitewin:
     // Black side wins
     if (!whiteKing.getSquare())
         return;
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+    
     
     // White Pieces
     if (whitePawn1.getSquare())
@@ -783,10 +774,10 @@ void keyboardCallback(unsigned char key, int x, int y)
             board.unhightlightAll();
             break;
         case SPACE_KEY: //Reset camera position
-            Zoom = 0.65; // 1.0
+            Zoom = 0.65;
             theta = 0;
 			oldTheta = -180;
-            azimuth = 30; // 0
+            azimuth = 30;
             horizontalPos = 0.5;
             verticalPos = 0;
             break;
@@ -814,40 +805,20 @@ void displayCallback()
 // Callback for idle
 void idleCallback()
 {
-<<<<<<< HEAD
     TIME = TM.GetElapsedTime() ;
 	DTIME = TIME - TIME_LAST;
 	TIME_LAST = TIME;
     
     aTime += 0.05*DTIME;      // for animation
-    
-    if( triggerRotate && pieceToMove != NULL && !pieceToMove->isAnimating())
-    {
-        triggerRotate = false;
-        turnRotation = GameManager::getInstance().incTurns() % 2;
-        
-        pieceToMove = NULL;
-        
-        oldTheta = theta;
-        TIME_LAST = TM.GetElapsedTime();
-    }
-    
-	if ((theta - oldTheta) < 180)   // for rotation
-=======
-	if (((theta - oldTheta) < 180) && turnRotation)
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+
+    if (((theta - oldTheta) < 180) && turnRotation)
 	{
+        
 		theta += DTIME * TURN_ROTATION_SPEED;
 		if (whoseTurn)
 			azimuth -= DTIME * TURN_ROTATION_SPEED/3.0;
 		else
 			azimuth += DTIME * TURN_ROTATION_SPEED/3.0;
-<<<<<<< HEAD
-	}// end if 
-    
-    
-    glutPostRedisplay();
-=======
         
         // Aligns board rotation
         if (whoseTurn == WHITESIDE)
@@ -864,7 +835,7 @@ void idleCallback()
             else
                 horizontalPos = boardBlack;
         }
-
+        
 		if (theta - oldTheta >= 180)
 		{
 			turnRotation = false;
@@ -875,10 +846,10 @@ void idleCallback()
 			else
 				azimuth = 30;
 		}
-        
-		glutPostRedisplay();
-	}
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
+
+    }//end if
+    
+    glutPostRedisplay();
 }// end idleCallback()
 
 
@@ -901,7 +872,6 @@ void reshapeCallback(int w, int h)
 
 void specialKeys(int key, int x, int y)
 {
-    //TODO: edit
     switch (key)
     {
         case GLUT_KEY_UP:       //Up arrow
@@ -941,7 +911,7 @@ void mouseCallback(int button, int state, int x, int y)
     //  - If selected square is highlighted, clears all highlights as selection is made
     Square* selected = NULL;
     if (selectedPiece == NULL)
-         selected = board.picking( vec2( x, y ) );
+        selected = board.picking( vec2( x, y ) );
     
     glUniform1f( uBoard, 0.0 );
     
@@ -984,18 +954,6 @@ void mouseCallback(int button, int state, int x, int y)
             
 			if (!notMove && pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected, uTex, uEnableTex, uModelView, model_view))
 			{
-<<<<<<< HEAD
-				PieceType ptmType = pieceToMove->getType();
-
-				if (ptmType == TypePawn)
-					((Pawn *) pieceToMove)->setMoved();
-				else if (ptmType == TypeRook)
-					((Rook *) pieceToMove)->setMoved();
-				else if (ptmType == TypeKing)
-					((King *) pieceToMove)->setMoved();
-
-                triggerRotate = true;
-=======
 				King *king = whoseTurn ? &blackKing : &whiteKing;
 				if (!GameManager::getInstance().isCheck(king))
 				{
@@ -1034,11 +992,12 @@ void mouseCallback(int button, int state, int x, int y)
 					King* otherKing = whoseTurn ? &whiteKing : &blackKing;
 					if (otherKing->isChecked() && GameManager::getInstance().isCheckMate(otherKing))
 						GameManager::getInstance().endGame(whoseTurn);
-
+                    
 					whoseTurn = GameManager::getInstance().incTurns() % 2;
-
+                    
+                    
 					turnRotation = true;
-
+                    
 					oldTheta = theta;
 					TIME_LAST = TM.GetElapsedTime();
 				}
@@ -1047,11 +1006,10 @@ void mouseCallback(int button, int state, int x, int y)
 					pieceToMove->undo(undo);
 				}
 				pieceToMove = NULL;
->>>>>>> b86da179d6c9644760ae59100652cc0366ab7182
 			}
-
+            
             printf("Selected: %i\n", selected->getId());
-        }// end Board case
+        }
         else // CASE Piece
         {
             if (prevPieceSelected == selectedPiece)
@@ -1073,7 +1031,7 @@ void mouseCallback(int button, int state, int x, int y)
 				
 				if (pieceToMove)
 					undo = pieceToMove->getSquare();
-					
+                
                 if (selectedPiece->getSquare()->isHighlight() && prevId == selectedPiece->getSquare()->getId())
                 {
                     board.unhightlightAll(); // Unhighlight all squares
@@ -1088,7 +1046,7 @@ void mouseCallback(int button, int state, int x, int y)
                 }
                 
                 if (!notMove && pieceToMove != NULL && prevSelected == selectedPiece->getSquare()
-                    && pieceToMove->move(selectedPiece->getSquare()))
+                    && pieceToMove->move(selectedPiece->getSquare(), uTex, uEnableTex, uModelView, model_view))
                 {
 					King *king = whoseTurn ? &blackKing : &whiteKing;
 					if (!GameManager::getInstance().isCheck(king))
@@ -1106,16 +1064,16 @@ void mouseCallback(int button, int state, int x, int y)
 							((Rook *) pieceToMove)->setMoved();
 						else if (ptmType == TypeKing)
 							((King *) pieceToMove)->setMoved();
-                    
+                        
 						GameManager::getInstance().buildMoveList(pieceToMove);
 						pieceToMove = NULL;
-
+                        
 						King* otherKing = whoseTurn ? &whiteKing : &blackKing;
 						if (otherKing->isChecked() && GameManager::getInstance().isCheckMate(otherKing))
 							GameManager::getInstance().endGame(whoseTurn);
-
+                        
 						whoseTurn = GameManager::getInstance().incTurns() % 2;
-
+                        
 						turnRotation = true;
 						
 						oldTheta = theta;
@@ -1139,8 +1097,8 @@ void mouseCallback(int button, int state, int x, int y)
             
             // 0 = NULL, 1 = Pawn, 2 = Rook, 3 = Bishop, 4 = Knight, 5 = Queen, 6 = King
             printf("Selected piece: %i\n", selectedPiece->getType());
-        }// end Piece case
-    }// end if mouse up 
+        }
+    }
     else if (state == GLUT_DOWN) // Mouse down
     {
         if (selectedPiece == NULL) // CASE Board Square
@@ -1165,7 +1123,7 @@ void mouseCallback(int button, int state, int x, int y)
                 {
                     if (selectedPiece->getSquare()->isHighlight())
                         selectedPiece->getSquare()->setColor(SELECT);
-                        
+                    
                     prevId = selectedPiece->getSquare()->getId();
                     prevSelected = selectedPiece->getSquare();
                     prevOpponentPieceSelected = selectedPiece;
@@ -1174,10 +1132,10 @@ void mouseCallback(int button, int state, int x, int y)
                     prevOpponentPieceSelected = NULL;
             }
         }
-    }// end if mouse down
+    }
     
     glutPostRedisplay(); // Display normal scene immediately after clicked object is found
-}// end mouseCallback()
+}
 
 //-----------------------------------------------------------------
 //Assign callback functions

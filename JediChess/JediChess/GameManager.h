@@ -31,14 +31,14 @@ public:
     Board* getBoard();
 	int	 incTurns();
 	void endGame(int side);
-
+    
 private:
 	GameManager();
-
+    
 	// make these private so they aren't accidentally implemented
 	GameManager(GameManager const&);
 	void operator=(GameManager const&);
-
+    
 	void pawnMoveList(Pawn *pawn, int side, Square *currentSquare);
 	void bishopMoveList(Bishop *bishop, int side, Square *currentSquare);
 	void knightMoveList(Knight *knight, int side, Square *currentSquare);
@@ -49,7 +49,7 @@ private:
 	MoveList iterativeMoveBuilder(int x, int y, int side, bool diagonal);
 	bool moveBuilderHelper(Square *square, int side, MoveList* pm);
 	void kingMoveHelper(Square *square, int side, MoveList* pm);
-
+    
 	Board* m_board;
 	int m_turns;
 };
