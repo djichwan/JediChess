@@ -84,7 +84,7 @@ Board::Board( GLuint program, double dim ) //: m_square() // Explicitly declared
     // Initialize textures
     m_imageBoard   = new TgaImage();
     m_imageBorder  = new TgaImage();
-    m_initTexture( m_imageBoard, &m_textureBoard, "battleground.tga" ); // Normal mapping
+    m_initTexture( m_imageBoard, &m_textureBoard, "metal.tga" ); // Normal mapping
     m_initTexture( m_imageBorder,&m_textureBorder, "border.tga" ); // Normal mapping
 }
 
