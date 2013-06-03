@@ -202,7 +202,6 @@ protected:
     Square* m_squareToBe;           //which square should move to after finish capturing
     Piece*  m_capturee;             //which piece currently capturing
     bool m_finishShooting = true;   //whether finish shooting
-    
 }; //end class Piece
 
 

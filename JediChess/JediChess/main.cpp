@@ -823,6 +823,7 @@ void idleCallback()
 	}
     
     //Update absolute time
+
     TIME = TM.GetElapsedTime() ;
 	DTIME = TIME - TIME_LAST;
 	TIME_LAST = TIME;
