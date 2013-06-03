@@ -140,6 +140,9 @@ void GameManager::promote(Piece *pawn, Piece *tobe)
 {
 	pawn->setType(tobe->getType());
 	pawn->m_texture = tobe->getTexture();
+    pawn->setWeapon(tobe->getWeapon());
+    pawn->setAlive(true);
+    
 }
 
 void GameManager::pawnMoveList(Pawn *pawn, int side, Square *currentSquare)

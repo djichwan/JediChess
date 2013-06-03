@@ -170,16 +170,16 @@ textureGroup createBlackRookTexture()
     //Left Leg
     blackRookTexture.leftLeg.faceFile[0] = "DarthVaderLeftLeg.tga";
     blackRookTexture.leftLeg.faceFile[1] = "DarthVaderLeftLegSide.tga";
-    blackRookTexture.leftLeg.faceFile[2] = "Blank.tga";
-    blackRookTexture.leftLeg.faceFile[3] = "Blank.tga";
+    blackRookTexture.leftLeg.faceFile[2] = "BlackBlank.tga";
+    blackRookTexture.leftLeg.faceFile[3] = "BlackBlank.tga";
     blackRookTexture.leftLeg.faceFile[4] = "DarthVaderLeftLegBack.tga";
-    blackRookTexture.leftLeg.faceFile[5] = "Blank.tga";
+    blackRookTexture.leftLeg.faceFile[5] = "DarthVaderLeftLegSide.tga";
     
     //Right Leg
     blackRookTexture.rightLeg.faceFile[0] = "DarthVaderRightLeg.tga";
-    blackRookTexture.rightLeg.faceFile[1] = "Blank.tga";
-    blackRookTexture.rightLeg.faceFile[2] = "Blank.tga";
-    blackRookTexture.rightLeg.faceFile[3] = "Blank.tga";
+    blackRookTexture.rightLeg.faceFile[1] = "DarthVaderRightLegSide.tga";
+    blackRookTexture.rightLeg.faceFile[2] = "BlackBlank.tga";
+    blackRookTexture.rightLeg.faceFile[3] = "BlackBlank.tga";
     blackRookTexture.rightLeg.faceFile[4] = "DarthVaderRightLegBack.tga";
     blackRookTexture.rightLeg.faceFile[5] = "DarthVaderRightLegSide.tga";
     
@@ -202,9 +202,9 @@ textureGroup createBlackRookTexture()
     //Weapon
     blackRookTexture.weapon.faceFile[0] = "DarthVaderWeaponFront.tga";
     blackRookTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
-    blackRookTexture.weapon.faceFile[2] = "Blank.tga";
+    blackRookTexture.weapon.faceFile[2] = "BlackBlank.tga";
     blackRookTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
-    blackRookTexture.weapon.faceFile[4] = "Blank.tga";
+    blackRookTexture.weapon.faceFile[4] = "BlackBlank.tga";
     blackRookTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
     
     return blackRookTexture;
@@ -269,12 +269,12 @@ textureGroup createBlackBishopTexture()
     blackBishopTexture.rightArm.faceFile[5] = "AdmiralRightArmSide.tga";
     
     //Weapon
-    blackBishopTexture.weapon.faceFile[0] = "Blank.tga";
-    blackBishopTexture.weapon.faceFile[1] = "Blank.tga";
-    blackBishopTexture.weapon.faceFile[2] = "Blank.tga";
-    blackBishopTexture.weapon.faceFile[3] = "Blank.tga";
-    blackBishopTexture.weapon.faceFile[4] = "Blank.tga";
-    blackBishopTexture.weapon.faceFile[5] = "Blank.tga";
+    blackBishopTexture.weapon.faceFile[0] = "BlackBlank.tga";
+    blackBishopTexture.weapon.faceFile[1] = "BlackBlank.tga";
+    blackBishopTexture.weapon.faceFile[2] = "BlackBlank.tga";
+    blackBishopTexture.weapon.faceFile[3] = "BlackBlank.tga";
+    blackBishopTexture.weapon.faceFile[4] = "BlackBlank.tga";
+    blackBishopTexture.weapon.faceFile[5] = "BlackBlank.tga";
     
     return blackBishopTexture;
 }// end createBlackBishopTexture()
@@ -432,40 +432,40 @@ textureGroup createBlackQueenTexture()
 
     //Torso
     blackQueenTexture.torso.faceFile[0] = "DarthVaderTorso.tga";
-    blackQueenTexture.torso.faceFile[1] = "Blank.tga";
-    blackQueenTexture.torso.faceFile[2] = "Blank.tga";
+    blackQueenTexture.torso.faceFile[1] = "BlackBlank.tga";
+    blackQueenTexture.torso.faceFile[2] = "BlackBlank.tga";
     blackQueenTexture.torso.faceFile[3] = "DarthVaderTorsoTop.tga";
     blackQueenTexture.torso.faceFile[4] = "DarthVaderTorsoBack.tga";
-    blackQueenTexture.torso.faceFile[5] = "Blank.tga";
+    blackQueenTexture.torso.faceFile[5] = "BlackBlank.tga";
 
     //Left Leg
     blackQueenTexture.leftLeg.faceFile[0] = "DarthVaderLeftLeg.tga";
     blackQueenTexture.leftLeg.faceFile[1] = "DarthVaderLeftLegSide.tga";
-    blackQueenTexture.leftLeg.faceFile[2] = "Blank.tga";
-    blackQueenTexture.leftLeg.faceFile[3] = "Blank.tga";
+    blackQueenTexture.leftLeg.faceFile[2] = "BlackBlank.tga";
+    blackQueenTexture.leftLeg.faceFile[3] = "BlackBlank.tga";
     blackQueenTexture.leftLeg.faceFile[4] = "DarthVaderLeftLegBack.tga";
-    blackQueenTexture.leftLeg.faceFile[5] = "Blank.tga";
+    blackQueenTexture.leftLeg.faceFile[5] = "BlackBlank.tga";
     
     //Right Leg
     blackQueenTexture.rightLeg.faceFile[0] = "DarthVaderRightLeg.tga";
-    blackQueenTexture.rightLeg.faceFile[1] = "Blank.tga";
-    blackQueenTexture.rightLeg.faceFile[2] = "Blank.tga";
-    blackQueenTexture.rightLeg.faceFile[3] = "Blank.tga";
+    blackQueenTexture.rightLeg.faceFile[1] = "DarthVaderRightLegSide.tga";
+    blackQueenTexture.rightLeg.faceFile[2] = "BlackBlank.tga";
+    blackQueenTexture.rightLeg.faceFile[3] = "BlackBlank.tga";
     blackQueenTexture.rightLeg.faceFile[4] = "DarthVaderRightLegBack.tga";
     blackQueenTexture.rightLeg.faceFile[5] = "DarthVaderRightLegSide.tga";
 
     //Left Arm
     blackQueenTexture.leftArm.faceFile[0] = "DarthVaderLeftArmFront.tga";
     blackQueenTexture.leftArm.faceFile[1] = "DarthVaderLeftArmSide.tga";
-    blackQueenTexture.leftArm.faceFile[2] = "Blank.tga";
+    blackQueenTexture.leftArm.faceFile[2] = "BlackBlank.tga";
     blackQueenTexture.leftArm.faceFile[3] = "DarthVaderLeftArmTop.tga";
     blackQueenTexture.leftArm.faceFile[4] = "DarthVaderLeftArmBack.tga";
-    blackQueenTexture.leftArm.faceFile[5] = "Blank.tga";
+    blackQueenTexture.leftArm.faceFile[5] = "DarthVaderLeftArmSide.tga";
 
     //Right Arm
     blackQueenTexture.rightArm.faceFile[0] = "DarthVaderRightArmFront.tga";
-    blackQueenTexture.rightArm.faceFile[1] = "Blank.tga";
-    blackQueenTexture.rightArm.faceFile[2] = "Blank.tga";
+    blackQueenTexture.rightArm.faceFile[1] = "BlackBlank.tga";
+    blackQueenTexture.rightArm.faceFile[2] = "BlackBlank.tga";
     blackQueenTexture.rightArm.faceFile[3] = "DarthVaderRightArmTop.tga";
     blackQueenTexture.rightArm.faceFile[4] = "DarthVaderRightArmBack.tga";
     blackQueenTexture.rightArm.faceFile[5] = "DarthVaderRightArmSide.tga";
@@ -475,7 +475,7 @@ textureGroup createBlackQueenTexture()
     blackQueenTexture.weapon.faceFile[1] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[2] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[3] = "DarthVaderWeapon.tga";
-    blackQueenTexture.weapon.faceFile[4] = "Blank.tga";
+    blackQueenTexture.weapon.faceFile[4] = "DarthVaderWeapon.tga";
     blackQueenTexture.weapon.faceFile[5] = "DarthVaderWeapon.tga";
 
     return blackQueenTexture;
@@ -749,12 +749,12 @@ textureGroup createWhiteKnightTexture()
     whiteKnightTexture.rightArm.faceFile[5] = "SoloRightArmSide.tga";
     
     //Weapon
-    whiteKnightTexture.weapon.faceFile[0] = "Blank.tga";
-    whiteKnightTexture.weapon.faceFile[1] = "Blank.tga";
-    whiteKnightTexture.weapon.faceFile[2] = "Blank.tga";
-    whiteKnightTexture.weapon.faceFile[3] = "Blank.tga";
-    whiteKnightTexture.weapon.faceFile[4] = "Blank.tga";
-    whiteKnightTexture.weapon.faceFile[5] = "Blank.tga";
+    whiteKnightTexture.weapon.faceFile[0] = "BlackBlank.tga";
+    whiteKnightTexture.weapon.faceFile[1] = "BlackBlank.tga";
+    whiteKnightTexture.weapon.faceFile[2] = "BlackBlank.tga";
+    whiteKnightTexture.weapon.faceFile[3] = "BlackBlank.tga";
+    whiteKnightTexture.weapon.faceFile[4] = "BlackBlank.tga";
+    whiteKnightTexture.weapon.faceFile[5] = "BlackBlank.tga";
     
     return whiteKnightTexture;
 }// end createWhiteKnightTexture()
@@ -906,7 +906,7 @@ cubeFaceTextures createBulletTexture()
 {
     cubeFaceTextures bulletTexture;
     
-    bulletTexture.faceFile[0] = "Blank.tga";
+    bulletTexture.faceFile[0] = "RedBlank.tga";
     bulletTexture.faceFile[1] = "RedBlank.tga";
     bulletTexture.faceFile[2] = "RedBlank.tga";
     bulletTexture.faceFile[3] = "RedBlank.tga";

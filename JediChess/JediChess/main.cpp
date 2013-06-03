@@ -36,9 +36,11 @@
 #include "Board.h"
 #include "tga.h"
 
-//Global Variables
+//=================== GLOBAL VARIABLES =======================
 int     Window_Width  = 1200;
 int     Window_Height = 900;
+
+// Viewing control variables
 float   Zoom          = 0.65;
 GLfloat theta         = 0.0;
 GLfloat oldTheta	  = -180.0;
@@ -46,16 +48,21 @@ GLfloat azimuth       = 30.0;
 GLfloat horizontalPos = 0.5;
 GLfloat verticalPos   = 0.0;
 
-const int ESC_KEY     = 27;
-const int SPACE_KEY   = 32;
-
 // The eye point and look-at point.
 // Currently unused. Use to control a camera with LookAt().
 Angel::vec4 eye(0, 0.0, 50.0,1.0);
 Angel::vec4 ref(0.0, 0.0, 0.0,1.0);
 Angel::vec4 up(0.0,1.0,0.0,0.0);
 
-//------------ Instantiate Timer variables --------------------
+//Rendering settings
+mat4         model_view;
+mat4         texture_view;
+GLint        uModelView, uProjection, uView;
+GLint        uAmbient, uDiffuse, uSpecular, uLightPos, uShininess;
+GLint        uTex, uEnableTex, uTexture;
+GLint        uBoard, uPicking;
+
+// Timer variables
 Timer  TM;
 double TIME;
 double TIME_LAST;
@@ -64,17 +71,16 @@ double FRAME_TIME  = 0;
 int    FRAME_COUNT = 0;
 double aTime = 0;
 
-//------------ Global Variables -----------
+//Rotation Variables
 double rotation = 0;
-bool   smooth   = true;
+//bool   smooth   = true;
 bool   triggerRotate = false;    //if board should rotate
 
-mat4         model_view;
-mat4         texture_view;
-GLint        uModelView, uProjection, uView;
-GLint        uAmbient, uDiffuse, uSpecular, uLightPos, uShininess;
-GLint        uTex, uEnableTex, uTexture;
-GLint        uBoard, uPicking;
+// To fix board rotation bug
+double boardOffset   = 1.5;
+double boardBlack    = -0.5;
+double boardWhite    = 1.0;
+int    rotationCount = 140;
 
 // Variables for mouse click
 int     prevId;            // Square selected on mouse down
@@ -87,12 +93,6 @@ bool	turnRotation = false;
 
 // Board object
 Board board;
-
-// To fix board rotation bug
-double boardOffset   = 1.5;
-double boardBlack    = -0.5;
-double boardWhite    = 1.0;
-int    rotationCount = 140;
 
 // Texture bind object
 TextureBind textureBind;
@@ -135,7 +135,7 @@ King whiteKing;       // starts at (8,5)
 Bullet bullet;        // for gun animations
 
 
-//===============================================================
+//===================== FUNCTIONS ============================
 //----------------------------------------------------------------
 void set_color(float r, float g, float b)
 {
@@ -164,9 +164,8 @@ void initScene()
 
     
     //--------- Assign texture files and generate pieces ------------
-    //--------- Assign texture files and generate pieces ------------
     //---------------- Black pieces --------------------------
-    textureGroup blackPawnTexture = createBlackPawnTexture();
+    textureGroup blackPawnTexture = createBlackPawnTexture();       // Storm Troopers
     blackPawn1 = Pawn(2, 1, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn1.generate(program);
     blackPawn2 = Pawn(2, 2, BLACKSIDE, blackPawnTexture, TypeGun);
@@ -183,38 +182,37 @@ void initScene()
     blackPawn7.generate(program);
     blackPawn8 = Pawn(2, 8, BLACKSIDE, blackPawnTexture, TypeGun);
     blackPawn8.generate(program);
-    
-    textureGroup blackRookTexture = createBlackRookTexture();
+     
+    textureGroup blackRookTexture = createBlackRookTexture();       // Darth Maul
     blackRook1 = Rook(1, 1, BLACKSIDE, blackRookTexture, TypeSaber);
     blackRook1.generate(program);
     blackRook2 = Rook(1, 8, BLACKSIDE, blackRookTexture, TypeSaber);
     blackRook2.generate(program);
     
-    textureGroup blackBishopTexture = createBlackBishopTexture();
-    
-    blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeSaber);
+    textureGroup blackBishopTexture = createBlackBishopTexture();    // General
+    blackBishop1 = Bishop(1, 3, BLACKSIDE, blackBishopTexture, TypeGun);
     blackBishop1.generate(program);
-    blackBishop2 = Bishop(1, 6, BLACKSIDE, blackBishopTexture, TypeSaber);
+    blackBishop2 = Bishop(1, 6, BLACKSIDE, blackBishopTexture, TypeGun);
     blackBishop2.generate(program);
     
-    textureGroup blackKnightTexture = createBlackKnightTexture();
-    blackKnight1 = Knight(1, 2, BLACKSIDE, blackKnightTexture, TypeSaber);
+    textureGroup blackKnightTexture = createBlackKnightTexture();   //Boba Fett
+    blackKnight1 = Knight(1, 2, BLACKSIDE, blackKnightTexture, TypeGun);
     blackKnight1.generate(program);
-    blackKnight2 = Knight(1, 7, BLACKSIDE, blackKnightTexture, TypeSaber);
+    blackKnight2 = Knight(1, 7, BLACKSIDE, blackKnightTexture, TypeGun);
     blackKnight2.generate(program);
     
-    textureGroup blackQueenTexture = createBlackQueenTexture();
+    textureGroup blackQueenTexture = createBlackQueenTexture();     // Darth Vader
     blackQueen = Queen(1, 4, BLACKSIDE, blackQueenTexture, TypeSaber);
     blackQueen.generate(program);
     
-    textureGroup blackKingTexture = createBlackKingTexture();
+    textureGroup blackKingTexture = createBlackKingTexture();       // Emperor
     blackKing = King(1, 5, BLACKSIDE, blackKingTexture, TypeSaber);
     blackKing.generate(program);
     
     
     
     //------------------ White pieces ------------------------
-    textureGroup whitePawnTexture = createWhitePawnTexture();
+    textureGroup whitePawnTexture = createWhitePawnTexture();       // Rebel
     whitePawn1 = Pawn(7, 1, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn1.generate(program);
     whitePawn2 = Pawn(7, 2, WHITESIDE, whitePawnTexture, TypeGun);
@@ -232,29 +230,29 @@ void initScene()
     whitePawn8 = Pawn(7, 8, WHITESIDE, whitePawnTexture, TypeGun);
     whitePawn8.generate(program);
     
-    textureGroup whiteRookTexture = createWhiteRookTexture();
-    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeSaber);
+    textureGroup whiteRookTexture = createWhiteRookTexture();       // 3CPO
+    whiteRook1 = Rook(8, 1, WHITESIDE, whiteRookTexture, TypeGun);
     whiteRook1.generate(program);
-    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeSaber);
+    whiteRook2 = Rook(8, 8, WHITESIDE, whiteRookTexture, TypeGun);
     whiteRook2.generate(program);
     
-    textureGroup whiteBishopTexture = createWhiteBishopTexture();
+    textureGroup whiteBishopTexture = createWhiteBishopTexture();   // Chewbacca
     whiteBishop1 = Bishop(8, 3, WHITESIDE, whiteBishopTexture, TypeGun);
     whiteBishop1.generate(program);
     whiteBishop2 = Bishop(8, 6, WHITESIDE, whiteBishopTexture, TypeGun);
     whiteBishop2.generate(program);
     
-    textureGroup whiteKnightTexture = createWhiteKnightTexture();
+    textureGroup whiteKnightTexture = createWhiteKnightTexture();   // Han Solo
     whiteKnight1 = Knight(8, 2, WHITESIDE, whiteKnightTexture, TypeGun);
     whiteKnight1.generate(program);
     whiteKnight2 = Knight(8, 7, WHITESIDE, whiteKnightTexture, TypeGun);
     whiteKnight2.generate(program);
     
-    textureGroup whiteQueenTexture = createWhiteQueenTexture();
-    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeSaber);
+    textureGroup whiteQueenTexture = createWhiteQueenTexture();     // Princess Leia
+    whiteQueen = Queen(8, 4, WHITESIDE, whiteQueenTexture, TypeGun);
     whiteQueen.generate(program);
     
-    textureGroup whiteKingTexture = createWhiteKingTexture();
+    textureGroup whiteKingTexture = createWhiteKingTexture();       // Luke Skywalker
     whiteKing = King(8, 5, WHITESIDE, whiteKingTexture, TypeSaber);
     whiteKing.generate(program);
     
@@ -387,11 +385,13 @@ void initScene()
     board.add(board.convertPos(whiteQueen.getRow(), whiteQueen.getCol()), &whiteQueen);
     board.add(board.convertPos(whiteKing.getRow(), whiteKing.getCol()), &whiteKing);
     
+    
+    passBullet(&bullet);
     //--------------------------------------------------------
     // Set texture sampler variable to texture unit 0
     // (set in glActiveTexture(GL_TEXTURE0))
     
-    passBullet(&bullet);
+
     
     glUniform1i( uTex, 0);
     
@@ -401,15 +401,16 @@ void initScene()
 
 
 //-------------------------------------------------------------
-// Draw scene (i.e. board + pieces)
+// Draw scene (i.e. board + pieces) when redisplay
 void drawScene()
 {
-    if (board.getGameSet())
+    if (board.getGameSet()) //if game is over
     {
-        GameManager::getInstance().getBoard()->generateEndScreen(-1);
+        GameManager::getInstance().getBoard()->generateEndScreen(-1);   //TODO: make functional 
         return;
     }
     
+    //------- Set View of Game -----------------------
     model_view = mat4(1.0f);
     
     model_view *= Translate(horizontalPos, verticalPos, -15.0);
@@ -427,7 +428,7 @@ void drawScene()
     
     mat4 originalView = model_view;
     
-    //--------- Draw Board -----------------------------------
+    //-------------------- Draw Board ------------------------
     glUniform1f( uBoard, 1.0 );
     model_view *= RotateX(BOARD_ROTATION);
     glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
@@ -438,13 +439,14 @@ void drawScene()
     model_view = originalView;
     glUniform1f( uBoard, 0.0 );
     glUniform1f( uPicking, 0.0 );
-    //---------------------------------------------------------
     
+    //---------------------------------------------------------
     // Scale pieces
     model_view *= Scale(PIECE_SCALE.x, PIECE_SCALE.y, PIECE_SCALE.z);
     
-    updateAnimationTime(aTime); // tells Piece class what time it is
+    updateAnimationTime(aTime); // tells Pieces what time it is
     
+    //If can't find the black king or the white king => game over
     if (!blackKing.getSquare() || !whiteKing.getSquare())
         board.setGameSet(true);
     
@@ -592,10 +594,11 @@ void drawScene()
     }
     
     whitewin:
-    // Black side wins
+    // Black side wins -> draw all black pieces and not the white pieces
     if (!whiteKing.getSquare())
         return;
     
+    //If white pieces win -> draw all white pieces and not the black pieces
     
     // White Pieces
     if (whitePawn1.getSquare())
@@ -805,19 +808,34 @@ void displayCallback()
 // Callback for idle
 void idleCallback()
 {
+	bool animating = false;
+	if (turnRotation)
+	{
+		std::vector<Piece*> pieceList = board.getPieceList();
+		for (std::vector<Piece*>::iterator i = pieceList.begin(); i != pieceList.end(); ++i)
+		{
+			if ((*i)->isAnimating())
+			{
+				animating = true;
+				break;
+			}
+		}
+	}
+    
+    //Update absolute time
     TIME = TM.GetElapsedTime() ;
 	DTIME = TIME - TIME_LAST;
 	TIME_LAST = TIME;
     
-    aTime += 0.05*DTIME;      // for animation
+    aTime += 0.05*DTIME;      // for animation time
 
-    if (((theta - oldTheta) < 180) && turnRotation)
+    if (((theta - oldTheta) < 180) && turnRotation  && !animating) //if still need to complete a board rotation
 	{
         
-		theta += DTIME * TURN_ROTATION_SPEED;
-		if (whoseTurn)
+		theta += DTIME * TURN_ROTATION_SPEED;       //adjust the angle of the board
+		if (whoseTurn)                              //if blacks turn
 			azimuth -= DTIME * TURN_ROTATION_SPEED/3.0;
-		else
+		else                                        //else if white's turn
 			azimuth += DTIME * TURN_ROTATION_SPEED/3.0;
         
         // Aligns board rotation
@@ -836,14 +854,14 @@ void idleCallback()
                 horizontalPos = boardBlack;
         }
         
-		if (theta - oldTheta >= 180)
+		if (theta - oldTheta >= 180)        //If already completed rotation/overshot it
 		{
 			turnRotation = false;
-			if (fmod(theta, 180.0))
+			if (fmod(theta, 180.0))         //If overshot - take theta mod 180
 				theta = (((int) theta) / 180) * 180;
-			if (whoseTurn)
+			if (whoseTurn)                  //If white's turn - angle board -30 degrees
 				azimuth = -30;
-			else
+			else                            //If black's turn - angle board 30 degrees
 				azimuth = 30;
 		}
 
@@ -915,7 +933,8 @@ void mouseCallback(int button, int state, int x, int y)
     
     glUniform1f( uBoard, 0.0 );
     
-    // Neither piece or square selected
+    
+    // If neither piece or square selected
     if (selectedPiece == NULL && selected == NULL)
     {
         if (prevSelected != NULL)
@@ -926,12 +945,14 @@ void mouseCallback(int button, int state, int x, int y)
         return;
     }
     
+    
     if (state == GLUT_UP) // Mouse up
     {
-        if (selectedPiece == NULL) // CASE Board Square
+        if (selectedPiece == NULL) // CASE Board Square clicked
         {
             bool notMove = false; // So no move takes place when square is not lit
-			Square *undo = NULL;
+			
+            Square *undo = NULL;
 			int oldCol;
 			if (pieceToMove)
 			{
@@ -952,13 +973,15 @@ void mouseCallback(int button, int state, int x, int y)
                     notMove = true;
             }
             
+            // If moving a piece
 			if (!notMove && pieceToMove != NULL && prevSelected == selected && pieceToMove->move(selected, uTex, uEnableTex, uModelView, model_view))
 			{
+                //Check if piece needs special processing (Pawn, Rook, King)
 				King *king = whoseTurn ? &blackKing : &whiteKing;
 				if (!GameManager::getInstance().isCheck(king))
 				{
 					PieceType ptmType = pieceToMove->getType();
-					if (ptmType == TypePawn)
+					if (ptmType == TypePawn)    // Pawns can be queened
 					{
 						((Pawn *) pieceToMove)->setMoved();
 						if (pieceToMove->getRow() == 1)
@@ -966,9 +989,9 @@ void mouseCallback(int button, int state, int x, int y)
 						else if (pieceToMove->getRow() == 8)
 							GameManager::getInstance().promote(pieceToMove, &blackQueen);
 					}
-					else if (ptmType == TypeRook)
+					else if (ptmType == TypeRook)  // Rooks can be castled
 						((Rook *) pieceToMove)->setMoved();
-					else if (ptmType == TypeKing)
+					else if (ptmType == TypeKing)  // Kings 
 					{
 						((King *) pieceToMove)->setMoved();
 						// Queenside castling
@@ -979,7 +1002,7 @@ void mouseCallback(int button, int state, int x, int y)
 							else
 								whiteRook1.castle(board.getSquare(4, 8));
 						}
-						// Kingside
+						// Kingside castling
 						else if (oldCol - pieceToMove->getCol() == -2)
 						{
 							if (whoseTurn == BLACKSIDE)
@@ -988,14 +1011,18 @@ void mouseCallback(int button, int state, int x, int y)
 								whiteRook2.castle(board.getSquare(6, 8));
 						}
 					}
+                    
 					GameManager::getInstance().buildMoveList(pieceToMove);
 					King* otherKing = whoseTurn ? &whiteKing : &blackKing;
-					if (otherKing->isChecked() && GameManager::getInstance().isCheckMate(otherKing))
+					if (otherKing->isChecked() && GameManager::getInstance().isCheckMate(otherKing))    //check if game is over
+                    {
 						GameManager::getInstance().endGame(whoseTurn);
+                    }
                     
-					whoseTurn = GameManager::getInstance().incTurns() % 2;
                     
+					whoseTurn = GameManager::getInstance().incTurns() % 2; //increment turn counter to other team
                     
+                    //board should rotate
 					turnRotation = true;
                     
 					oldTheta = theta;
@@ -1004,21 +1031,22 @@ void mouseCallback(int button, int state, int x, int y)
 				else	// Your king in check
 				{
 					pieceToMove->undo(undo);
+					king->setChecked(NULL);
 				}
 				pieceToMove = NULL;
 			}
             
-            printf("Selected: %i\n", selected->getId());
+            //printf("Selected: %i\n", selected->getId());    //TODO: delete
         }
-        else // CASE Piece
+        else // CASE Piece selected
         {
-            if (prevPieceSelected == selectedPiece)
+            if (prevPieceSelected == selectedPiece) // If select piece
             {
                 selectedPiece->setOnTheMove(ON_MOVE);
 				GameManager::getInstance().buildMoveList(selectedPiece);
                 board.select(selectedPiece->getSquare()->getPos(), HIGHLIGHT_ON);
 				MoveList* pm = selectedPiece->getMoveList();
-				for (MoveList::size_type i = 0; i != pm->size(); i++)
+				for (MoveList::size_type i = 0; i < pm->size(); i++)
 				{
 					board.select((*pm)[i]->getPos(), HIGHLIGHT_ON);
 				}
@@ -1083,6 +1111,7 @@ void mouseCallback(int button, int state, int x, int y)
 					{
 						pieceToMove->undo(undo);
 						pieceToMove = NULL;
+						king->setChecked(NULL);
 					}
                 }
             }
@@ -1096,7 +1125,7 @@ void mouseCallback(int button, int state, int x, int y)
             prevPieceSelected = NULL;
             
             // 0 = NULL, 1 = Pawn, 2 = Rook, 3 = Bishop, 4 = Knight, 5 = Queen, 6 = King
-            printf("Selected piece: %i\n", selectedPiece->getType());
+            //printf("Selected piece: %i\n", selectedPiece->getType()); //TODO: delete
         }
     }
     else if (state == GLUT_DOWN) // Mouse down

@@ -87,6 +87,8 @@ struct TextureBind {
 } typedef TextureBind;
 
 //------------ General -----------------------------
+const int ESC_KEY     = 27;
+const int SPACE_KEY   = 32;
 
 #define TESTING_NO_TEXTURE false
 

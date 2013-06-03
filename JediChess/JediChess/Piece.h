@@ -127,12 +127,15 @@ struct textureImage
 class Piece : public Object
 {
 public:
+	Piece();
     bool move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view);        // move piece to destSquare, need to check if valid move
     void undo(Square* original);
     void select();                      // respond to being selected by mouse click
     void setType(PieceType type);      // change the PieceType of the object (if pawn reaches other end of the board)
     void captured();                    // call if captured
 	void setMoveList(MoveList moveList);
+    void setWeapon(WeaponType aWeapon);
+    void setAlive(bool aAlive);
     
     int getRow();                       // accessor function for m_row
     int getCol();                       // accessor function for m_col
@@ -151,6 +154,7 @@ public:
     WeaponType getWeapon();             // accessor function for m_weapon
     bool isAnimating();                 // whether piece is currently in animation
     GLfloat rotatePiece(Piece* piece, GLfloat finalTranslateAllX, GLfloat finalTranslateAllY);
+    
     
     void generate(GLint program);   // generates the geometry for piece's parts
     void draw(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view, vec3 translate) ;  	   //draws the Piece
@@ -187,17 +191,17 @@ protected:
     vec3  m_translate;
     
     // Use for animation
-    animationType m_animationType;
-    double m_animationTime = 0;
-    double m_animationStartTime = 0;
-    bool m_animationFinish = true;
+    animationType m_animationType;   //what type of animation is being done (attacking/dying)
+    double m_animationTime = 0;      //timer for animation
+    double m_animationStartTime = 0; //beginning of animation
+    bool m_animationFinish = true;   //whether animation is done
     bool m_animationUpStroke = false; //whether finish upstroke in attack animation
-    vec3 m_posStart;
-    vec3 m_posDest;
-    double m_squareDim;
+    vec3 m_posStart;                 //starting position
+    vec3 m_posDest;                  //ending position
+    double m_squareDim;              //dimension of square
     Square* m_squareToBe;           //which square should move to after finish capturing
     Piece*  m_capturee;             //which piece currently capturing
-    bool m_finishShooting = true;
+    bool m_finishShooting = true;   //whether finish shooting
     
 }; //end class Piece
 
@@ -301,9 +305,9 @@ class Bullet : public Object
     //private:    
         //for animation
         animateBulletData m_animation;
-        bool m_animationFinish = true;
-        bool m_animationStart = false;
-        vec3 m_translate = vec3(0,0,0);
+        bool m_animationFinish;
+        bool m_animationStart;
+        vec3 m_translate;
 
 };// end class Bullet
 

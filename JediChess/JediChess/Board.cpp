@@ -809,7 +809,7 @@ void Board::generateEndScreen( int side )
     
     TgaImage* image = new TgaImage();
     GLuint    texture;
-    m_initTexture( image, &texture, (m_side == WHITESIDE) ? "allianceVictory.tga" : "imperialVictory.tga" );
+    m_initTexture( image, &texture, (m_side == WHITESIDE) ? "images/allianceVictory.tga" : "images/imperialVictory.tga" );
     
     // Bind border texture
     glBindTexture( GL_TEXTURE_2D, texture );

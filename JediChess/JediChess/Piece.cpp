@@ -12,6 +12,15 @@ double absoluteTime = 0;
 Bullet* bulletPtr;
 
 //================================== Piece Base Class ==========================================
+Piece::Piece()
+{
+	m_animationTime = 0;
+    m_animationStartTime = 0;
+    m_animationFinish = true;
+    m_animationUpStroke = false;
+	m_finishShooting = true;
+}
+
 //------------------------ Modifiers---------------------------
 // Move piece to (row, col), need to check if valid move
 bool Piece::move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_view)
@@ -136,6 +145,19 @@ void Piece::setOnTheMove( bool move )
 {
     m_onTheMove = move;
 }
+
+//----------------------------------------------------
+void Piece::setWeapon(WeaponType aWeapon)
+{
+    m_weapon = aWeapon;
+}//end Piece::setWeapon()
+
+
+//----------------------------------------------------
+void Piece::setAlive(bool aAlive)
+{
+    m_alive = aAlive;
+}// end Piece::setAlive()
 
 //---------------------------------------------------------------
 MoveList* Piece::getMoveList()
@@ -1013,6 +1035,7 @@ void passBullet(Bullet* aBullet)
 //--------------------------------------------------------------
 Pawn::Pawn(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
+	Piece();
     m_row = row;
     m_col = col;                  // row where piece locationed (1-8)
     m_team = team;
@@ -1074,6 +1097,7 @@ bool Pawn::getMoved()
 //--------------------------------------------------------------
 Rook::Rook(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
+	Piece();
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1133,6 +1157,7 @@ bool Rook::castle(Square *dest)
 //--------------------------------------------------------------
 Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
+	Piece();
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1157,6 +1182,7 @@ Bishop::Bishop(int row, int col, int team, textureGroup texture, WeaponType weap
 //--------------------------------------------------------------
 Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
+	Piece();
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1180,6 +1206,7 @@ Knight::Knight(int row, int col, int team, textureGroup texture, WeaponType weap
 //--------------------------------------------------------------
 Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
+	Piece();
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1202,6 +1229,7 @@ Queen::Queen(int row, int col, int team, textureGroup texture, WeaponType weapon
 //--------------------------------------------------------------
 King::King(int row, int col, int team, textureGroup texture, WeaponType weapon)
 {
+	Piece();
     m_row = row;
     m_col = col;
     m_team = team;
@@ -1259,7 +1287,9 @@ bool King::getMoved()
 //--------------------------------------------------------------
 Bullet::Bullet()
 {
-    
+    m_animationFinish = true;
+    m_animationStart = false;
+    m_translate = vec3(0,0,0);
 }//end Bullet::Bullet()
 
 
