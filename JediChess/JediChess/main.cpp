@@ -511,7 +511,7 @@ void drawSpace()
                 2.0f, 2.0f, 2.0f, 1.0f);
     
     // Front
-    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateX(180) * Translate(0.0f, 0.0f, 500.0f));
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateX(180) * Translate(0.0f, 0.0f, 500.0f) * RotateZ(180));
     glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
     // Back
     glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * Translate(0.0f, 0.0f, 500.0f));
@@ -558,7 +558,9 @@ void drawScene()
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
     mat4 originalView = model_view;
+    
     drawSpace();
+    
     //-------------------- Draw Board ------------------------
     model_view = originalView;
     glUniform1f( uBoard, 1.0 );
