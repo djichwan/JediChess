@@ -40,22 +40,58 @@ bool GameManager::isCheckMate(King *king)
 		return false;
     
 	int side = king->isOnTeam(WHITESIDE) ? WHITESIDE : BLACKSIDE;
-	
-	// Check if any piece on king's side can block check
-	MoveList* threatMoveList = threat->getMoveList();
 	std::vector<Piece*> pieceList = m_board->getPieceList();
-	for (MoveList::size_type i = 0; i != threatMoveList->size(); i++)
+	if (threat->getType() == TypeKnight)
 	{
 		for (std::vector<Piece*>::size_type j = 0; j != pieceList.size(); j++)
 		{
-            buildMoveList(pieceList.at(j));
+			buildMoveList(pieceList.at(j));
 			if (pieceList.at(j)->isOnTeam(side) && pieceList.at(j)->getType() != TypeKing)
 			{
 				MoveList* protectorMoveList = pieceList.at(j)->getMoveList();
 				for (MoveList::size_type k = 0; k != protectorMoveList->size(); k++)
 				{
-					if (protectorMoveList->at(k) == threatMoveList->at(i) || protectorMoveList->at(k) == threat->getSquare())
+					if (protectorMoveList->at(k) == threat->getSquare())
 						return false;
+				}
+			}
+		}
+	}
+	else
+	{
+		// Check if any piece on king's side can block check
+		int threatX = threat->getCol();
+		int threatY = threat->getRow();
+
+		int kingX = king->getCol();
+		int kingY = king->getRow();
+	
+		int verticalDir = ((threatY - kingY) < 0) ? -1 : 1;
+		int horizontalDir = ((threatX - kingX) < 0) ? -1 : 1;
+
+		MoveList betweenKingAndThreat;		// only squares between threat and king
+		Square* cur = king->getSquare();
+		while (cur != threat->getSquare())
+		{
+			cur = m_board->getSquare(kingX + horizontalDir, kingY + verticalDir);
+			betweenKingAndThreat.insert(betweenKingAndThreat.end(), cur);
+			verticalDir += (verticalDir < 0) ? -1 : 1;
+			horizontalDir += (horizontalDir < 0) ? -1 : 1;
+		}
+
+		for (MoveList::size_type i = 0; i != betweenKingAndThreat.size(); i++)
+		{
+			for (std::vector<Piece*>::size_type j = 0; j != pieceList.size(); j++)
+			{
+				buildMoveList(pieceList.at(j));
+				if (pieceList.at(j)->isOnTeam(side) && pieceList.at(j)->getType() != TypeKing)
+				{
+					MoveList* protectorMoveList = pieceList.at(j)->getMoveList();
+					for (MoveList::size_type k = 0; k != protectorMoveList->size(); k++)
+					{
+						if (protectorMoveList->at(k) == betweenKingAndThreat.at(i))
+							return false;
+					}
 				}
 			}
 		}
