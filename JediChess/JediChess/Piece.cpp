@@ -438,8 +438,8 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
                         }
                         //else facing the right way
                         
-                        //bulletAnimation.translate.z = isYNegative ? m_animationTime*slope+m_squareDim : -m_animationTime*slope-m_squareDim;
-                        bulletAnimation.translate.z = isYNegative ? m_animationTime*slope : -m_animationTime*slope;
+                        bulletAnimation.translate.z = isYNegative ? m_animationTime*slope+m_squareDim : -m_animationTime*slope-m_squareDim;
+  
                     }//end if horizontal translation
                     //else  // if (m_animationTime-abs(finalTranslateAllX) <= abs(finalTranslateAllX)) //move left/right first
                     if(abs(finalTranslateAllX) != 0)
@@ -455,9 +455,9 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
                         
                         //double xTranslate = m_animationTime-abs(finalTranslateAllY);
                         
-                        //bulletAnimation.translate.x = isXNegative ? -xTranslate : xTranslate;
-                        //bulletAnimation.translate.x = isXNegative ? -m_animationTime*inverseSlope-m_squareDim : m_animationTime*inverseSlope+m_squareDim;
-                        bulletAnimation.translate.x = isXNegative ? -m_animationTime*inverseSlope : m_animationTime*inverseSlope;
+
+                        bulletAnimation.translate.x = isXNegative ? -m_animationTime*inverseSlope-m_squareDim/3 : m_animationTime*inverseSlope+m_squareDim/3;
+
 
                         
                     }//end if
