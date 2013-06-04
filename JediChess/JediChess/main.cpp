@@ -907,6 +907,7 @@ void keyboardCallback(unsigned char key, int x, int y)
         case 'D':
             horizontalPos -= .5;
             break;
+        case 'U':
         case 'u':       // Unhighlight squares on board
             board.unhightlightAll();
             break;
