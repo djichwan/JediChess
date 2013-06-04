@@ -400,6 +400,137 @@ void initScene()
 
 }// end initScene()
 
+TgaImage* image;
+GLuint texture;
+bool spaceInit = false;
+void initSpace()
+{
+    std::string filename = "space.tga";
+    image = new TgaImage();
+    if (!image->loadTGA(filename.c_str()))
+    {
+        std::cerr << "Error load texture file" << std::endl;
+        exit( EXIT_FAILURE );
+    }
+    
+    glGenTextures( 1, &texture );
+    spaceInit = true;
+}
+
+void drawSpace()
+{
+    glUniform1f( uBoard, 1.0 );
+    glUniform1f( uPicking, 0.0 );
+    
+    vec4 points[4] = {
+        vec4( -500, 500, -0, 1),
+        vec4(  500, 500, -0, 1),
+        vec4( -500, -500, -0, 1),
+        vec4(  500, -500, -0, 1)
+    };
+    
+    vec2 texCoords[4];
+    texCoords[0] = vec2( 0.0, 1.0 );
+    texCoords[1] = vec2( 1.0, 1.0 );
+    texCoords[2] = vec2( 0.0, 0.0 );
+    texCoords[3] = vec2( 1.0, 0.0 );
+    
+    // Calculate normal
+    vec4 normals[4];
+    vec4 U = points[1] - points[0];
+    vec4 V = points[2] - points[0];
+    vec3 normal = vec3(
+                       U.y*V.z - U.z*V.y,
+                       U.z*V.x - U.x*V.z,
+                       U.x*V.y - U.y*V.x
+                       );
+    
+    normals[0] = normal;
+    normals[1] = normal;
+    normals[2] = normal;
+    normals[3] = normal;
+    
+    GLuint vao[1], buffer[1];
+    
+    // Create a vertex array object
+#ifdef __APPLE__
+    glGenVertexArraysAPPLE( 1, vao );
+    glBindVertexArrayAPPLE( vao[0] );
+#else
+	glGenVertexArrays( 1, vao );
+    glBindVertexArray( vao[0] );
+#endif
+    
+    // Create and initialize a buffer object
+    glGenBuffers( 1, buffer );
+    glBindBuffer( GL_ARRAY_BUFFER, buffer[0] );
+    glBufferData( GL_ARRAY_BUFFER, pointsSize + texSize + normalsSize,
+                 NULL, GL_STATIC_DRAW );
+    
+    // Set up vector positions
+    GLuint vPosition = glGetAttribLocation( program, "vPosition" );
+    glEnableVertexAttribArray( vPosition );
+    glVertexAttribPointer( vPosition, 4, GL_FLOAT, GL_FALSE, 0,
+                          BUFFER_OFFSET(0) );
+    
+    GLuint vTexCoord = glGetAttribLocation( program, "vTexCoords" );
+    glEnableVertexAttribArray( vTexCoord );
+    glVertexAttribPointer( vTexCoord, 2, GL_FLOAT, GL_FALSE, 0,
+                          BUFFER_OFFSET(pointsSize) );
+    
+    GLuint vNormal = glGetAttribLocation( program, "vNormal" );
+    glEnableVertexAttribArray( vNormal );
+    glVertexAttribPointer( vNormal, 3, GL_FLOAT, GL_FALSE, 0,
+                          BUFFER_OFFSET(pointsSize + texSize) );
+    
+    glUniform1i( glGetUniformLocation(program, "Tex"), 0 );
+    glUniform4f( glGetUniformLocation(program, "color"), WHITE.x, WHITE.y, WHITE.z, WHITE.w );
+    
+    
+    glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
+    glBufferSubData( GL_ARRAY_BUFFER, pointsSize,
+                    texSize, texCoords );
+    glBufferSubData( GL_ARRAY_BUFFER, pointsSize + texSize,
+                    normalsSize, normals );
+    
+    if (!spaceInit)
+        initSpace();
+    glBindTexture( GL_TEXTURE_2D, texture );
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, image->width, image->height, 0,
+                 (image->byteCount == 3) ? GL_BGR : GL_BGRA,
+                 GL_UNSIGNED_BYTE, image->data );
+    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+    // Bind border texture
+    glBindTexture( GL_TEXTURE_2D, texture );
+    
+    glUniform4f(glGetUniformLocation( program, "DiffuseProduct" ),
+                2.0f, 2.0f, 2.0f, 1.0f);
+    
+    // Front
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateX(180) * Translate(0.0f, 0.0f, 500.0f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+    // Back
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * Translate(0.0f, 0.0f, 500.0f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+    // Right
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateY(90) * Translate(0.0f, 0.0f, 500.0f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+    // Left
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateY(90) * RotateX(180) * Translate(0.0f, 0.0f, 500.0f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+    // Bottom
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateX(90) * Translate(0.0f, 0.0f, 500.0f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+    // Top
+    glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view * RotateX(90) * Translate(0.0f, 0.0f, -500.0f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);
+}
+
+
 //-------------------------------------------------------------
 // Draw scene (i.e. board + pieces) when redisplay
 void drawScene()
@@ -427,7 +558,7 @@ void drawScene()
     model_view *= Translate(0.0f, 0.0f, 1.0f);
     
     mat4 originalView = model_view;
-    
+    drawSpace();
     //-------------------- Draw Board ------------------------
     model_view = originalView;
     glUniform1f( uBoard, 1.0 );
