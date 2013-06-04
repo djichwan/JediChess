@@ -68,6 +68,11 @@ bool GameManager::isCheckMate(King *king)
 	
 		int verticalDir = ((threatY - kingY) < 0) ? -1 : 1;
 		int horizontalDir = ((threatX - kingX) < 0) ? -1 : 1;
+		
+		if (threatY - kingY == 0)
+			verticalDir = 0;
+		if (threatX - kingX == 0)
+			horizontalDir = 0;
 
 		MoveList betweenKingAndThreat;		// only squares between threat and king
 		Square* cur = king->getSquare();
