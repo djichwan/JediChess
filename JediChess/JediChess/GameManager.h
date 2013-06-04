@@ -46,8 +46,8 @@ private:
 	void queenMoveList(Queen *queen, int side, Square *currentSquare);
 	void kingMoveList(King *king, int side, Square *currentSquare);
 	
-	MoveList iterativeMoveBuilder(int x, int y, int side, bool diagonal);
-	bool moveBuilderHelper(Square *square, int side, MoveList* pm);
+	MoveList iterativeMoveBuilder(int x, int y, int side, bool diagonal, Piece* mover);
+	bool moveBuilderHelper(Square *square, int side, MoveList* pm, Piece* mover);
 	void kingMoveHelper(Square *square, int side, MoveList* pm);
     
 	Board* m_board;

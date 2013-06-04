@@ -27,7 +27,7 @@ bool GameManager::isCheck(King *king)
 		if (!piece->isOnTeam(side))
 			buildMoveList(piece);
 	}
-	if (king->isChecked())
+	if (king->isChecked() != NULL)
 		return true;
 	
 	return false;
@@ -53,7 +53,7 @@ bool GameManager::isCheckMate(King *king)
 				MoveList* protectorMoveList = pieceList.at(j)->getMoveList();
 				for (MoveList::size_type k = 0; k != protectorMoveList->size(); k++)
 				{
-					if (protectorMoveList[k] == threatMoveList[i])
+					if (protectorMoveList->at(k) == threatMoveList->at(i) || protectorMoveList->at(k) == threat->getSquare())
 						return false;
 				}
 			}
@@ -199,7 +199,7 @@ void GameManager::bishopMoveList(Bishop *bishop, int side, Square *currentSquare
 	int x = bishop->getCol();
 	int y = bishop->getRow();
 	
-	possibleMoves = iterativeMoveBuilder(x, y, side, true);
+	possibleMoves = iterativeMoveBuilder(x, y, side, true, bishop);
 	bishop->setMoveList(possibleMoves);
 }
 
@@ -214,21 +214,21 @@ void GameManager::knightMoveList(Knight *knight, int side, Square *currentSquare
 	
 	Square *square = NULL;
 	if ((square = m_board->getSquare(x + longSide, y + shortSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x + longSide, y - shortSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x - longSide, y + shortSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x - longSide, y - shortSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x + shortSide, y + longSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x - shortSide, y + longSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x + shortSide, y - longSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	if ((square = m_board->getSquare(x - shortSide, y - longSide)))
-		moveBuilderHelper(square, side, &possibleMoves);
+		moveBuilderHelper(square, side, &possibleMoves, knight);
 	
 	knight->setMoveList(possibleMoves);
 }
@@ -239,7 +239,7 @@ void GameManager::rookMoveList(Rook *rook, int side, Square *currentSquare)
 	int x = rook->getCol();
 	int y = rook->getRow();
 	
-	possibleMoves = iterativeMoveBuilder(x, y, side, false);
+	possibleMoves = iterativeMoveBuilder(x, y, side, false, rook);
 	rook->setMoveList(possibleMoves);
 }
 
@@ -250,8 +250,8 @@ void GameManager::queenMoveList(Queen *queen, int side, Square *square)
 	int x = queen->getCol();
 	int y = queen->getRow();
 	
-	diagonals = iterativeMoveBuilder(x, y, side, true);
-	straights = iterativeMoveBuilder(x, y, side, false);
+	diagonals = iterativeMoveBuilder(x, y, side, true, queen);
+	straights = iterativeMoveBuilder(x, y, side, false, queen);
 	
 	MoveList possibleMoves;
 	possibleMoves.insert(possibleMoves.end(), diagonals.begin(), diagonals.end());
@@ -321,7 +321,7 @@ void GameManager::kingMoveList(King *king, int side, Square *square)
 	king->setMoveList(possibleMoves);
 }
 
-MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal)
+MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal, Piece* mover)
 {
 	MoveList possibleMoves;
 	int hOffset = 1;
@@ -332,7 +332,7 @@ MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal
     
 	Square *square = NULL;
 	while ((square = m_board->getSquare(x + hOffset, y + vOffset))
-           && moveBuilderHelper(square, side, &possibleMoves))
+           && moveBuilderHelper(square, side, &possibleMoves, mover))
 	{
 		hOffset++;
 		if (diagonal)
@@ -343,7 +343,7 @@ MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal
 	if (diagonal)
 		vOffset = hOffset;
 	while ((square = m_board->getSquare(x - hOffset, y - vOffset))
-           && moveBuilderHelper(square, side, &possibleMoves))
+           && moveBuilderHelper(square, side, &possibleMoves, mover))
 	{
 		hOffset++;
 		if (diagonal)
@@ -356,7 +356,7 @@ MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal
 	else
 		hOffset = 0;
 	while ((square = m_board->getSquare(x + hOffset, y - vOffset))
-           && moveBuilderHelper(square, side, &possibleMoves))
+           && moveBuilderHelper(square, side, &possibleMoves, mover))
 	{
 		vOffset++;
 		if (diagonal)
@@ -365,9 +365,9 @@ MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal
 	
 	vOffset = 1;
 	if (diagonal)
-		vOffset = hOffset;
+		hOffset = vOffset;
 	while ((square = m_board->getSquare(x - hOffset, y + vOffset))
-           && moveBuilderHelper(square, side, &possibleMoves))
+           && moveBuilderHelper(square, side, &possibleMoves, mover))
 	{
 		vOffset++;
 		if (diagonal)
@@ -377,7 +377,7 @@ MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal
 	return possibleMoves;
 }
 
-bool GameManager::moveBuilderHelper(Square *square, int side, MoveList* pm)
+bool GameManager::moveBuilderHelper(Square *square, int side, MoveList* pm, Piece* mover)
 {
 	Piece *piece = square->getPiece();
 	if (piece == NULL)
@@ -386,7 +386,7 @@ bool GameManager::moveBuilderHelper(Square *square, int side, MoveList* pm)
 	{
 		pm->insert(pm->end(), square);
 		if (piece->getType() == TypeKing)
-			((King *) piece)->setChecked(piece);
+			((King *) piece)->setChecked(mover);
 		return false;
 	}
 	else

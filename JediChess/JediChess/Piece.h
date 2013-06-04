@@ -192,16 +192,16 @@ protected:
     
     // Use for animation
     animationType m_animationType;   //what type of animation is being done (attacking/dying)
-    double m_animationTime = 0;      //timer for animation
-    double m_animationStartTime = 0; //beginning of animation
-    bool m_animationFinish = true;   //whether animation is done
-    bool m_animationUpStroke = false; //whether finish upstroke in attack animation
+    double m_animationTime;      //timer for animation
+    double m_animationStartTime; //beginning of animation
+    bool m_animationFinish;   //whether animation is done
+    bool m_animationUpStroke; //whether finish upstroke in attack animation
     vec3 m_posStart;                 //starting position
     vec3 m_posDest;                  //ending position
     double m_squareDim;              //dimension of square
     Square* m_squareToBe;           //which square should move to after finish capturing
     Piece*  m_capturee;             //which piece currently capturing
-    bool m_finishShooting = true;   //whether finish shooting
+    bool m_finishShooting;   //whether finish shooting
 }; //end class Piece
 
 

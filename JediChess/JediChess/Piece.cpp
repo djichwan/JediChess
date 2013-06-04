@@ -54,8 +54,11 @@ bool Piece::move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModel
        // store destination square info for the attacker to move after animation is finished (otherwise will move to destination square then animate)
         m_squareToBe = destSquare;
         m_capturee = occupant;
+		int squareId = m_squareToBe->getId();
+        m_row = (squareId / 8) + 1;
+        m_col = (squareId % 8) + 1;
         
-        initiateAnimation(TypeAttacking, uTex, uEnableTex, uModelView, model_view, posStart, posDest);
+        //initiateAnimation(TypeAttacking, uTex, uEnableTex, uModelView, model_view, posStart, posDest);
         //piece computationally captured in the dying animation
     }
     else        //if no capture,
