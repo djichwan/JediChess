@@ -324,8 +324,12 @@ void Board::select( vec3 pos, bool on )
 {
     vec4 color = HIGHLIGHT;
     if (m_squares.at(pos2id(pos)).getPiece())
+    {
         if (!m_squares.at(pos2id(pos)).getPiece()->getOnTheMove())
+        {
             color = KILL;
+        }
+    }
     
     select( pos, on, color );
 }

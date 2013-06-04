@@ -48,12 +48,13 @@ bool GameManager::isCheckMate(King *king)
 	{
 		for (std::vector<Piece*>::size_type j = 0; j != pieceList.size(); j++)
 		{
+            buildMoveList(pieceList.at(j));
 			if (pieceList.at(j)->isOnTeam(side) && pieceList.at(j)->getType() != TypeKing)
 			{
 				MoveList* protectorMoveList = pieceList.at(j)->getMoveList();
 				for (MoveList::size_type k = 0; k != protectorMoveList->size(); k++)
 				{
-					if (protectorMoveList[k] == threatMoveList[i])
+					if (protectorMoveList[k] == threatMoveList[i] || protectorMoveList->at(k) == threat->getSquare())
 						return false;
 				}
 			}
@@ -365,7 +366,7 @@ MoveList GameManager::iterativeMoveBuilder(int x, int y, int side, bool diagonal
 	
 	vOffset = 1;
 	if (diagonal)
-		vOffset = hOffset;
+		hOffset = vOffset;
 	while ((square = m_board->getSquare(x - hOffset, y + vOffset))
            && moveBuilderHelper(square, side, &possibleMoves))
 	{
