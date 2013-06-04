@@ -465,7 +465,9 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
                     bulletPtr->m_animation = bulletAnimation;
                     glUniform4f( glGetUniformLocation(m_square->getShader(), "color"), RED.x, RED.y, RED.z, RED.w );
                     glUniform1f( glGetUniformLocation(m_square->getShader(), "Board"), 0.0 );
+                    glUniform1f( glGetUniformLocation(m_square->getShader(), "Picking"), 1.0 );
                     bulletPtr->draw(uTex, uEnableTex, uModelView, model_view);
+                    glUniform1f( glGetUniformLocation(m_square->getShader(), "Picking"), 0.0 );
                     
                 }//end else if
                 else
