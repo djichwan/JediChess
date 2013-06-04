@@ -48,6 +48,7 @@ bool GameManager::isCheckMate(King *king)
 	{
 		for (std::vector<Piece*>::size_type j = 0; j != pieceList.size(); j++)
 		{
+            buildMoveList(pieceList.at(j));
 			if (pieceList.at(j)->isOnTeam(side) && pieceList.at(j)->getType() != TypeKing)
 			{
 				MoveList* protectorMoveList = pieceList.at(j)->getMoveList();

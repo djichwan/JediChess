@@ -347,14 +347,14 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
     m_animationTime += absoluteTime-m_animationStartTime;   //increment by the time that has passed
     
 
-    GLfloat finalTranslateAllX = m_posDest.x-m_posStart.x; // amount need to move in x-direction
-    GLfloat finalTranslateAllY = m_posDest.y-m_posStart.y; // amount need to move in y-direction
+    GLfloat finalTranslateAllX = (m_posDest.x-m_posStart.x)/PIECE_SCALE.x; // amount need to move in x-direction
+    GLfloat finalTranslateAllY = (m_posDest.y-m_posStart.y)/PIECE_SCALE.y; // amount need to move in y-direction
     GLfloat finalTranslateAllZ = m_posDest.z-m_posStart.z; // amount need to move in z-direction
     bool isXNegative = (finalTranslateAllX < 0);    //if finalTranslateAllX is negative
     bool isYNegative = (finalTranslateAllY < 0);    //if finalTranslateAllY is negative
     bool isZNegative = (finalTranslateAllZ < 0);    //if finalTranslateAllZ is negative
    
-    finalTranslateAllY = isYNegative ? finalTranslateAllY-m_squareDim : finalTranslateAllY+m_squareDim;
+    //finalTranslateAllY = isYNegative ? finalTranslateAllY-m_squareDim : finalTranslateAllY+m_squareDim;
     
     if(m_animationType == TypeAttacking)  //ATTACKING case
     {
@@ -438,8 +438,8 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
                         }
                         //else facing the right way
                         
-                        bulletAnimation.translate.z = isYNegative ? m_animationTime*slope+m_squareDim : -m_animationTime*slope-m_squareDim;
-                        
+                        //bulletAnimation.translate.z = isYNegative ? m_animationTime*slope+m_squareDim : -m_animationTime*slope-m_squareDim;
+                        bulletAnimation.translate.z = isYNegative ? m_animationTime*slope : -m_animationTime*slope;
                     }//end if horizontal translation
                     //else  // if (m_animationTime-abs(finalTranslateAllX) <= abs(finalTranslateAllX)) //move left/right first
                     if(abs(finalTranslateAllX) != 0)
@@ -456,11 +456,15 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
                         //double xTranslate = m_animationTime-abs(finalTranslateAllY);
                         
                         //bulletAnimation.translate.x = isXNegative ? -xTranslate : xTranslate;
-                        bulletAnimation.translate.x = isXNegative ? -m_animationTime*inverseSlope-m_squareDim : m_animationTime*inverseSlope+m_squareDim;
+                        //bulletAnimation.translate.x = isXNegative ? -m_animationTime*inverseSlope-m_squareDim : m_animationTime*inverseSlope+m_squareDim;
+                        bulletAnimation.translate.x = isXNegative ? -m_animationTime*inverseSlope : m_animationTime*inverseSlope;
+
                         
                     }//end if
 
                     bulletPtr->m_animation = bulletAnimation;
+                    glUniform4f( glGetUniformLocation(m_square->getShader(), "color"), RED.x, RED.y, RED.z, RED.w );
+                    glUniform1f( glGetUniformLocation(m_square->getShader(), "Board"), 0.0 );
                     bulletPtr->draw(uTex, uEnableTex, uModelView, model_view);
                     
                 }//end else if
@@ -489,6 +493,10 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
             return;
         }
         
+        if(currWeapon == TypeSaber)
+        {
+            finalTranslateAllY = isYNegative ? finalTranslateAllY+m_squareDim : finalTranslateAllY-m_squareDim;
+        }
             
         if (m_animationTime <= abs(finalTranslateAllX) + abs(finalTranslateAllY)) //if still moving to square
         {
@@ -617,6 +625,7 @@ void Piece::animate(GLint uTex, GLint uEnableTex, GLuint uModelView, mat4 model_
                 moveAnimation.translateAllX = finalTranslateAllX;
                 moveAnimation.translateAllZ = -finalTranslateAllY;
                 
+                std::cout << moveAnimation.translateAllX << " " << moveAnimation.translateAllZ << std::endl;
                 
                 if(finalTranslateAllX != 0 && finalTranslateAllY == 0) //rotating horizontally
                 {

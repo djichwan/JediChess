@@ -324,8 +324,12 @@ void Board::select( vec3 pos, bool on )
 {
     vec4 color = HIGHLIGHT;
     if (m_squares.at(pos2id(pos)).getPiece())
+    {
         if (!m_squares.at(pos2id(pos)).getPiece()->getOnTheMove())
+        {
             color = KILL;
+        }
+    }
     
     select( pos, on, color );
 }
@@ -809,7 +813,7 @@ void Board::generateEndScreen( int side )
     
     TgaImage* image = new TgaImage();
     GLuint    texture;
-    m_initTexture( image, &texture, (m_side == WHITESIDE) ? "images/allianceVictory.tga" : "images/imperialVictory.tga" );
+    m_initTexture( image, &texture, (m_side == WHITESIDE) ? "allianceVictory.tga" : "imperialVictory.tga" );
     
     // Bind border texture
     glBindTexture( GL_TEXTURE_2D, texture );
