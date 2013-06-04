@@ -134,6 +134,7 @@ King whiteKing;       // starts at (8,5)
 
 Bullet bullet;        // for gun animations
 
+GLuint program;
 
 //===================== FUNCTIONS ============================
 //----------------------------------------------------------------
@@ -155,7 +156,7 @@ void set_color(float r, float g, float b)
 void initScene()
 {
     // Load shaders and use the resulting shader program
-    GLuint program = InitShader( "vShader.vert", "fShader.frag" );
+    program = InitShader( "vShader.vert", "fShader.frag" );
     glUseProgram(program);
     
     //Initialize timing
@@ -399,7 +400,6 @@ void initScene()
 
 }// end initScene()
 
-
 //-------------------------------------------------------------
 // Draw scene (i.e. board + pieces) when redisplay
 void drawScene()
@@ -429,6 +429,7 @@ void drawScene()
     mat4 originalView = model_view;
     
     //-------------------- Draw Board ------------------------
+    model_view = originalView;
     glUniform1f( uBoard, 1.0 );
     model_view *= RotateX(BOARD_ROTATION);
     glUniformMatrix4fv( uModelView, 1, GL_TRUE, model_view );
