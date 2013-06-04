@@ -58,7 +58,7 @@ bool Piece::move(Square* destSquare, GLint uTex, GLint uEnableTex, GLuint uModel
         m_row = (squareId / 8) + 1;
         m_col = (squareId % 8) + 1;
         
-        //initiateAnimation(TypeAttacking, uTex, uEnableTex, uModelView, model_view, posStart, posDest);
+        initiateAnimation(TypeAttacking, uTex, uEnableTex, uModelView, model_view, posStart, posDest);
         //piece computationally captured in the dying animation
     }
     else        //if no capture,
