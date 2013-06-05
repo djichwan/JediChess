@@ -819,10 +819,10 @@ void Board::generateEndScreen( int side )
     glBindTexture( GL_TEXTURE_2D, texture );
     
     vec4 points[NumSquareVertices] = {
-        vec4( -15, 15, 5, 1.0),
-        vec4(  15, 15, 5, 1.0),
-        vec4( -15, -15, 5, 1.0),
-        vec4(  15, -15, 5, 1.0)
+        vec4( -22, 15, 5, 1.0),
+        vec4(  22, 15, 5, 1.0),
+        vec4( -22, -15, 5, 1.0),
+        vec4(  22, -15, 5, 1.0)
     };
     glBufferSubData( GL_ARRAY_BUFFER, 0, pointsSize, points );
     glDrawArrays(GL_TRIANGLE_STRIP, 0, NumSquareVertices);

@@ -987,9 +987,9 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
     
     //------------------- Draw weapon as cube in right arm ------------------------
     model_view *= RotateX(animation.rightArmAngleX); // move weapon with right arm
-    
     if(piece->getWeapon() == TypeSaber)     // Lightsaber
     {
+        glUniform4f( glGetUniformLocation(piece->getSquare()->getShader(), "DiffuseProduct"), 1.0f, 1.0f, 1.0f, 1.0f );
         model_view *= Translate(-1.3f, -3.28f, 1.2f);
         model_view *= RotateX(90.0f);
         model_view *= Scale(0.25f, 2.0f, 0.2f);
@@ -997,6 +997,7 @@ void drawPersonPiece(Piece* piece, GLint uTex, GLint uEnableTex, GLuint uModelVi
         bindCubeFaceTextures(piece, piece->m_texture.weapon, uTex, uEnableTex, uModelView, model_view, piece->m_shapeData.rightArm);
         
         model_view = originalView; //undo transformation for next objects
+        glUniform4f( glGetUniformLocation(piece->getSquare()->getShader(), "DiffuseProduct"), 0.6f,  0.6f,  0.6f, 1.0f );
     }// end if
     else if(piece->getWeapon() == TypeGun)  // Gun
     {
